@@ -2,9 +2,9 @@ name: Deploy fe app to Heroku
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   deploy-to-heroku:
