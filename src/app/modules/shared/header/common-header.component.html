@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+  <div class="mat-toolbar-content" fxLayout="row">
+    <div fxShow="true" fxHide.gt-sm="true">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <a mat-button class="companyName" routerLink="/">
+      <span class="header-title">Порт</span>
+    </a>
+    <div fxShow="true" fxHide.lt-md="true">
+      <a mat-button routerLinkActive="active" routerLink="/home">Домой</a>
+      <span class="header-spacer" fxFlex="noshrink"></span>
+    </div>
+    <div fxShow="true" fxHide.lt-md="true">
+      <a mat-button routerLinkActive="active" routerLink="/system-example">Пример системы</a>
+      <span class="header-spacer" fxFlex="noshrink"></span>
+    </div>
+    <div fxShow="true" fxHide.lt-md="true">
+      <a mat-button routerLinkActive="active" routerLink="/calculate">Рассчитать</a>
+      <span class="header-spacer" fxFlex="noshrink"></span>
+    </div>
+    <mat-menu #menu="matMenu" class="common-header-menu">
+      <div fxLayout="column">
+        <a mat-button routerLinkActive="active" routerLink="/home">Home</a>
+      </div>
+    </mat-menu>
+  </div>
+</mat-toolbar>

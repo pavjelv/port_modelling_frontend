@@ -1,0 +1,102 @@
+/* You can add global styles to this file, and also import other style files */
+@import "@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+html {
+  height: -webkit-fill-available;
+}
+
+.catalog-content {
+  gap: 1rem;
+}
+
+.catalog-wrapper {
+  gap: 1rem;
+}
+
+.cart-items-layout-wrapper {
+  gap: 1rem;
+}
+
+.catalog-dropdown-filter-content {
+  max-height: 250px;
+  overflow: auto;
+}
+
+.app-root {
+  gap: 1rem;
+}
+
+.mat-toolbar-content {
+  margin: 0 10%;
+}
+
+.application-content {
+  margin: 1% 10%;
+}
+
+.catalog-item-characteristics-list,
+.characteristics-list {
+  list-style: none;
+}
+
+.catalog-item-characteristics-list .characteristic-title {
+  color: #707070;
+  font-weight: 400;
+}
+
+.catalog-item-characteristics-list li {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.price-container {
+  font-weight: 600;
+}
+
+.price-container .price {
+  letter-spacing: 0;
+  color: #1c3260;
+  font-weight: 500;
+  margin-bottom: 0;
+  margin-right: 0;
+  font-size: 2rem;
+}
+
+.catalog-item-card-actions {
+  margin-top: 10%;
+}
+
+.catalog-item-image {
+  display: flex;
+  justify-content: center;
+  height: 160px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.product-detail-wrapper {
+  margin: 0 10%;
+  font-size: 16px;
+}
+
+.characteristics-list .value {
+  padding-left: 2rem;
+}
+
+.product-detail-content li {
+  margin-top: 0.7rem;
+}
