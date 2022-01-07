@@ -1,4 +1,4 @@
-import "zone.js/dist/zone-node";
+import "zone.js/node";
 
 import { ngExpressEngine } from "@nguniversal/express-engine";
 import * as express from "express";
@@ -19,14 +19,14 @@ export function app(): express.Express {
   server.use(morgan("dev"));
   // Proxy endpoints
   server.use("/api", createProxyMiddleware({
-    target: process.env.BACKEND_URL,
+    target: process.env.BACKEND_URL || "http://localhost:8080",
     changeOrigin: true,
     pathRewrite: {
       [`^/api`]: "",
     },
   }));
   server.use("/files/images", createProxyMiddleware( {
-    target: process.env.BACKEND_URL,
+    target: process.env.BACKEND_URL || "http://localhost:8080",
     changeOrigin: true
   }));
 

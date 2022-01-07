@@ -1,6 +1,7 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID} from "@angular/core";
 import {Color, Label} from "ng2-charts";
 import {ChartDataSets, ChartOptions, ChartType} from "chart.js";
+import {isPlatformBrowser} from "@angular/common";
 
 export interface PeriodicElement {
   name: string;
@@ -122,8 +123,11 @@ export class SystemExampleComponent implements OnInit {
   public lineChartLegend = true;
   public lineChartType: ChartType = "line";
   public lineChartPlugins = [];
+  public isBrowser = false;
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(@Inject(PLATFORM_ID) private platformId: unknown,
+              private cdr: ChangeDetectorRef) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit(): void {
