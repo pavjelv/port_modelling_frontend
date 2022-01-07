@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
+import { Overlay, OverlayRef } from "@angular/cdk/overlay";
+import { ComponentPortal } from "@angular/cdk/portal";
 
-import { Subject } from 'rxjs';
-import { scan, map, distinctUntilChanged } from 'rxjs/operators';
-import { MatSpinner } from '@angular/material/progress-spinner';
+import { Subject } from "rxjs";
+import { scan, map, distinctUntilChanged } from "rxjs/operators";
+import { MatSpinner } from "@angular/material/progress-spinner";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class LoadingOverlayService {
   private spinnerTopRef: OverlayRef;

@@ -1,42 +1,43 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from "@angular/core";
+import {PreloadAllModules, RouterModule, Routes} from "@angular/router";
 
 const routes: Routes = [
   {
-    path: 'home',
+    path: "home",
     loadChildren: () =>
-      import('./modules/homepage/homepage.module').then(
+      import("./modules/homepage/homepage.module").then(
         (m) => m.HomepageModule
       ),
-    data: { state: 'lazy' },
+    data: { state: "lazy" },
   },
   {
-    path: 'system-example',
+    path: "system-example",
     loadChildren: () =>
-      import('./modules/system-example/system-example.module').then(
+      import("./modules/system-example/system-example.module").then(
         (m) => m.SystemExampleModule
       ),
-    data: { state: 'lazy' },
+    data: { state: "lazy" },
   },
   {
-    path: 'calculate',
+    path: "calculate",
     loadChildren: () =>
-      import('./modules/calculate-values/calculate-values.module').then(
+      import("./modules/calculate-values/calculate-values.module").then(
         (m) => m.CalculateValuesModule
       ),
-    data: { state: 'lazy' },
+    data: { state: "lazy" },
   },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    path: "",
+    redirectTo: "home",
+    pathMatch: "full"
   },
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-      initialNavigation: 'enabled',
+      preloadingStrategy: PreloadAllModules,
+      initialNavigation: "enabled",
     }),
   ],
   exports: [RouterModule],

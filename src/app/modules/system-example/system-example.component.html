@@ -83,7 +83,7 @@
             — среднее число заявок в очереди.
           </li>
         </ul>
-        <mat-tab-group>
+        <mat-tab-group *ngIf="isBrowser">
           <mat-tab label="Одноканальная СМО">
             <ng-container [ngTemplateOutlet]="oneChannel"></ng-container>
           </mat-tab>
@@ -148,7 +148,8 @@
   <br>
   Оптимальное количество каналов обслуживания = 21.
   <div style="display: block;">
-    <canvas baseChart class="chart-canvas"
+    <canvas *ngIf="isBrowser" baseChart
+            class="chart-canvas"
             [datasets]="withRefuseData"
             [labels]="lineChartLabels"
             [options]="lineChartOptions"
@@ -194,7 +195,8 @@
   <br>
   Оптимальное количество каналов обслуживания = 19.
   <div style="display: block;">
-    <canvas baseChart class="chart-canvas"
+    <canvas *ngIf="isBrowser" baseChart
+            class="chart-canvas"
             [datasets]="withQueueData"
             [labels]="lineChartWithQueueLabels"
             [options]="lineChartOptions"
@@ -205,7 +207,8 @@
     </canvas>
   </div>
   <div style="display: block;">
-    <canvas baseChart class="chart-canvas"
+    <canvas *ngIf="isBrowser" baseChart
+            class="chart-canvas"
             [datasets]="queueLengthData"
             [labels]="lineChartWithQueueLabels"
             [options]="lineChartOptions"
