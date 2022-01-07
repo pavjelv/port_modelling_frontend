@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {CalculatedSystemParametersModel} from '../model/calculated-system-parameters.model';
-import {SystemVariablesModel} from '../model/system-variables.model';
+import {Injectable} from "@angular/core";
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {CalculatedSystemParametersModel} from "../model/calculated-system-parameters.model";
+import {SystemVariablesModel} from "../model/system-variables.model";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class OptimalSizeGenerationService {
   constructor(private http: HttpClient) { }
@@ -13,7 +13,7 @@ export class OptimalSizeGenerationService {
   calculateWithQueue(params: SystemVariablesModel): Observable<CalculatedSystemParametersModel> {
     const request = {
       ...params,
-      type: 'WITH_QUEUE',
+      type: "WITH_QUEUE",
     };
     return this.http.post<CalculatedSystemParametersModel>(`/api/optimalCapacity/calculate`, request);
   }
@@ -21,7 +21,7 @@ export class OptimalSizeGenerationService {
   calculateWithoutQueue(params: SystemVariablesModel): Observable<CalculatedSystemParametersModel> {
     const request = {
       ...params,
-      type: 'WITHOUT_QUEUE',
+      type: "WITHOUT_QUEUE",
     };
     return this.http.post<CalculatedSystemParametersModel>(`/api/optimalCapacity/calculate`, request);
   }
