@@ -1,10 +1,11 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from "@angular/core";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID} from "@angular/core";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LoadingOverlayService} from "../../services/loading-overlay.service";
 import {OptimalSizeGenerationService} from "../../services/optimal-size-generation.service";
 import {CalculatedSystemParametersModel} from "../../model/calculated-system-parameters.model";
 import {ChartDataSets, ChartOptions, ChartType} from "chart.js";
 import {Color, Label} from "ng2-charts";
+import {isPlatformBrowser} from "@angular/common";
 
 @Component({
   selector: "app-calculate-values",
@@ -18,6 +19,7 @@ export class CalculateValuesComponent implements OnInit {
   public selected = "";
   public valuesCalculated = false;
   public calculatedParameters: CalculatedSystemParametersModel;
+  public isBrowser = false;
 
 
   // charts
@@ -54,11 +56,14 @@ export class CalculateValuesComponent implements OnInit {
     {value: "Многоканальная СМО с ограниченной очередью", id: "3"}
   ];
   constructor(private fb: FormBuilder,
+              @Inject(PLATFORM_ID) private platformId: unknown,
               private loadingService: LoadingOverlayService,
               private optimalSizeService: OptimalSizeGenerationService,
               private cdr: ChangeDetectorRef,
               )
-  { }
+  {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.systemParametersForm = this.fb.group({
