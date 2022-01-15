@@ -8,9 +8,15 @@ export enum CUSTOMER_STATE {
 export class Ship {
   constructor(protected ctx: CanvasRenderingContext2D, private color: string) {}
 
-  public draw(x: number, y: number, z: number, state: CUSTOMER_STATE): void {
+  public draw(x: number, y: number, z: number, state: CUSTOMER_STATE, angle?: number): void {
     const p = z / 5;
     const ctx = this.ctx;
+
+    if (angle) {
+      ctx.translate(x + z / 2, y + z / 2);
+      ctx.rotate(angle);
+      ctx.translate(-x - z / 2, -y - z / 2);
+    }
 
     ctx.fillStyle = this.color;
     // bottom of the ship
@@ -35,6 +41,12 @@ export class Ship {
 
     if (state !== CUSTOMER_STATE.SERVED) {
       this.fillCargo(x, y, z, state);
+    }
+
+    if (angle) {
+      ctx.translate(x + z / 2, y + z / 2);
+      ctx.rotate(-angle);
+      ctx.translate(-x - z / 2, -y - z / 2);
     }
   }
 
