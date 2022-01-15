@@ -1,6 +1,9 @@
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {Server, SERVER_STATE} from "./ui-elements/server";
-import {Customer, CUSTOMER_STATE} from "./ui-elements/customer";
+import {Customer} from "./ui-elements/customer";
+import {SimulationService} from "../../../../services/simulation.service";
+import {first} from "rxjs/operators";
+import {SimulationResultModel} from "../../../../model/simulation-result.model";
 
 const WIDTH = 600;
 const HEIGHT = 300;
@@ -22,42 +25,116 @@ export class SystemAnimationComponent implements OnInit {
 
   private ctx: CanvasRenderingContext2D;
 
-  constructor() { }
+  private model: SimulationResultModel;
+  private customers: Customer[];
+  private servers: Server[];
+  public time = 20;
+
+  constructor(private simulationService: SimulationService) { }
 
   ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext("2d");
+    // this.draw(1);
     this.animate();
   }
 
   private draw(i: number): void {
-    const server = new Server(this.ctx);
-    server.drawServer(5 * WIDTH_POINT, 0.5 * HEIGHT_POINT, i % 2 === 0 ? SERVER_STATE.BUSY : SERVER_STATE.FREE);
-    server.drawServer(5 * WIDTH_POINT, 2 * HEIGHT_POINT, SERVER_STATE.BUSY);
-    server.drawServer(5 * WIDTH_POINT, 3.5 * HEIGHT_POINT, SERVER_STATE.FREE);
+    // const server1 = new Server(this.ctx, 5 * WIDTH_POINT, 0.5 * HEIGHT_POINT);
+    // server1.draw(SERVER_STATE.FREE);
+    //
+    // const server2 = new Server(this.ctx, 5 * WIDTH_POINT, 2 * HEIGHT_POINT);
+    // server2.draw(SERVER_STATE.FREE);
+    //
+    // const server3 = new Server(this.ctx, 5 * WIDTH_POINT, 3.5 * HEIGHT_POINT);
+    // server3.draw(SERVER_STATE.IDLE);
 
-    new Customer(this.ctx, "9").drawCustomer(5.5 * WIDTH_POINT, 2.5 * HEIGHT_POINT, CUSTOMER_STATE.SERVING);
+    // servers location
+    // new Customer(this.ctx, "9", 5.5 * WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.SERVING);
+    // new Customer(this.ctx, "10", 5.5 * WIDTH_POINT, 4 * HEIGHT_POINT).draw(CUSTOMER_STATE.SERVING);
+    // new Customer(this.ctx, "10", 5.5 * WIDTH_POINT, HEIGHT_POINT).draw(CUSTOMER_STATE.SERVING);
 
-    new Customer(this.ctx, "0").drawCustomer(WIDTH_POINT, 2.5 * HEIGHT_POINT, CUSTOMER_STATE.WAITING);
-    new Customer(this.ctx, "1").drawCustomer(2 * WIDTH_POINT, 2.5 * HEIGHT_POINT, CUSTOMER_STATE.WAITING);
-    new Customer(this.ctx, "3").drawCustomer(3 * WIDTH_POINT, 2.5 * HEIGHT_POINT, CUSTOMER_STATE.WAITING);
-    new Customer(this.ctx, "4").drawCustomer(4 * WIDTH_POINT, 2.5 * HEIGHT_POINT, CUSTOMER_STATE.WAITING);
+    // queue location
+    // new Customer(this.ctx, "0", WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.WAITING);
+    // new Customer(this.ctx, "1", 2 * WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.WAITING);
+    // new Customer(this.ctx, "3", 3 * WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.WAITING);
+    // new Customer(this.ctx, "4", 4 * WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.WAITING);
 
-    new Customer(this.ctx, "5").drawCustomer(7 * WIDTH_POINT, 2.5 * HEIGHT_POINT, CUSTOMER_STATE.SERVED);
-    new Customer(this.ctx, "6").drawCustomer(8 * WIDTH_POINT, 2.5 * HEIGHT_POINT, CUSTOMER_STATE.SERVED);
+    // success serve location
+    // new Customer(this.ctx, "5", 7 * WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.SERVED);
+    // new Customer(this.ctx, "6", 8 * WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.SERVED);
 
-    new Customer(this.ctx, "7").drawCustomer(WIDTH_POINT, 4 * HEIGHT_POINT, CUSTOMER_STATE.LEFT);
+    // leave location
+    // new Customer(this.ctx, "7", WIDTH_POINT, 4 * HEIGHT_POINT).draw(CUSTOMER_STATE.LEFT);
   }
 
   private animate(): void {
-    const max = 20;
-    let x = 0;
-    const i = setInterval(() => {
-      this.draw(x);
-      x++;
-      if (x >= max) {
-        clearInterval(i);
+    const server1 = new Server(this.ctx, 5 * WIDTH_POINT, 0.5 * HEIGHT_POINT);
+    server1.reset();
+
+    const server2 = new Server(this.ctx, 5 * WIDTH_POINT, 2 * HEIGHT_POINT);
+    server2.reset();
+
+    const server3 = new Server(this.ctx, 5 * WIDTH_POINT, 3.5 * HEIGHT_POINT);
+    server3.reset();
+
+    this.servers = [server1, server2, server3];
+
+    this.simulationService.getModellingResult().pipe(first()).subscribe((result) => {
+      this.model = result.model;
+      this.customers = this.model.customer_data.map((c) => new Customer(this.ctx, c.name, WIDTH_POINT, HEIGHT_POINT));
+      this.onTimeChange(0);
+      // const i = setInterval(() => {
+      //   x++;
+      //   if (x >= max) {
+      //     clearInterval(i);
+      //   }
+      // }, 1000);
+    });
+  }
+
+  public onTimeChange(x: number): void {
+    this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    this.servers.forEach((s) => s.reset());
+
+    const queuedCustomers = this.model.customer_data
+      .filter((c) => c.arrive <= x && c.serve > x)
+      .filter((_, i) => i < 4);
+    queuedCustomers.sort((c1, c2) => c1.arrive - c2.arrive);
+    queuedCustomers.forEach((c, i) => {
+      const cust = this.customers.find((customer) => customer.customerName === c.name);
+      this.servers.find((s) => s.customer === cust)?.free();
+      cust.queue(i + 1);
+    });
+
+    const servedCustomers = this.model.customer_data
+      .filter((c) => c.serve !== null && c.leave <= x)
+      .reverse()
+      .filter((_, i) => i < 3);
+    servedCustomers.sort((c1, c2) => c2.leave - c1.leave);
+    servedCustomers.forEach((c, i) => {
+      const cust = this.customers.find((customer) => customer.customerName === c.name);
+      this.servers.find((s) => s.customer === cust)?.free();
+      cust.success(i);
+    });
+
+    const servingCustomers = this.model.customer_data
+      .filter((c) => c.serve !== null && c.serve <= x && c.leave > x);
+    servingCustomers.forEach((c) => {
+      const cust = this.customers.find((customer) => customer.customerName === c.name);
+      let index = this.servers.findIndex((s) => s.customer === cust);
+      if (index === -1) {
+        index = this.servers.findIndex((s) => !s.customer);
       }
-    }, 1000);
+      this.servers[index].serve(cust);
+      cust.serve(index);
+    });
+
+    const rejectedCustomers = this.model.customer_data
+      .filter((c) => c.serve === null && c.arrive <= x)
+      .reverse()
+      .filter((_, i) => i < 4);
+    rejectedCustomers.sort((c1, c2) => c2.leave - c1.leave);
+    rejectedCustomers.forEach((c, i) => this.customers.find((customer) => customer.customerName === c.name)?.leave(i + 1));
   }
 
 }

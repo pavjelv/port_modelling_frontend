@@ -7,6 +7,7 @@ import { join } from "path";
 import { AppServerModule } from "./src/main.server";
 import { APP_BASE_HREF } from "@angular/common";
 import { existsSync } from "fs";
+import {createProxyMiddleware} from "http-proxy-middleware";
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -18,13 +19,22 @@ export function app(): express.Express {
 
   server.use(morgan("dev"));
   // Proxy endpoints
-  server.use("/api", createProxyMiddleware({
+  server.use("/api/modelling", createProxyMiddleware({
+    target: process.env.BACKEND_URL || "http://localhost:8000",
+    changeOrigin: true,
+    pathRewrite: {
+      [`^/api/modelling`]: "",
+    },
+  }));
+
+  server.use("/api/common", createProxyMiddleware({
     target: process.env.BACKEND_URL || "http://localhost:8080",
     changeOrigin: true,
     pathRewrite: {
-      [`^/api`]: "",
+      [`^/api/common`]: "",
     },
   }));
+
   server.use("/files/images", createProxyMiddleware( {
     target: process.env.BACKEND_URL || "http://localhost:8080",
     changeOrigin: true

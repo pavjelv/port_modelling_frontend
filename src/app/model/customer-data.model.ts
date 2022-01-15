@@ -1,6 +1,6 @@
 export interface CustomerDataModel {
   name: string;
-  arrive: string;
-  leave: string;
-  serve: string;
+  arrive: number;
+  leave: number;
+  serve: number;
 }

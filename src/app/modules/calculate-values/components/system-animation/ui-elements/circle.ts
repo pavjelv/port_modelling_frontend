@@ -10,4 +10,8 @@ export class Circle {
     this.ctx.fill();
     this.ctx.fillStyle = prevStyle;
   }
+
+  public clear(x: number, y: number, z: number): void {
+    this.ctx.clearRect(x - z, y - z, z * 2, z * 2);
+  }
 }

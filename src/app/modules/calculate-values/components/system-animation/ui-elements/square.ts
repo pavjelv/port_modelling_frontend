@@ -7,4 +7,8 @@ export class Square {
     this.ctx.fillRect(x, y, z, z);
     this.ctx.fillStyle = prevStyle;
   }
+
+  public clear(x: number, y: number, z: number): void {
+    this.ctx.clearRect(x, y, z, z);
+  }
 }

@@ -1,9 +1,17 @@
 {
-  "/api": {
+  "/api/common": {
     "target": "http://localhost:5000",
     "secure": false,
     "pathRewrite": {
-      "^/api": ""
+      "^/api/common": ""
+    },
+    "logLevel": "debug"
+  },
+  "/api/modelling": {
+    "target": "http://localhost:8000",
+    "secure": false,
+    "pathRewrite": {
+      "^/api/modelling": ""
     },
     "logLevel": "debug"
   },

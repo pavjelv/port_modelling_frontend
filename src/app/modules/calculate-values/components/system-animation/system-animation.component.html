@@ -1,1 +1,12 @@
-<canvas class="system-animation-canvas" #canvas width="600" height="300"></canvas>
+<div class="system-animation-container">
+  <canvas class="system-animation-canvas" #canvas width="600" height="300"></canvas>
+  <mat-slider
+    class="system-animation-slider"
+    [min]="0"
+    [max]="time"
+    [step]="1"
+    [tickInterval]="1"
+    [thumbLabel]="true"
+    (valueChange)="onTimeChange($event)"
+  ></mat-slider>
+</div>
