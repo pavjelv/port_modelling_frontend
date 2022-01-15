@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
-import {Server, SERVER_STATE} from "./ui-elements/server";
+import {Server} from "./ui-elements/server";
 import {Customer} from "./ui-elements/customer";
 import {SimulationService} from "../../../../services/simulation.service";
 import {first} from "rxjs/operators";

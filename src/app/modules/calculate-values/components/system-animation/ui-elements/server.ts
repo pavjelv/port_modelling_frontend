@@ -1,11 +1,5 @@
-import {Square} from "./square";
 import {Customer} from "./customer";
-
-export enum SERVER_STATE {
-  BUSY = "red",
-  FREE = "green",
-  IDLE = "gray",
-}
+import {Crane, SERVER_STATE} from "./crane";
 
 const SERVER_FIGURE_SIZE = 60;
 
@@ -13,12 +7,12 @@ export class Server {
 
   private readonly x: number;
   private readonly y: number;
-  private square: Square;
+  private crane: Crane;
   private _customer: Customer;
   private _state: SERVER_STATE;
 
   constructor(private ctx: CanvasRenderingContext2D, x: number, y: number) {
-    this.square = new Square(ctx);
+    this.crane = new Crane(ctx);
     this.x = x;
     this.y = y;
   }
@@ -45,7 +39,12 @@ export class Server {
   }
 
   private draw(): void {
-    this.square.draw(this.x, this.y, SERVER_FIGURE_SIZE, this._state);
+    // const img = new Image();
+    // img.onload = () => {
+    //   this.ctx.drawImage(img, this.x, this.y, 57, 55);
+    // };
+    // img.src = "/assets/pictures/cranes/crane.webp";
+    this.crane.draw(this.x, this.y, SERVER_FIGURE_SIZE, this._state);
   }
 
   public clear(): void {

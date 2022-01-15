@@ -1,17 +1,11 @@
-import {Circle} from "./circle";
+import {CUSTOMER_STATE, Ship} from "./ship";
+import {getRandomColor} from "./color-generation.helper";
 
-export enum CUSTOMER_STATE {
-  WAITING = "gray",
-  LEFT = "red",
-  SERVING = "yellow",
-  SERVED = "green",
-}
-
-const CUSTOMER_FIGURE_SIZE = 25;
+const CUSTOMER_FIGURE_SIZE = 40;
 
 export class Customer {
 
-  private circle: Circle;
+  private ship: Ship;
   public readonly customerName: string;
   private readonly widthPoint: number;
   private readonly heightPoint: number;
@@ -20,7 +14,7 @@ export class Customer {
   private _state: CUSTOMER_STATE;
 
   constructor(private ctx: CanvasRenderingContext2D, customerName: string, widthPoint: number, heightPoint: number) {
-    this.circle = new Circle(ctx);
+    this.ship = new Ship(ctx, getRandomColor());
     this.customerName = customerName;
     this.widthPoint = widthPoint;
     this.heightPoint = heightPoint;
@@ -32,26 +26,20 @@ export class Customer {
 
   public queue(order: number): void {
     this.clear();
-    this.x = this.widthPoint * (5 - order);
-    this.y = this.heightPoint * 2.5;
+    this.x = this.widthPoint * (4 - order);
+    this.y = this.heightPoint * 2.35;
     this._state = CUSTOMER_STATE.WAITING;
     this.draw();
   }
 
   private draw(): void {
-    this.circle.draw(this.x, this.y, CUSTOMER_FIGURE_SIZE, this.state);
-    const prevStyle = this.ctx.fillStyle;
-    this.ctx.font = "20pt Calibri";
-    this.ctx.fillStyle = "black";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText(this.customerName, this.x, this.y + 10);
-    this.ctx.fillStyle = prevStyle;
+    this.ship.draw(this.x, this.y, CUSTOMER_FIGURE_SIZE, this.state);
   }
 
   public leave(order: number): void {
     this.clear();
     this.x = this.widthPoint * (5 - order);
-    this.y = this.heightPoint * 4;
+    this.y = this.heightPoint * 3.85;
     this._state = CUSTOMER_STATE.LEFT;
     this.draw();
   }
@@ -59,28 +47,28 @@ export class Customer {
   public success(order: number): void {
     this.clear();
     this.x = this.widthPoint * (7 + order);
-    this.y = this.heightPoint * 2.5;
+    this.y = this.heightPoint * 2.35;
     this._state = CUSTOMER_STATE.SERVED;
     this.draw();
   }
 
   public serve(serverNumber: number): void {
     this.clear();
-    let serverLocation = 1;
+    let serverLocation = 0.85;
     switch (serverNumber) {
       case 0:
-        serverLocation = 1;
+        serverLocation = 0.85;
         break;
       case 1:
-        serverLocation = 2.5;
+        serverLocation = 2.35;
         break;
       case 2:
-        serverLocation = 4;
+        serverLocation = 3.85;
         break;
       default:
         break;
     }
-    this.x = this.widthPoint * 5.5;
+    this.x = this.widthPoint * 4.8;
     this.y = this.heightPoint * serverLocation;
     this._state = CUSTOMER_STATE.SERVING;
     this.draw();
