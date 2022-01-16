@@ -7,7 +7,7 @@ export enum SERVER_STATE {
 export class Crane {
   constructor(protected ctx: CanvasRenderingContext2D) {}
 
-  public draw(x: number, y: number, z: number, state: SERVER_STATE): void {
+  public draw(x: number, y: number, z: number, state: SERVER_STATE, size = 0.75): void {
     const p = z / 5;
     const ctx = this.ctx;
 
@@ -35,10 +35,14 @@ export class Crane {
     ctx.lineTo(x, y + p * 1.5);
     ctx.lineTo(x + p * 0.5, y + p * 1.5);
     ctx.lineTo(x + p * 0.5, y + p * 1.75);
+
+    // vertical thing
     ctx.lineTo(x + p * 0.75, y + p * 1.75);
-    ctx.lineTo(x + p * 0.75, y + p * 2.5);
-    ctx.lineTo(x + p, y + p * 2.5);
+    ctx.lineTo(x + p * 0.75, y + p * (1.75 + size));
+    ctx.lineTo(x + p, y + p * (1.75 + size));
     ctx.lineTo(x + p, y + p * 1.75);
+    // vertical thing end
+
     ctx.lineTo(x + p * 1.25, y + p * 1.75);
     ctx.lineTo(x + p * 1.25, y + p * 1.5);
     ctx.lineTo(x + p * 4, y + p * 1.5);
@@ -47,11 +51,15 @@ export class Crane {
     if (state === SERVER_STATE.BUSY) {
       // cargo
       ctx.fillStyle = "black";
-      ctx.fillRect(x + p * 0.5, y + p * 2.5, p * 0.75, p * 0.5);
+      ctx.fillRect(x + p * 0.5, y + p * (1.75 + size), p, p * 0.5);
     }
   }
 
   public clear(x: number, y: number, z: number): void {
-    this.ctx.clearRect(x, y, z, z);
+    const p = z / 5;
+    const ctx = this.ctx;
+
+    ctx.clearRect(x, y + p, p * 4.5, p / 2);
+    ctx.clearRect(x + p * 0.5, y + p * 1.5, p, p * 2.5);
   }
 }

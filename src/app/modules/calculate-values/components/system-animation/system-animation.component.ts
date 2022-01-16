@@ -29,6 +29,7 @@ export class SystemAnimationComponent implements OnInit {
   private customers: Customer[];
   private servers: Server[];
   public time = 20;
+  public currentTime = 0;
 
   constructor(private simulationService: SimulationService) { }
 
@@ -84,27 +85,18 @@ export class SystemAnimationComponent implements OnInit {
       this.customers = this.model.customer_data.map((c) => new Customer(this.ctx, c.name, WIDTH_POINT, HEIGHT_POINT));
       this.onTimeChange(0);
       // const i = setInterval(() => {
-      //   x++;
-      //   if (x >= max) {
+      //   this.onTimeChange(this.currentTime);
+      //   this.currentTime = this.currentTime + 1;
+      //   if (this.currentTime >= this.time) {
       //     clearInterval(i);
       //   }
-      // }, 1000);
+      // }, 4000);
     });
   }
 
   public onTimeChange(x: number): void {
-    this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
-    this.servers.forEach((s) => s.reset());
-
-    const queuedCustomers = this.model.customer_data
-      .filter((c) => c.arrive <= x && c.serve > x)
-      .filter((_, i) => i < 4);
-    queuedCustomers.sort((c1, c2) => c1.arrive - c2.arrive);
-    queuedCustomers.forEach((c, i) => {
-      const cust = this.customers.find((customer) => customer.customerName === c.name);
-      this.servers.find((s) => s.customer === cust)?.free();
-      cust.queue(i + 1);
-    });
+    // this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    // this.servers.forEach((s) => s.reset());
 
     const servedCustomers = this.model.customer_data
       .filter((c) => c.serve !== null && c.leave <= x)
@@ -113,7 +105,7 @@ export class SystemAnimationComponent implements OnInit {
     servedCustomers.sort((c1, c2) => c2.leave - c1.leave);
     servedCustomers.forEach((c, i) => {
       const cust = this.customers.find((customer) => customer.customerName === c.name);
-      this.servers.find((s) => s.customer === cust)?.free();
+      this.servers.find((s) => s.customerName === cust.customerName)?.free();
       cust.success(i);
     });
 
@@ -121,12 +113,22 @@ export class SystemAnimationComponent implements OnInit {
       .filter((c) => c.serve !== null && c.serve <= x && c.leave > x);
     servingCustomers.forEach((c) => {
       const cust = this.customers.find((customer) => customer.customerName === c.name);
-      let index = this.servers.findIndex((s) => s.customer === cust);
+      let index = this.servers.findIndex((s) => s.customerName === cust.customerName);
       if (index === -1) {
-        index = this.servers.findIndex((s) => !s.customer);
+        index = this.servers.findIndex((s) => !s.customerName);
       }
-      this.servers[index].serve(cust);
-      cust.serve(index);
+      this.servers[index].serve(cust.customerName);
+      cust.serve(index, this.servers[index]);
+    });
+
+    const queuedCustomers = this.model.customer_data
+      .filter((c) => c.arrive <= x && c.serve > x)
+      .filter((_, i) => i < 4);
+    queuedCustomers.sort((c1, c2) => c1.arrive - c2.arrive || c1.serve - c2.serve);
+    queuedCustomers.forEach((c, i) => {
+      const cust = this.customers.find((customer) => customer.customerName === c.name);
+      this.servers.find((s) => s.customerName === cust.customerName)?.free();
+      cust.queue(i + 1);
     });
 
     const rejectedCustomers = this.model.customer_data

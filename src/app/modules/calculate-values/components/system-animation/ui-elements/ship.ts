@@ -6,7 +6,7 @@ export enum CUSTOMER_STATE {
 }
 
 export class Ship {
-  constructor(protected ctx: CanvasRenderingContext2D, private color: string) {}
+  constructor(protected ctx: CanvasRenderingContext2D, private color: string, private name: string) {}
 
   public draw(x: number, y: number, z: number, state: CUSTOMER_STATE, angle?: number): void {
     const p = z / 5;
@@ -43,6 +43,10 @@ export class Ship {
       this.fillCargo(x, y, z, state);
     }
 
+    ctx.fillStyle = "white";
+    ctx.font = "10px calibri";
+    ctx.fillText(this.name, x + p * 0.7, y + p * 4.95);
+
     if (angle) {
       ctx.translate(x + z / 2, y + z / 2);
       ctx.rotate(-angle);
@@ -57,38 +61,39 @@ export class Ship {
 
     ctx.beginPath();
     // first cargo line
-    ctx.moveTo(x + p * 1.6, y + p * 4);
-    ctx.lineTo(x + p * 1.6, y + p * 3.5);
-    ctx.lineTo(x + p * 2.6, y + p * 3.5);
-    ctx.lineTo(x + p * 2.6, y + p * 4);
-
-    ctx.moveTo(x + p * 2.7, y + p * 4);
-    ctx.lineTo(x + p * 2.7, y + p * 3.5);
-    ctx.lineTo(x + p * 3.7, y + p * 3.5);
-    ctx.lineTo(x + p * 3.7, y + p * 4);
-
-    ctx.moveTo(x + p * 3.8, y + p * 4);
-    ctx.lineTo(x + p * 3.8, y + p * 3.5);
-    ctx.lineTo(x + p * 4.8, y + p * 3.5);
-    ctx.lineTo(x + p * 4.8, y + p * 4);
+    ctx.fillRect(x + p * 1.6, y + p * 3.5, p, p * 0.5);
+    ctx.fillRect(x + p * 2.7, y + p * 3.5, p, p * 0.5);
+    ctx.fillRect(x + p * 3.8, y + p * 3.5, p, p * 0.5);
 
     if (state !== CUSTOMER_STATE.SERVING) {
       // second cargo line
-      ctx.moveTo(x + p * 1.6, y + p * 3.4);
-      ctx.lineTo(x + p * 1.6, y + p * 2.9);
-      ctx.lineTo(x + p * 2.6, y + p * 2.9);
-      ctx.lineTo(x + p * 2.6, y + p * 3.4);
+      ctx.fillRect(x + p * 1.6, y + p * 2.9, p, p * 0.5);
 
-      ctx.moveTo(x + p * 2.7, y + p * 3.4);
-      ctx.lineTo(x + p * 2.7, y + p * 2.9);
-      ctx.lineTo(x + p * 3.7, y + p * 2.9);
-      ctx.lineTo(x + p * 3.7, y + p * 3.4);
+      ctx.fillRect(x + p * 2.7, y + p * 2.9, p, p * 0.5);
     }
 
     ctx.fill();
   }
 
-  public clear(x: number, y: number, z: number): void {
-    this.ctx.clearRect(x, y, z, z);
+  public clear(x: number, y: number, z: number, angle?: number): void {
+    // this.ctx.clearRect(x, y, z, z);
+    const p = z / 5;
+    const ctx = this.ctx;
+
+    if (angle) {
+      ctx.translate(x + z / 2, y + z / 2);
+      ctx.rotate(angle);
+      ctx.translate(-x - z / 2, -y - z / 2);
+    }
+
+    ctx.clearRect(x, y + p * 1.9, p * 5, p * 3.2);
+    // ctx.clearRect(x + p * 0.5, y + p * 2, p, p * 2);
+    // ctx.clearRect(x + p * 1.6, y + p * 3.4, p * 3, p * 2);
+
+    if (angle) {
+      ctx.translate(x + z / 2, y + z / 2);
+      ctx.rotate(-angle);
+      ctx.translate(-x - z / 2, -y - z / 2);
+    }
   }
 }
