@@ -1,14 +1,9 @@
-export enum CUSTOMER_STATE {
-  WAITING = "gray",
-  LEFT = "red",
-  SERVING = "yellow",
-  SERVED = "green",
-}
+import {CustomerState} from "./vessel";
 
-export class Ship {
+export class CargoShip {
   constructor(protected ctx: CanvasRenderingContext2D, private color: string, private name: string) {}
 
-  public draw(x: number, y: number, z: number, state: CUSTOMER_STATE, angle?: number): void {
+  public draw(x: number, y: number, z: number, state: CustomerState, angle?: number): void {
     const p = z / 5;
     const ctx = this.ctx;
 
@@ -29,17 +24,13 @@ export class Ship {
     ctx.lineTo(x, y + p * 4);
 
     // top of the ship
-    ctx.moveTo(x + p / 2, y + p * 4);
-    ctx.lineTo(x + p / 2, y + p * 2.5);
-    ctx.lineTo(x + p * 3 / 4, y + p * 2.5);
-    ctx.lineTo(x + p * 3 / 4, y + p * 2);
-    ctx.lineTo(x + p * 5 / 4, y + p * 2);
-    ctx.lineTo(x + p * 5 / 4, y + p * 2.5);
-    ctx.lineTo(x + p * 1.5, y + p * 2.5);
-    ctx.lineTo(x + p * 1.5, y + p * 4);
+    ctx.moveTo(x, y + p * 4);
+    ctx.lineTo(x, y + p * 2.5);
+    ctx.lineTo(x + p * 0.5, y + p * 2.5);
+    ctx.lineTo(x + p * 0.5, y + p * 4);
     ctx.fill();
 
-    if (state !== CUSTOMER_STATE.SERVED) {
+    if (state !== CustomerState.SERVED) {
       this.fillCargo(x, y, z, state);
     }
 
@@ -54,22 +45,29 @@ export class Ship {
     }
   }
 
-  private fillCargo(x: number, y: number, z: number, state: CUSTOMER_STATE): void {
+  private fillCargo(x: number, y: number, z: number, state: CustomerState): void {
     const ctx = this.ctx;
     const p = z / 5;
     ctx.fillStyle = "black";
 
     ctx.beginPath();
     // first cargo line
-    ctx.fillRect(x + p * 1.6, y + p * 3.5, p, p * 0.5);
-    ctx.fillRect(x + p * 2.7, y + p * 3.5, p, p * 0.5);
-    ctx.fillRect(x + p * 3.8, y + p * 3.5, p, p * 0.5);
+    ctx.fillRect(x + p * 0.6, y + p * 3.5, p, p * 0.5);
+    ctx.fillRect(x + p * 1.7, y + p * 3.5, p, p * 0.5);
+    ctx.fillRect(x + p * 2.8, y + p * 3.5, p, p * 0.5);
+    ctx.fillRect(x + p * 3.9, y + p * 3.5, p, p * 0.5);
 
-    if (state !== CUSTOMER_STATE.SERVING) {
-      // second cargo line
-      ctx.fillRect(x + p * 1.6, y + p * 2.9, p, p * 0.5);
+    // second cargo line
+    ctx.fillRect(x + p * 0.6, y + p * 2.9, p, p * 0.5);
+    ctx.fillRect(x + p * 1.7, y + p * 2.9, p, p * 0.5);
+    ctx.fillRect(x + p * 2.8, y + p * 2.9, p, p * 0.5);
+    ctx.fillRect(x + p * 3.9, y + p * 2.9, p, p * 0.5);
 
-      ctx.fillRect(x + p * 2.7, y + p * 2.9, p, p * 0.5);
+    if (state !== CustomerState.SERVING) {
+      // third cargo line
+      ctx.fillRect(x + p * 1.6, y + p * 2.3, p, p * 0.5);
+
+      ctx.fillRect(x + p * 2.7, y + p * 2.3, p, p * 0.5);
     }
 
     ctx.fill();

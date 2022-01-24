@@ -35,37 +35,7 @@ export class SystemAnimationComponent implements OnInit {
 
   ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext("2d");
-    // this.draw(1);
     this.animate();
-  }
-
-  private draw(i: number): void {
-    // const server1 = new Server(this.ctx, 5 * WIDTH_POINT, 0.5 * HEIGHT_POINT);
-    // server1.draw(SERVER_STATE.FREE);
-    //
-    // const server2 = new Server(this.ctx, 5 * WIDTH_POINT, 2 * HEIGHT_POINT);
-    // server2.draw(SERVER_STATE.FREE);
-    //
-    // const server3 = new Server(this.ctx, 5 * WIDTH_POINT, 3.5 * HEIGHT_POINT);
-    // server3.draw(SERVER_STATE.IDLE);
-
-    // servers location
-    // new Customer(this.ctx, "9", 5.5 * WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.SERVING);
-    // new Customer(this.ctx, "10", 5.5 * WIDTH_POINT, 4 * HEIGHT_POINT).draw(CUSTOMER_STATE.SERVING);
-    // new Customer(this.ctx, "10", 5.5 * WIDTH_POINT, HEIGHT_POINT).draw(CUSTOMER_STATE.SERVING);
-
-    // queue location
-    // new Customer(this.ctx, "0", WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.WAITING);
-    // new Customer(this.ctx, "1", 2 * WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.WAITING);
-    // new Customer(this.ctx, "3", 3 * WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.WAITING);
-    // new Customer(this.ctx, "4", 4 * WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.WAITING);
-
-    // success serve location
-    // new Customer(this.ctx, "5", 7 * WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.SERVED);
-    // new Customer(this.ctx, "6", 8 * WIDTH_POINT, 2.5 * HEIGHT_POINT).draw(CUSTOMER_STATE.SERVED);
-
-    // leave location
-    // new Customer(this.ctx, "7", WIDTH_POINT, 4 * HEIGHT_POINT).draw(CUSTOMER_STATE.LEFT);
   }
 
   private animate(): void {
@@ -82,7 +52,7 @@ export class SystemAnimationComponent implements OnInit {
 
     this.simulationService.getModellingResult().pipe(first()).subscribe((result) => {
       this.model = result.model;
-      this.customers = this.model.customer_data.map((c) => new Customer(this.ctx, c.name, WIDTH_POINT, HEIGHT_POINT));
+      this.customers = this.model.customer_data.map((c) => new Customer(this.ctx, c.type, c.name, WIDTH_POINT, HEIGHT_POINT));
       this.onTimeChange(0);
       // const i = setInterval(() => {
       //   this.onTimeChange(this.currentTime);

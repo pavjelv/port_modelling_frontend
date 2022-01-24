@@ -1,12 +1,15 @@
-import {CUSTOMER_STATE, Ship} from "./ship";
 import {getRandomColor} from "./color-generation.helper";
 import {Server} from "./server";
+import {CargoShip} from "./ships/cargo-ship";
+import {CustomerState, Vessel} from "./ships/vessel";
+import {ShipType} from "../../../../../model/customer-data.model";
+import {Ship} from "./ships/ship";
 
 const CUSTOMER_FIGURE_SIZE = 40;
 
 export class Customer {
 
-  private ship: Ship;
+  private vessel: Vessel;
   public readonly customerName: string;
   private readonly widthPoint: number;
   private readonly heightPoint: number;
@@ -16,16 +19,20 @@ export class Customer {
   private serverNum = 0;
   private server: Server;
   private currentInterval;
-  private _state: CUSTOMER_STATE;
+  private _state: CustomerState;
 
-  constructor(private ctx: CanvasRenderingContext2D, customerName: string, widthPoint: number, heightPoint: number) {
-    this.ship = new Ship(ctx, getRandomColor(), customerName);
+  constructor(private ctx: CanvasRenderingContext2D, type: ShipType, customerName: string, widthPoint: number, heightPoint: number) {
+    if (type === ShipType.CARGO_SHIP) {
+      this.vessel = new CargoShip(ctx, getRandomColor(), customerName);
+    } else {
+      this.vessel = new Ship(ctx, getRandomColor(), customerName);
+    }
     this.customerName = customerName;
     this.widthPoint = widthPoint;
     this.heightPoint = heightPoint;
   }
 
-  get state(): CUSTOMER_STATE {
+  get state(): CustomerState {
     return this._state;
   }
 
@@ -53,16 +60,16 @@ export class Customer {
     }
     this.y = this.heightPoint * 2.35;
     this.queueNum = order;
-    this._state = CUSTOMER_STATE.WAITING;
+    this._state = CustomerState.WAITING;
     this.draw();
   }
 
   private draw(angle?: number): void {
-    this.ship.draw(this.x, this.y, CUSTOMER_FIGURE_SIZE, this.state, angle);
+    this.vessel.draw(this.x, this.y, CUSTOMER_FIGURE_SIZE, this.state, angle);
   }
 
   public leave(order: number): void {
-    if (this._state === CUSTOMER_STATE.LEFT) {
+    if (this._state === CustomerState.LEFT) {
       return;
     }
     if (this.currentInterval) {
@@ -74,7 +81,7 @@ export class Customer {
     let dy = 3;
     this.x = this.widthPoint * dx - order * this.widthPoint / 2;
     this.y = this.heightPoint * dy;
-    this._state = CUSTOMER_STATE.LEFT;
+    this._state = CustomerState.LEFT;
     this.draw();
 
     let angle = 0;
@@ -96,7 +103,7 @@ export class Customer {
   }
 
   public success(order: number): void {
-    if (this._state === CUSTOMER_STATE.SERVED) {
+    if (this._state === CustomerState.SERVED) {
       return;
     }
     if (this.currentInterval) {
@@ -124,7 +131,7 @@ export class Customer {
 
     this.x = this.widthPoint * dx;
     this.y = this.heightPoint * dy;
-    this._state = CUSTOMER_STATE.SERVED;
+    this._state = CustomerState.SERVED;
     this.draw();
     let angle = 0;
     this.currentInterval = setInterval(() => {
@@ -150,7 +157,7 @@ export class Customer {
   }
 
   public serve(serverNumber: number, server: Server): void {
-    if (this.state === CUSTOMER_STATE.SERVING) {
+    if (this.state === CustomerState.SERVING) {
       this.server.animateUnload();
       return;
     }
@@ -182,7 +189,7 @@ export class Customer {
     }
     this.x = this.widthPoint * dx;
     this.y = this.heightPoint * dy;
-    this._state = CUSTOMER_STATE.WAITING;
+    this._state = CustomerState.WAITING;
     let angle = 0;
     this.draw();
     this.currentInterval = setInterval(() => {
@@ -202,7 +209,7 @@ export class Customer {
       this.y = this.heightPoint * dy;
       if (dx >= 4.8) {
         clearInterval(this.currentInterval);
-        this._state = CUSTOMER_STATE.SERVING;
+        this._state = CustomerState.SERVING;
         server.animateUnload();
       }
       this.draw(angle);
@@ -210,6 +217,6 @@ export class Customer {
   }
 
   private clear(angle?: number): void {
-    this.ship.clear(this.x, this.y, CUSTOMER_FIGURE_SIZE, angle);
+    this.vessel.clear(this.x, this.y, CUSTOMER_FIGURE_SIZE, angle);
   }
 }

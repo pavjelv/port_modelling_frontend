@@ -1,4 +1,4 @@
-import {Crane, SERVER_STATE} from "./crane";
+import {Crane, SERVER_STATE} from "./cranes/crane";
 
 const SERVER_FIGURE_SIZE = 60;
 
