@@ -1,9 +1,9 @@
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {Server} from "./ui-elements/server";
 import {Customer} from "./ui-elements/customer";
-import {SimulationService} from "../../../../services/simulation.service";
+import {SimulationService} from "../../services/simulation.service";
 import {first} from "rxjs/operators";
-import {SimulationResultModel} from "../../../../model/simulation-result.model";
+import {SimulationResultModel} from "../../model/simulation-result.model";
 
 const WIDTH = 600;
 const HEIGHT = 300;

@@ -2,7 +2,7 @@ import {getRandomColor} from "./color-generation.helper";
 import {Server} from "./server";
 import {CargoShip} from "./ships/cargo-ship";
 import {CustomerState, Vessel} from "./ships/vessel";
-import {ShipType} from "../../../../../model/customer-data.model";
+import {ShipType} from "../../../model/customer-data.model";
 import {Ship} from "./ships/ship";
 
 const CUSTOMER_FIGURE_SIZE = 40;

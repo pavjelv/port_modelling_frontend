@@ -9,7 +9,6 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {ChartsModule} from "ng2-charts";
-import { SystemAnimationComponent } from "./components/system-animation/system-animation.component";
 import {MatSliderModule} from "@angular/material/slider";
 
 const routes: Route[] = [
@@ -21,7 +20,7 @@ const routes: Route[] = [
 
 
 @NgModule({
-  declarations: [CalculateValuesComponent, SystemAnimationComponent],
+  declarations: [CalculateValuesComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
