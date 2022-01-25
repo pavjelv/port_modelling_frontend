@@ -1,3 +1,34 @@
+.calculate-values {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  &-form {
+    .system-field {
+      width: 30%;
+    }
+    &__parameter {
+      width: 60%;
+      display: flex;
+      align-items: center;
+
+      &-slider {
+        flex-grow: 1;
+      }
+    }
+  }
+
+  &__charts-wrapper {
+    display: flex;
+    column-gap: 10px;
+
+    .chart-canvas {
+      width: 33%;
+    }
+  }
+}
+
+
 .crane-icon {
   width: 400px;
 }

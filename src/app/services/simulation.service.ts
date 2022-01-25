@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import {Observable, of} from "rxjs";
-import {ModellingResultModel} from "../model/modelling-result.model";
+import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+import {SimulationResultModel} from "../model/simulation-result.model";
 
 @Injectable({
   providedIn: "root"
@@ -10,8 +10,8 @@ export class SimulationService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getModellingResult(): Observable<ModellingResultModel> {
-    return this.httpClient.get<ModellingResultModel>(`/api/modelling/poisson/`, {
+  public getModellingResult(): Observable<SimulationResultModel> {
+    return this.httpClient.get<SimulationResultModel>(`/api/modelling/poisson/`, {
       params: {
         serveTime: 2,
         lambda: 2,
@@ -20,6 +20,5 @@ export class SimulationService {
         time: 20,
       }
     });
-    // return of(SIMULATION_RESULT);
   }
 }

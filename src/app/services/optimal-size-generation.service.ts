@@ -1,29 +1,19 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {CalculatedSystemParametersModel} from "../model/calculated-system-parameters.model";
 import {SystemVariablesModel} from "../model/system-variables.model";
+import {TheorySummaryModel} from "../model/theory-summary.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class OptimalSizeGenerationService {
-  constructor(private http: HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
 
-  calculateWithQueue(params: SystemVariablesModel): Observable<CalculatedSystemParametersModel> {
-    const request = {
-      ...params,
-      type: "WITH_QUEUE",
-    };
-    return this.http.post<CalculatedSystemParametersModel>(`/api/optimalCapacity/calculate`, request);
-  }
-
-  calculateWithoutQueue(params: SystemVariablesModel): Observable<CalculatedSystemParametersModel> {
-    const request = {
-      ...params,
-      type: "WITHOUT_QUEUE",
-    };
-    return this.http.post<CalculatedSystemParametersModel>(`/api/optimalCapacity/calculate`, request);
+  public calculateWithQueue(values: SystemVariablesModel): Observable<TheorySummaryModel> {
+    return this.httpClient.get<TheorySummaryModel>(`/api/modelling/theory/summary/`, {
+      params: values as any,
+    });
   }
 // ((sum (12 * 2.16)^i/i!,i=1 to 61) + 1)^(-1)
 

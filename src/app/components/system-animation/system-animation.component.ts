@@ -51,7 +51,7 @@ export class SystemAnimationComponent implements OnInit {
     this.servers = [server1, server2, server3];
 
     this.simulationService.getModellingResult().pipe(first()).subscribe((result) => {
-      this.model = result.model;
+      this.model = result;
       this.customers = this.model.customer_data.map((c) => new Customer(this.ctx, c.type, c.name, WIDTH_POINT, HEIGHT_POINT));
       this.onTimeChange(0);
       // const i = setInterval(() => {

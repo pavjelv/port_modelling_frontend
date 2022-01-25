@@ -1,5 +1,10 @@
+import {SystemParameters, SystemType} from "./system-type";
+
 export interface SystemVariablesModel {
-  t: number;
+  serveTime: number;
   lambda: number;
-  m?: number;
+  queueLength: number;
+  serversNum: number;
+  rangeParameter: SystemParameters;
+  systemType: SystemType;
 }

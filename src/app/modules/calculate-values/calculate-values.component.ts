@@ -1,59 +1,42 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID} from "@angular/core";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation} from "@angular/core";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {LoadingOverlayService} from "../../services/loading-overlay.service";
 import {OptimalSizeGenerationService} from "../../services/optimal-size-generation.service";
-import {CalculatedSystemParametersModel} from "../../model/calculated-system-parameters.model";
-import {ChartDataSets, ChartOptions, ChartType} from "chart.js";
+import {ChartDataSets} from "chart.js";
 import {Color, Label} from "ng2-charts";
 import {isPlatformBrowser} from "@angular/common";
+import {SystemParameters, SystemType} from "../../model/system-type";
+import {queueLengthColors, servingProbabilityColors, systemWaitingTimeColors} from "./chart-colors.const";
+import {TheorySummaryModel} from "../../model/theory-summary.model";
 
 @Component({
   selector: "app-calculate-values",
   templateUrl: "./calculate-values.component.html",
   styleUrls: ["./calculate-values.component.less"],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class CalculateValuesComponent implements OnInit {
   public systemParametersForm: FormGroup;
-  public wasValidated = false;
-  public selected = "";
-  public valuesCalculated = false;
-  public calculatedParameters: CalculatedSystemParametersModel;
   public isBrowser = false;
 
+  public parameters = SystemParameters;
+  public rangeParameterControl: FormControl;
 
   // charts
   public servingProbabilityData: ChartDataSets[] = [];
   public queueLengthData: ChartDataSets[] = [];
-  public waitingTimeData: ChartDataSets[] = [];
+  public systemTimeData: ChartDataSets[] = [];
   public lineChartLabels: Label[] = [];
-  // @ts-ignore
-  public lineChartOptions: (ChartOptions & { annotation: any }) = {
-    responsive: true,
-  };
-  public probabilityColors: Color[] = [{
-      borderColor: "black",
-      backgroundColor: "rgba(0,239,141,0.62)",
-    }
-  ];
-  public queueLengthColors: Color[] = [{
-    borderColor: "black",
-    backgroundColor: "rgba(36,86,250,0.94)",
-    },
-  ];
-  public waitingTimeColors: Color[] = [{
-    borderColor: "black",
-    backgroundColor: "rgba(218,18,53,0.94)",
-    },
-  ];
-  public lineChartLegend = true;
-  public lineChartType: ChartType = "line";
-  public lineChartPlugins = [];
+
+  public servingProbabilityColors: Color[] = servingProbabilityColors;
+  public queueLengthColors: Color[] = queueLengthColors;
+  public systemWaitingTimeColors: Color[] = systemWaitingTimeColors;
 
   systems = [
-    // {value: 'Одноканальная СМО', id: '1'},
-    {value: "Многоканальная СМО с отказами", id: "2"},
-    {value: "Многоканальная СМО с ограниченной очередью", id: "3"}
+    { value: "Многоканальная СМО с бесконечной очередью", id:  SystemType.INFINITE_QUEUE },
+    { value: "Многоканальная СМО с отказами", id: SystemType.WITH_REJECT },
+    { value: "Многоканальная СМО с ограниченной очередью", id: SystemType.WITH_QUEUE }
   ];
   constructor(private fb: FormBuilder,
               @Inject(PLATFORM_ID) private platformId: unknown,
@@ -66,80 +49,50 @@ export class CalculateValuesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.systemParametersForm = this.fb.group({
-      lambda: [0, [Validators.required, Validators.min(0.1)]],
-      t: [0, [Validators.required, Validators.min(0.1)]],
-      m: [1, [Validators.required, Validators.min(1)]]
+    this.systemParametersForm = new FormGroup({});
+    this.rangeParameterControl = new FormControl(SystemParameters.LAMBDA);
+    this.rangeParameterControl.valueChanges.subscribe((v) => {
+      this.systemParametersForm.enable({ emitEvent: false });
+      this.systemParametersForm.get(v).disable();
+    });
+    this.systemParametersForm.registerControl("systemType", new FormControl(SystemType.WITH_QUEUE));
+    this.systemParametersForm.registerControl("rangeParameter", this.rangeParameterControl);
+    Object.values(this.parameters).forEach((parameter) => {
+      const disabled = parameter === SystemParameters.LAMBDA;
+      this.systemParametersForm.registerControl(parameter, new FormControl({value: 2, disabled}));
+    });
+    this.systemParametersForm.valueChanges.subscribe((v) => {
+      this._onSubmit();
     });
   }
 
-  get lambda(): AbstractControl {
-    return this.systemParametersForm.get("lambda");
-  }
-
-  get t(): AbstractControl {
-    return this.systemParametersForm.get("t");
-  }
-
-  get m(): AbstractControl {
-    return this.systemParametersForm.get("m");
-  }
-
-  public onSelectionChange(): void {
-    this.valuesCalculated = false;
-  }
-
-  public isInvalid(value: AbstractControl | null): boolean {
-    return (
-      value?.invalid && (this.wasValidated || value.dirty || value.touched)
-    );
-  }
-
-  private processCalculatedParameters(): void {
-    this.lineChartLabels = [];
-    for (let i = 1; i <= this.calculatedParameters.probabilityChanges.length; i++) {
-      this.lineChartLabels.push(i + "");
-    }
+  private processTheorySummary(summary: TheorySummaryModel): void {
+    this.lineChartLabels = summary.parameter_range.map((v => v + ""));
     this.servingProbabilityData = [{
-        data: this.calculatedParameters.probabilityChanges,
+        data: summary.result.map((value => value.p_serv)),
         label: "Вероятность обслуживания.",
       },
     ];
     this.queueLengthData = [{
-      data: this.calculatedParameters.queueLength,
+      data: summary.result.map((value => value.l_queue)),
       label: "Средняя длина очереди",
     }];
-    this.waitingTimeData = [{
-      data: this.calculatedParameters.waitingTime,
-      label: "Среднее время ожидания",
+    this.systemTimeData = [{
+      data: summary.result.map((value => value.t_sys)),
+      label: "Среднее время пребывания в системе",
     }];
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
   _onSubmit(): void {
-    this.wasValidated = true;
-    if (this.systemParametersForm.valid) {
-        this.loadingService.showLoading();
-        if (this.selected === "3") {
-          this.optimalSizeService.calculateWithQueue(this.systemParametersForm.value)
-            .subscribe((params) => {
-              this.loadingService.hideLoading();
-              this.valuesCalculated = true;
-              this.calculatedParameters = params;
-              this.processCalculatedParameters();
-              console.log(params);
-            });
-        } else if (this.selected === "2") {
-          this.optimalSizeService.calculateWithoutQueue(this.systemParametersForm.value)
-            .subscribe((params) => {
-              this.loadingService.hideLoading();
-              this.valuesCalculated = true;
-              this.calculatedParameters = params;
-              this.processCalculatedParameters();
-              console.log(params);
-            });
-        }
-    }
+    this.loadingService.showLoading();
+    this.optimalSizeService.calculateWithQueue(this.systemParametersForm.getRawValue())
+      .subscribe((summary) => {
+        this.loadingService.hideLoading();
+        this.processTheorySummary(summary);
+      }, (error: unknown) => {
+        console.error(error);
+      });
   }
 
 }

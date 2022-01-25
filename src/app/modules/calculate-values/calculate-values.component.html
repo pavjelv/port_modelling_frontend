@@ -1,116 +1,72 @@
 <h1>Выберите тип системы</h1>
-<div class="system-chooser-layout" fxLayout="row" fxLayoutAlign="space-around">
-  <div class="form-layout" fxLayout="column" fxLayoutAlign="center center">
-    <mat-form-field appearance="fill">
-      <mat-label>Тип системы</mat-label>
-      <mat-select [(value)]="selected" (selectionChange)="onSelectionChange()">
-        <mat-option *ngFor="let system of systems" [value]="system.id">
-          {{system.value}}
-        </mat-option>
+<div class="calculate-values">
+  <div class="calculate-values__charts-wrapper" *ngIf="isBrowser">
+    <div class="chart-canvas">
+      <canvas baseChart
+              [datasets]="servingProbabilityData"
+              [labels]="lineChartLabels"
+              [options]="{ responsive: true }"
+              [colors]="servingProbabilityColors"
+              [legend]="true"
+              [chartType]="'line'">
+      </canvas>
+    </div>
+    <div class="chart-canvas">
+      <canvas baseChart
+              [datasets]="queueLengthData"
+              [labels]="lineChartLabels"
+              [options]="{ responsive: true }"
+              [colors]="queueLengthColors"
+              [legend]="true"
+              [chartType]="'line'">
+      </canvas>
+    </div>
+    <div class="chart-canvas">
+      <canvas baseChart
+              [datasets]="systemTimeData"
+              [labels]="lineChartLabels"
+              [options]="{ responsive: true }"
+              [colors]="systemWaitingTimeColors"
+              [legend]="true"
+              [chartType]="'line'">
+      </canvas>
+    </div>
+  </div>
+  <div [formGroup]="systemParametersForm" class="calculate-values-form">
+    <mat-form-field appearance="fill" class="system-field">
+      <mat-label>System type</mat-label>
+      <mat-select [formControlName]="'systemType'">
+        <mat-option *ngFor="let system of systems" [value]="system.id">{{system.value}}</mat-option>
       </mat-select>
     </mat-form-field>
-    <ng-container *ngIf="selected !== ''" >
-      <ng-container [ngTemplateOutlet]="form"></ng-container>
-      <p>
-        После нажатия кнопки "Рассчитать", система вычислит оптимальное количество причалов.
-      </p>
-    </ng-container>
-  </div>
-  <div class="crane-icon">
-    <ng-container *ngIf="!valuesCalculated" [ngTemplateOutlet]="cranePic"></ng-container>
-    <ng-container *ngIf="valuesCalculated" [ngTemplateOutlet]="calculationResult"></ng-container>
+    <mat-radio-group [formControlName]="'rangeParameter'">
+      <div class="calculate-values-form__parameter">
+        <mat-radio-button [value]="parameters.SERVERS_NUM">
+          c = serversNum
+        </mat-radio-button>
+        <mat-slider class="calculate-values-form__parameter-slider" [formControlName]="parameters.SERVERS_NUM" [min]="2" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+      </div>
+      <div class="calculate-values-form__parameter">
+        <mat-radio-button [value]="parameters.SERVE_TIME">
+          t_serv
+        </mat-radio-button>
+        <mat-slider class="calculate-values-form__parameter-slider" [formControlName]="parameters.SERVE_TIME" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+      </div>
+      <div class="calculate-values-form__parameter">
+        <mat-radio-button [value]="parameters.LAMBDA">
+          lambda
+        </mat-radio-button>
+        <mat-slider class="calculate-values-form__parameter-slider" [formControlName]="parameters.LAMBDA" [min]="0" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
+      </div>
+      <div class="calculate-values-form__parameter">
+      <mat-radio-button [value]="parameters.QUEUE_LENGTH">
+        max_queue_len
+      </mat-radio-button>
+      <mat-slider class="calculate-values-form__parameter-slider" [formControlName]="parameters.QUEUE_LENGTH" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+    </div>
+  </mat-radio-group>
   </div>
 </div>
-
-<ng-template #form>
-  <form
-    novalidate
-    class="submit-form"
-    [formGroup]="systemParametersForm"
-    (ngSubmit)="_onSubmit()"
-    fxLayout="column"
-  >
-    <div class="col-md-6">
-      <mat-form-field appearance="standard">
-        <mat-label>Количество судозаходов в день</mat-label>
-        <input matInput
-               type="number"
-               class="form-control"
-               [class.is-invalid]="isInvalid(lambda)"
-               formControlName="lambda"
-               required
-        />
-      </mat-form-field>
-    </div>
-    <div class="col-md-6">
-      <mat-form-field appearance="standard">
-        <mat-label class="form-label">Время обслуживания (день)</mat-label>
-        <input matInput
-               type="number"
-               class="form-control"
-               [class.is-invalid]="isInvalid(t)"
-               formControlName="t"
-               required
-        />
-      </mat-form-field>
-    </div>
-    <div class="col-md-6" *ngIf="selected === '3'">
-      <mat-form-field appearance="standard">
-        <mat-label class="form-label">Длина очереди</mat-label>
-        <input matInput
-               type="number"
-               class="form-control"
-               [class.is-invalid]="isInvalid(m)"
-               formControlName="m"
-               required
-        />
-      </mat-form-field>
-    </div>
-    <div class="button-wrapper" fxFlex="" fxFlexAlign="center">
-      <button mat-flat-button class="btn btn-primary btn-lg" type="submit" color="primary">Рассчитать</button>
-    </div>
-  </form>
-
-</ng-template>
-
-<ng-template #calculationResult>
-  <p>
-    Для введенных значений, оптимальное количество каналов обслуживания (причалов) = {{calculatedParameters.optimalCapacity}}
-  </p>
-  <div style="display: block;">
-    <canvas baseChart class="chart-canvas serving-probability"
-            [datasets]="servingProbabilityData"
-            [labels]="lineChartLabels"
-            [options]="lineChartOptions"
-            [colors]="probabilityColors"
-            [legend]="lineChartLegend"
-            [chartType]="lineChartType"
-            [plugins]="lineChartPlugins">
-    </canvas>
-  </div>
-  <div style="display: block;" *ngIf="selected === '3'">
-    <canvas baseChart class="chart-canvas queue-length"
-            [datasets]="queueLengthData"
-            [labels]="lineChartLabels"
-            [options]="lineChartOptions"
-            [colors]="queueLengthColors"
-            [legend]="lineChartLegend"
-            [chartType]="lineChartType"
-            [plugins]="lineChartPlugins">
-    </canvas>
-  </div>
-  <div style="display: block;" *ngIf="selected === '3'">
-    <canvas baseChart class="chart-canvas waiting-time"
-            [datasets]="waitingTimeData"
-            [labels]="lineChartLabels"
-            [options]="lineChartOptions"
-            [colors]="waitingTimeColors"
-            [legend]="lineChartLegend"
-            [chartType]="lineChartType"
-            [plugins]="lineChartPlugins">
-    </canvas>
-  </div>
-</ng-template>
 
 <ng-template #cranePic>
   <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
