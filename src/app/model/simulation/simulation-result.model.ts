@@ -1,4 +1,4 @@
-import {CustomerDataModel} from "./customer-data.model";
+import {CustomerDataModel} from "../customer-data.model";
 
 export interface SimulationResultModel {
   customer_data: CustomerDataModel[];

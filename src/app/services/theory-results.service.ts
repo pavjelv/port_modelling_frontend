@@ -1,17 +1,17 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {SystemVariablesModel} from "../model/system-variables.model";
-import {TheorySummaryModel} from "../model/theory-summary.model";
+import {SystemVariablesModel} from "../model/theory/system-variables.model";
+import {TheorySummaryModel} from "../model/theory/theory-summary.model";
 
 @Injectable({
   providedIn: "root",
 })
-export class OptimalSizeGenerationService {
+export class TheoryResultsService {
   constructor(private httpClient: HttpClient) { }
 
   public calculateWithQueue(values: SystemVariablesModel): Observable<TheorySummaryModel> {
-    return this.httpClient.get<TheorySummaryModel>(`/api/modelling/theory/summary/`, {
+    return this.httpClient.get<TheorySummaryModel>(`/api/calculate/theory/summary/`, {
       params: values as any,
     });
   }

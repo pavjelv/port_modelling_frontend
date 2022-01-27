@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation} from "@angular/core";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {LoadingOverlayService} from "../../services/loading-overlay.service";
-import {OptimalSizeGenerationService} from "../../services/optimal-size-generation.service";
+import {TheoryResultsService} from "../../services/theory-results.service";
 import {ChartDataSets} from "chart.js";
 import {Color, Label} from "ng2-charts";
 import {isPlatformBrowser} from "@angular/common";
-import {SystemParameters, SystemType} from "../../model/system-type";
+import {SystemParameters, SystemType} from "../../model/theory/system-type";
 import {queueLengthColors, servingProbabilityColors, systemWaitingTimeColors} from "./chart-colors.const";
-import {TheorySummaryModel} from "../../model/theory-summary.model";
+import {TheorySummaryModel} from "../../model/theory/theory-summary.model";
 
 @Component({
   selector: "app-calculate-values",
@@ -24,9 +24,15 @@ export class CalculateValuesComponent implements OnInit {
   public rangeParameterControl: FormControl;
 
   // charts
-  public servingProbabilityData: ChartDataSets[] = [];
-  public queueLengthData: ChartDataSets[] = [];
-  public systemTimeData: ChartDataSets[] = [];
+  public servingProbabilityData: ChartDataSets[] = [{
+    label: "Вероятность обслуживания.",
+  }];
+  public queueLengthData: ChartDataSets[] = [{
+    label: "Средняя длина очереди",
+  }];
+  public systemTimeData: ChartDataSets[] = [{
+    label: "Среднее время пребывания в системе",
+  }];
   public lineChartLabels: Label[] = [];
 
   public servingProbabilityColors: Color[] = servingProbabilityColors;
@@ -41,7 +47,7 @@ export class CalculateValuesComponent implements OnInit {
   constructor(private fb: FormBuilder,
               @Inject(PLATFORM_ID) private platformId: unknown,
               private loadingService: LoadingOverlayService,
-              private optimalSizeService: OptimalSizeGenerationService,
+              private optimalSizeService: TheoryResultsService,
               private cdr: ChangeDetectorRef,
               )
   {
@@ -91,6 +97,7 @@ export class CalculateValuesComponent implements OnInit {
         this.loadingService.hideLoading();
         this.processTheorySummary(summary);
       }, (error: unknown) => {
+        this.loadingService.hideLoading();
         console.error(error);
       });
   }

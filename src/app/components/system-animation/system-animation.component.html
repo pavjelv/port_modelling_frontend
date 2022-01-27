@@ -3,10 +3,11 @@
   <mat-slider
     class="system-animation-slider"
     [min]="0"
-    [max]="time"
+    [max]="20"
     [step]="1"
     [tickInterval]="1"
     [thumbLabel]="true"
+    [(value)]="currentTime"
     (valueChange)="onTimeChange($event)"
   ></mat-slider>
 </div>

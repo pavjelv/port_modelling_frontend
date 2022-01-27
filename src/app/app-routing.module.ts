@@ -19,6 +19,14 @@ const routes: Routes = [
     data: { state: "lazy" },
   },
   {
+    path: "modelling-view",
+    loadChildren: () =>
+      import("./modules/modelling-view/modelling-view.module").then(
+        (m) => m.ModellingViewModule
+      ),
+    data: { state: "lazy" },
+  },
+  {
     path: "calculate",
     loadChildren: () =>
       import("./modules/calculate-values/calculate-values.module").then(

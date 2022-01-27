@@ -1,0 +1,25 @@
+<div class="modelling-view">
+  <app-system-animation *ngIf="isBrowser" [variables]="simulationVariables"></app-system-animation>
+  <div [formGroup]="systemParametersForm">
+    <div class="modelling-view-form__parameter">
+      <mat-label>Servers Num</mat-label>
+      <mat-slider class="modelling-view-form__parameter-slider" [formControlName]="parameters.SERVERS_NUM" [min]="2" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+    </div>
+    <div class="modelling-view-form__parameter">
+      <mat-label>Serve Time</mat-label>
+      <mat-slider class="modelling-view-form__parameter-slider" [formControlName]="parameters.SERVE_TIME" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+    </div>
+    <div class="modelling-view-form__parameter">
+      <mat-label>Lambda</mat-label>
+      <mat-slider class="modelling-view-form__parameter-slider" [formControlName]="parameters.LAMBDA" [min]="0" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
+    </div>
+    <div class="modelling-view-form__parameter">
+      <mat-label>Queue Length</mat-label>
+      <mat-slider class="modelling-view-form__parameter-slider" [formControlName]="parameters.QUEUE_LENGTH" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+    </div>
+    <div class="modelling-view-form__parameter">
+      <mat-label>Time</mat-label>
+      <mat-slider class="modelling-view-form__parameter-slider" [formControlName]="parameters.TIME" [min]="20" [max]="40" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+    </div>
+  </div>
+</div>

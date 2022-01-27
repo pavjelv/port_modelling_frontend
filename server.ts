@@ -19,11 +19,11 @@ export function app(): express.Express {
 
   server.use(morgan("dev"));
   // Proxy endpoints
-  server.use("/api/modelling", createProxyMiddleware({
+  server.use("/api/calculate", createProxyMiddleware({
     target: process.env.BACKEND_URL || "http://localhost:8000",
     changeOrigin: true,
     pathRewrite: {
-      [`^/api/modelling`]: "",
+      [`^/api/calculate`]: "",
     },
   }));
 

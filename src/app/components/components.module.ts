@@ -6,10 +6,13 @@ import {MatSliderModule} from "@angular/material/slider";
 
 
 @NgModule({
-  declarations: [SystemAnimationComponent],
-  imports: [
-    CommonModule,
-    MatSliderModule
-  ]
+    declarations: [SystemAnimationComponent],
+    exports: [
+        SystemAnimationComponent
+    ],
+    imports: [
+        CommonModule,
+        MatSliderModule
+    ]
 })
 export class ComponentsModule { }

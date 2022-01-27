@@ -1,9 +1,11 @@
-import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {Component, ElementRef, Inject, Input, OnChanges, OnInit, PLATFORM_ID, SimpleChanges, ViewChild} from "@angular/core";
 import {Server} from "./ui-elements/server";
 import {Customer} from "./ui-elements/customer";
 import {SimulationService} from "../../services/simulation.service";
 import {first} from "rxjs/operators";
-import {SimulationResultModel} from "../../model/simulation-result.model";
+import {SimulationResultModel} from "../../model/simulation/simulation-result.model";
+import {isPlatformBrowser} from "@angular/common";
+import {SimulationVariablesModel} from "../../model/simulation/simulation-variables.model";
 
 const WIDTH = 600;
 const HEIGHT = 300;
@@ -15,10 +17,14 @@ const HEIGHT_POINT = HEIGHT / 5;
   templateUrl: "./system-animation.component.html",
   styleUrls: ["./system-animation.component.less"]
 })
-export class SystemAnimationComponent implements OnInit {
+export class SystemAnimationComponent implements OnInit, OnChanges {
 
   @ViewChild("canvas", { static: true })
   canvas: ElementRef<HTMLCanvasElement>;
+
+  @Input() variables: SimulationVariablesModel;
+
+  public isBrowser = false;
 
   public width = WIDTH;
   public height = HEIGHT;
@@ -28,17 +34,28 @@ export class SystemAnimationComponent implements OnInit {
   private model: SimulationResultModel;
   private customers: Customer[];
   private servers: Server[];
-  public time = 20;
   public currentTime = 0;
 
-  constructor(private simulationService: SimulationService) { }
+  constructor(private simulationService: SimulationService,
+              @Inject(PLATFORM_ID) private platformId: unknown) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext("2d");
     this.animate();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.variables && !changes.variables.isFirstChange()) {
+      this.currentTime = 0;
+      this.animate();
+    }
+  }
+
   private animate(): void {
+    this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
     const server1 = new Server(this.ctx, 5 * WIDTH_POINT, 0.5 * HEIGHT_POINT);
     server1.reset();
 
@@ -50,7 +67,7 @@ export class SystemAnimationComponent implements OnInit {
 
     this.servers = [server1, server2, server3];
 
-    this.simulationService.getModellingResult().pipe(first()).subscribe((result) => {
+    this.simulationService.getModellingResult(this.variables).pipe(first()).subscribe((result) => {
       this.model = result;
       this.customers = this.model.customer_data.map((c) => new Customer(this.ctx, c.type, c.name, WIDTH_POINT, HEIGHT_POINT));
       this.onTimeChange(0);
