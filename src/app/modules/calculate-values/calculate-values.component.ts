@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewEncapsulation} from "@angular/core";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {LoadingOverlayService} from "../../services/loading-overlay.service";
 import {TheoryResultsService} from "../../services/theory-results.service";
 import {ChartDataSets} from "chart.js";
@@ -22,6 +22,7 @@ export class CalculateValuesComponent implements OnInit {
 
   public parameters = SystemParameters;
   public rangeParameterControl: FormControl;
+  public controlToParameterMap: Map<SystemParameters, FormControl> = new Map<SystemParameters, FormControl>();
 
   // charts
   public servingProbabilityData: ChartDataSets[] = [{
@@ -65,7 +66,9 @@ export class CalculateValuesComponent implements OnInit {
     this.systemParametersForm.registerControl("rangeParameter", this.rangeParameterControl);
     Object.values(this.parameters).forEach((parameter) => {
       const disabled = parameter === SystemParameters.LAMBDA;
-      this.systemParametersForm.registerControl(parameter, new FormControl({value: 2, disabled}));
+      const control = new FormControl({value: 2, disabled}, Validators.min(0));
+      this.controlToParameterMap.set(parameter, control);
+      this.systemParametersForm.registerControl(parameter, control);
     });
     this.systemParametersForm.valueChanges.subscribe((v) => {
       this._onSubmit();

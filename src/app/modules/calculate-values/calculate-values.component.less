@@ -3,17 +3,52 @@
   flex-direction: column;
   gap: 15px;
 
+  .mat-form-field {
+    &-wrapper {
+      padding-bottom: 0;
+    }
+    label {
+      font-size: 20px;
+    }
+  }
+
   &-form {
     .system-field {
       width: 30%;
     }
     &__parameter {
-      width: 60%;
+      width: 70%;
       display: flex;
       align-items: center;
+      padding-bottom: 16px;
+      gap: 10px;
+
+      .mat-form-field {
+        width: 30%;
+      }
 
       &-slider {
         flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        &-values {
+          position: absolute;
+          width: 98%;
+          top: 65%;
+          left: 4px;
+          &-left {
+            float: left;
+          }
+          &-right {
+            float: right;
+          }
+        }
+
+        .mat-slider {
+          width: 100%;
+        }
       }
     }
   }

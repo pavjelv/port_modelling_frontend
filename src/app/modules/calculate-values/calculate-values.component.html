@@ -1,5 +1,10 @@
-<h1>Выберите тип системы</h1>
-<div class="calculate-values">
+<div class="calculate-values" [formGroup]="systemParametersForm">
+  <mat-form-field appearance="outline" class="system-field">
+    <mat-label>Тип системы</mat-label>
+    <mat-select [formControlName]="'systemType'">
+      <mat-option *ngFor="let system of systems" [value]="system.id">{{system.value}}</mat-option>
+    </mat-select>
+  </mat-form-field>
   <div class="calculate-values__charts-wrapper" *ngIf="isBrowser">
     <div class="chart-canvas">
       <canvas baseChart
@@ -32,37 +37,63 @@
       </canvas>
     </div>
   </div>
-  <div [formGroup]="systemParametersForm" class="calculate-values-form">
-    <mat-form-field appearance="fill" class="system-field">
-      <mat-label>System type</mat-label>
-      <mat-select [formControlName]="'systemType'">
-        <mat-option *ngFor="let system of systems" [value]="system.id">{{system.value}}</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div  class="calculate-values-form">
     <mat-radio-group [formControlName]="'rangeParameter'">
       <div class="calculate-values-form__parameter">
-        <mat-radio-button [value]="parameters.SERVERS_NUM">
-          c = serversNum
-        </mat-radio-button>
-        <mat-slider class="calculate-values-form__parameter-slider" [formControlName]="parameters.SERVERS_NUM" [min]="2" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+        <mat-radio-button [value]="parameters.SERVERS_NUM"></mat-radio-button>
+        <mat-form-field appearance="outline">
+          <mat-label>Количество каналов</mat-label>
+          <input matInput type="number" min="2" max="10" [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM">
+        </mat-form-field>
+        <div class="calculate-values-form__parameter-slider">
+          <mat-slider [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM" [min]="2" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+          <div class="calculate-values-form__parameter-slider-values">
+            <label class="calculate-values-form__parameter-slider-values-left">2</label>
+            <label class="calculate-values-form__parameter-slider-values-right">10</label>
+          </div>
+        </div>
       </div>
       <div class="calculate-values-form__parameter">
-        <mat-radio-button [value]="parameters.SERVE_TIME">
-          t_serv
-        </mat-radio-button>
-        <mat-slider class="calculate-values-form__parameter-slider" [formControlName]="parameters.SERVE_TIME" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+        <mat-radio-button [value]="parameters.SERVE_TIME"></mat-radio-button>
+        <mat-form-field appearance="outline">
+          <mat-label>Время обслуживания</mat-label>
+          <input matInput type="number" min="0" max="10" [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME">
+        </mat-form-field>
+        <div class="calculate-values-form__parameter-slider">
+          <mat-slider [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+          <div class="calculate-values-form__parameter-slider-values">
+            <label class="calculate-values-form__parameter-slider-values-left">1</label>
+            <label class="calculate-values-form__parameter-slider-values-right">10</label>
+          </div>
+        </div>
       </div>
       <div class="calculate-values-form__parameter">
-        <mat-radio-button [value]="parameters.LAMBDA">
-          lambda
-        </mat-radio-button>
-        <mat-slider class="calculate-values-form__parameter-slider" [formControlName]="parameters.LAMBDA" [min]="0" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
+        <mat-radio-button [value]="parameters.LAMBDA"></mat-radio-button>
+        <mat-form-field appearance="outline">
+          <mat-label>Интенсивность потока заявок</mat-label>
+          <input matInput type="number" min="0" max="4" [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA">
+        </mat-form-field>
+        <div class="calculate-values-form__parameter-slider">
+          <mat-slider [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA" [min]="0" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
+          <div class="calculate-values-form__parameter-slider-values">
+            <label class="calculate-values-form__parameter-slider-values-left">0</label>
+            <label class="calculate-values-form__parameter-slider-values-right">4</label>
+          </div>
+        </div>
       </div>
       <div class="calculate-values-form__parameter">
-      <mat-radio-button [value]="parameters.QUEUE_LENGTH">
-        max_queue_len
-      </mat-radio-button>
-      <mat-slider class="calculate-values-form__parameter-slider" [formControlName]="parameters.QUEUE_LENGTH" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+      <mat-radio-button [value]="parameters.QUEUE_LENGTH"></mat-radio-button>
+      <mat-form-field appearance="outline">
+        <mat-label>Максимальная длина очереди</mat-label>
+        <input matInput type="number" min="0" max="10" [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH">
+      </mat-form-field>
+      <div class="calculate-values-form__parameter-slider">
+        <mat-slider [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+        <div class="calculate-values-form__parameter-slider-values">
+          <label class="calculate-values-form__parameter-slider-values-left">1</label>
+          <label class="calculate-values-form__parameter-slider-values-right">10</label>
+        </div>
+      </div>
     </div>
   </mat-radio-group>
   </div>
