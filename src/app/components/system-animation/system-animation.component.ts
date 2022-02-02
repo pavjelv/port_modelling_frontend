@@ -22,6 +22,9 @@ export class SystemAnimationComponent implements OnInit, OnChanges {
   @ViewChild("canvas", { static: true })
   canvas: ElementRef<HTMLCanvasElement>;
 
+  @ViewChild("craneCanvas", { static: true })
+  craneCanvas: ElementRef<HTMLCanvasElement>;
+
   @Input() variables: SimulationVariablesModel;
 
   public isBrowser = false;
@@ -30,6 +33,7 @@ export class SystemAnimationComponent implements OnInit, OnChanges {
   public height = HEIGHT;
 
   private ctx: CanvasRenderingContext2D;
+  private craneCtx: CanvasRenderingContext2D;
 
   private model: SimulationResultModel;
   private customers: Customer[];
@@ -43,6 +47,7 @@ export class SystemAnimationComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.ctx = this.canvas.nativeElement.getContext("2d");
+    this.craneCtx = this.craneCanvas.nativeElement.getContext("2d");
     this.animate();
   }
 
@@ -55,14 +60,15 @@ export class SystemAnimationComponent implements OnInit, OnChanges {
 
   private animate(): void {
     this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    this.craneCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
-    const server1 = new Server(this.ctx, 5 * WIDTH_POINT, 0.5 * HEIGHT_POINT);
+    const server1 = new Server(this.craneCtx, 5 * WIDTH_POINT, 0.5 * HEIGHT_POINT);
     server1.reset();
 
-    const server2 = new Server(this.ctx, 5 * WIDTH_POINT, 2 * HEIGHT_POINT);
+    const server2 = new Server(this.craneCtx, 5 * WIDTH_POINT, 2 * HEIGHT_POINT);
     server2.reset();
 
-    const server3 = new Server(this.ctx, 5 * WIDTH_POINT, 3.5 * HEIGHT_POINT);
+    const server3 = new Server(this.craneCtx, 5 * WIDTH_POINT, 3.5 * HEIGHT_POINT);
     server3.reset();
 
     this.servers = [server1, server2, server3];

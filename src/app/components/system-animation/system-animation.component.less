@@ -1,10 +1,16 @@
 .system-animation {
-  &-container {
-    display: flex;
-    flex-direction: column;
-    max-width: 50vw;
-  }
+  display: flex;
+  flex-direction: column;
+  max-width: 50vw;
+
   &-canvas {
-    border: 2px solid;
+    &__wrapper {
+      position: relative;
+      height: 320px;
+    }
+    &__view {
+      position: absolute;
+      border: 2px solid;
+    }
   }
 }
