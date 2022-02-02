@@ -7,6 +7,7 @@ import { ComponentsModule } from "../../components/components.module";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatSliderModule } from "@angular/material/slider";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatSliderModule,
     MatFormFieldModule,
+    MatInputModule,
   ],
   exports: [RouterModule, ModellingViewComponent],
 })
