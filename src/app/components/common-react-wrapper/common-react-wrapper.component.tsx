@@ -38,7 +38,6 @@ export class CommonReactWrapperComponent implements AfterContentInit, OnDestroy 
           await this.renderComponent(configuration, data.props);
         });
     }
-    await this.renderComponent(this.configuration, this.propsInternal);
   }
 
   private async renderComponent(configuration: FederationPlugin, props: Record<string, unknown>): Promise<void> {

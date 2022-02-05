@@ -12,14 +12,14 @@ export const ROUTES_CONFIGURATION: ReadonlyArray<FederationPlugin> = [
   //   moduleClassName: "BusinessModule",
   //   navigationAlias: "notesList"
   // },
-  {
-    type: "react",
-    remoteEntry: "http://localhost:8080/remoteEntry.js",
-    remoteName: "react_app",
-    exposedModule: "ReactApp",
-    displayName: "Notes admin panel",
-    routePath: "notesAdminPanel",
-    navigationAlias: "notesAdminPanel",
-    moduleClassName: "MainApplicationPlugin"
-  },
+  // {
+  //   type: "react",
+  //   remoteEntry: "http://localhost:8080/remoteEntry.js",
+  //   remoteName: "react_app",
+  //   exposedModule: "ReactApp",
+  //   displayName: "Notes admin panel",
+  //   routePath: "notesAdminPanel",
+  //   navigationAlias: "notesAdminPanel",
+  //   moduleClassName: "MainApplicationPlugin"
+  // },
 ];

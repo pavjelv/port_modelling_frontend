@@ -35,6 +35,7 @@ module.exports = {
         },
         '@angular/common': {
           version: dependencies['@angular/common'],
+          requiredVersion: dependencies['@angular/common'],
           singleton: false,
           eager: true
         },
@@ -72,6 +73,18 @@ module.exports = {
           version: dependencies['@angular/animations'],
           requiredVersion: dependencies['@angular/animations'],
           singleton: false,
+          eager: true
+        },
+        'react': {
+          version: dependencies['react'],
+          requiredVersion: dependencies['react'],
+          singleton: true,
+          eager: true
+        },
+        'react-dom': {
+          version: dependencies['react-dom'],
+          requiredVersion: dependencies['react-dom'],
+          singleton: true,
           eager: true
         },
       }

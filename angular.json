@@ -11,7 +11,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "ngx-build-plus:browser",
           "options": {
             "outputPath": "dist/port-modelling-fe/browser",
             "index": "src/index.html",
@@ -24,6 +24,7 @@
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
+            "extraWebpackConfig": "webpack.config.js",
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true
@@ -43,6 +44,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "extraWebpackConfig": "webpack.prod.config.js",
               "budgets": [
                 {
                   "type": "initial",
@@ -60,14 +62,17 @@
           "defaultConfiguration": ""
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "ngx-build-plus:dev-server",
           "options": {
+            "proxyConfig": "src/proxy.conf.json",
             "browserTarget": "port-modelling-fe:build",
-            "proxyConfig": "src/proxy.conf.json"
+            "extraWebpackConfig": "webpack.config.js",
+            "port": 4200
           },
           "configurations": {
             "production": {
-              "browserTarget": "port-modelling-fe:build:production"
+              "browserTarget": "port-modelling-fe:build:production",
+              "extraWebpackConfig": "webpack.prod.config.js"
             }
           }
         },
@@ -114,13 +119,14 @@
           }
         },
         "server": {
-          "builder": "@angular-devkit/build-angular:server",
+          "builder": "ngx-build-plus:server",
           "options": {
             "outputPath": "dist/port-modelling-fe/server",
             "main": "server.ts",
             "tsConfig": "tsconfig.server.json",
             "sourceMap": true,
-            "optimization": false
+            "optimization": false,
+            "extraWebpackConfig": "webpack.config.js"
           },
           "configurations": {
             "production": {
@@ -132,7 +138,8 @@
                 }
               ],
               "sourceMap": false,
-              "optimization": true
+              "optimization": true,
+              "extraWebpackConfig": "webpack.prod.config.js"
             }
           },
           "defaultConfiguration": ""
