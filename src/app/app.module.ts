@@ -9,12 +9,15 @@ import { FlexModule } from "@angular/flex-layout";
 import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
+import {FederationPluginService} from "./microfrontends/federation-plugin.service";
+import {ReactWrapperModule} from "./modules/react-wrapper/react-wrapper.module";
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: "serverApp" }),
     AppRoutingModule,
+    ReactWrapperModule,
     BrowserAnimationsModule,
     SharedModule,
     HttpClientModule,
@@ -23,7 +26,7 @@ import {MatButtonModule} from "@angular/material/button";
     MatFormFieldModule,
     MatButtonModule,
   ],
-  providers: [],
+  providers: [FederationPluginService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

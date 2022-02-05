@@ -18,16 +18,16 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [ModellingViewComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    MatButtonModule,
-    ComponentsModule,
-    ReactiveFormsModule,
-    MatSliderModule,
-    MatFormFieldModule,
-    MatInputModule,
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        ComponentsModule,
+        ReactiveFormsModule,
+        MatSliderModule,
+        MatFormFieldModule,
+        MatInputModule,
+    ],
   exports: [RouterModule, ModellingViewComponent],
 })
 export class ModellingViewModule {}
