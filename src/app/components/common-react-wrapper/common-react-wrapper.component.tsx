@@ -9,7 +9,7 @@ import {loadRemoteModule} from "@angular-architects/module-federation";
 @Component({
   selector: "app-common-react-wrapper",
   template: "",
-  styles: [":host {height: 100%; overflow: auto;}"]
+  styles: [":host {height: 100%;}"]
 })
 export class CommonReactWrapperComponent implements AfterContentInit, OnDestroy {
   propsInternal: Record<string, unknown>;

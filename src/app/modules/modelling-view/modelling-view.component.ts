@@ -18,7 +18,7 @@ export class ModellingViewComponent implements OnInit {
   public parameters = SimulationParameters;
   public controlToParameterMap: Map<SimulationParameters, FormControl> = new Map<SimulationParameters, FormControl>();
 
-  public simulationVariables: SimulationVariablesModel;
+  public simulationVariables: { systemVariables: SimulationVariablesModel };
 
   constructor(@Inject(PLATFORM_ID) private platformId: unknown) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -27,13 +27,13 @@ export class ModellingViewComponent implements OnInit {
   ngOnInit(): void {
     this.systemParametersForm = new FormGroup({});
     Object.values(this.parameters).forEach((parameter) => {
-      const control = new FormControl(1);
+      const control = new FormControl(parameter === SimulationParameters.TIME ? 20 : 2);
       this.controlToParameterMap.set(parameter, control);
       this.systemParametersForm.registerControl(parameter, control);
     });
     this.systemParametersForm.valueChanges.subscribe((v) => {
       if (this.systemParametersForm.valid) {
-        this.simulationVariables = this.systemParametersForm.value;
+        this.simulationVariables = { systemVariables: this.systemParametersForm.value };
       }
     });
   }
