@@ -107,7 +107,7 @@ module.exports = {
       exposes: {
         "ReactApp": "./main.plugin"
       },
-      shared: [{"react": {singleton: true, eager: true}}, {"react-dom": {singleton: true, eager: true}}, {"react-router-dom": {singleton: true, eager: true}}]
+      shared: [{"react": {singleton: true, eager: false}}, {"react-dom": {singleton: true, eager: false}}, {"react-router-dom": {singleton: true, eager: false}}]
     }),
   ],
   devServer: {

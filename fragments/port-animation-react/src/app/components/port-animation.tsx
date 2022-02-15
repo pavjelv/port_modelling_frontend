@@ -99,7 +99,7 @@ const PortAnimation = (props: {systemVariables: SystemVariablesModel}) => {
         .then(
           (result: SimulationResultModel) => {
             setResponse(result);
-            setAnimationProperties(processResponse(response, time));
+            setAnimationProperties(processResponse(result, time));
           },
           (err: unknown) => {
             console.error(err);

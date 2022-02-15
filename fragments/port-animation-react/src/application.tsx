@@ -26,7 +26,9 @@ export class Application extends React.Component<ApplicationProps> {
   render(): React.ReactNode {
     return (
       <BrowserRouter basename={this.props.basename ?? ""}>
-        <App systemVariables={this.props.systemVariables}/>
+        <React.StrictMode>
+          <App systemVariables={this.props.systemVariables}/>
+        </React.StrictMode>
       </BrowserRouter>
     );
   }
