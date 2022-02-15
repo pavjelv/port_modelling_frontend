@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, ElementRef, Input, OnDestroy} from "@angular/core";
+import {AfterContentInit, Component, ElementRef, Input, NgZone, OnDestroy} from "@angular/core";
 import React from "react";
 import ReactDOM from "react-dom";
 import {ActivatedRoute, Data} from "@angular/router";
@@ -26,6 +26,7 @@ export class CommonReactWrapperComponent implements AfterContentInit, OnDestroy 
 
   constructor(private hostRef: ElementRef,
               private route: ActivatedRoute,
+              private zone: NgZone,
   ) {
   }
 
@@ -48,14 +49,20 @@ export class CommonReactWrapperComponent implements AfterContentInit, OnDestroy 
       exposedModule: configuration.exposedModule
     });
     this.reactMFEModule = component[configuration.moduleClassName];
-    const ReactElement = React.createElement(
-      this.reactMFEModule,
-      this.constructProps({
-        ...props,
-        basename: this.configuration.routePath
-      })
-    );
-    ReactDOM.render(ReactElement, this.hostRef.nativeElement);
+    this.zone.runOutsideAngular(() => {
+      try {
+        const ReactElement = React.createElement(
+          this.reactMFEModule,
+          this.constructProps({
+            ...props,
+            basename: this.configuration.routePath
+          })
+        );
+        ReactDOM.render(ReactElement, this.hostRef.nativeElement);
+      } catch (error: unknown) {
+        console.error(error);
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -64,11 +71,17 @@ export class CommonReactWrapperComponent implements AfterContentInit, OnDestroy 
 
   private updateComponentProps(props: Record<string, unknown>): void {
     if (this.reactMFEModule) {
-      const ReactElement = React.createElement(this.reactMFEModule, this.constructProps({
-        ...props,
-        basename: this.configuration.routePath
-      }));
-      ReactDOM.hydrate(ReactElement, this.hostRef.nativeElement);
+      this.zone.runOutsideAngular(() => {
+        try {
+          const ReactElement = React.createElement(this.reactMFEModule, this.constructProps({
+            ...props,
+            basename: this.configuration.routePath
+          }));
+          ReactDOM.hydrate(ReactElement, this.hostRef.nativeElement);
+        } catch (error: unknown) {
+          console.log(error);
+        }
+      });
     }
   }
 

@@ -1,5 +1,5 @@
-import {EventBusService} from "app/models/event-bus.model";
-import {GlobalNavigationService} from "app/models/global-navigation.model";
+import {EventBusService} from "app/models/mfe/event-bus.model";
+import {GlobalNavigationService} from "app/models/mfe/global-navigation.model";
 
 export class ApplicationService {
   private static instance: ApplicationService;

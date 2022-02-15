@@ -1,10 +1,23 @@
 import {CustomerDataModel} from "app/models/customer-data.model";
 import {ServerModel} from "app/models/server.model";
 
+export enum CustomerState {
+  WAITING = "gray",
+  LEFT = "red",
+  SERVING = "yellow",
+  SERVED = "green",
+}
+
+export interface CustomerAnimationDataModel extends Omit<CustomerDataModel, "arrive" | "leave" | "serve"> {
+  customerState: CustomerState;
+  serverNum?: number;
+  queueNum?: number;
+}
+
 export interface AnimationPropertiesModel {
-  servedCustomers: CustomerDataModel[];
-  servingCustomers: CustomerDataModel[];
-  queuedCustomers: CustomerDataModel[];
-  rejectedCustomers: CustomerDataModel[];
+  servedCustomers: CustomerAnimationDataModel[];
+  servingCustomers: CustomerAnimationDataModel[];
+  queuedCustomers: CustomerAnimationDataModel[];
+  rejectedCustomers: CustomerAnimationDataModel[];
   servers: ServerModel[];
 }

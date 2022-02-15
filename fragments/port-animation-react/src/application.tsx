@@ -2,8 +2,8 @@ import {BrowserRouter} from "react-router-dom";
 import {App} from "app/index";
 import * as React from "react";
 import {ApplicationService} from "./application.service";
-import {EventBusService} from "app/models/event-bus.model";
-import {GlobalNavigationService} from "app/models/global-navigation.model";
+import {EventBusService} from "app/models/mfe/event-bus.model";
+import {GlobalNavigationService} from "app/models/mfe/global-navigation.model";
 import {SystemVariablesModel} from "app/models/system-variables.model";
 
 export interface ApplicationProps {
