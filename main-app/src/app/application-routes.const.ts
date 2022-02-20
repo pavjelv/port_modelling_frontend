@@ -1,5 +1,5 @@
 import {Routes} from "@angular/router";
-import {lazy} from "react";
+import { environment } from "@env/environment";
 
 export const APPLICATION_ROUTES: Routes = [
   {
@@ -26,7 +26,7 @@ export const APPLICATION_ROUTES: Routes = [
       ),
     data: {
       configuration: {
-        remoteEntry: "http://localhost:8080/remoteEntry.js",
+        remoteEntry: environment["port-animation-react-remote-entry"],
         remoteName: "react_app",
         exposedModule: "ReactApp",
         moduleClassName: "MainApplicationPlugin",

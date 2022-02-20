@@ -14,7 +14,12 @@
     "target": "es2015",
     "module": "es2020",
     "lib": ["es2018", "dom"],
-    "jsx": "react"
+    "jsx": "react",
+    "paths": {
+      "@env/*": [
+        "src/environments/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

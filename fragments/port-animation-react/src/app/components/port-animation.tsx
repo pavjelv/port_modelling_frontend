@@ -94,7 +94,7 @@ const PortAnimation = (props: {systemVariables: SystemVariablesModel}) => {
 
   React.useEffect(() => {
     if (queryParams) {
-      fetch(`http://localhost:4200/api/calculate/modelling/poisson/?${queryParams}`)
+      fetch(`/api/calculate/modelling/poisson/?${queryParams}`)
         .then(res => res.json())
         .then(
           (result: SimulationResultModel) => {

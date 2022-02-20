@@ -5,13 +5,12 @@ const {ModuleFederationPlugin} = require("webpack").container;
 const dependencies = require("./package.json").dependencies;
 
 // variables
-var isProduction = process.argv.indexOf('-p') >= 0 || process.env.NODE_ENV === 'production';
+var isProduction = process.argv.indexOf('-mode') >= 0 || process.env.NODE_ENV === 'production';
 var sourcePath = path.join(__dirname, './src');
-var outPath = path.join(__dirname, './build');
+var outPath = path.join(__dirname, './dist');
 
 // plugins
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   context: sourcePath,
@@ -77,10 +76,6 @@ module.exports = {
       NODE_ENV: isProduction ? 'production' : 'development', // use 'development' unless process.env.NODE_ENV is defined
       DEBUG: false
     }),
-    new MiniCssExtractPlugin({
-      filename: '[hash].css',
-      disable: !isProduction
-    }),
     new HtmlWebpackPlugin({
       template: 'assets/index.html',
       minify: {
@@ -107,7 +102,30 @@ module.exports = {
       exposes: {
         "ReactApp": "./main.plugin"
       },
-      shared: [{"react": {singleton: true, eager: false}}, {"react-dom": {singleton: true, eager: false}}, {"react-router-dom": {singleton: true, eager: false}}]
+      shared: [
+        {
+          "react": {
+            version: dependencies['react'],
+            requiredVersion: dependencies['react'],
+            singleton: true,
+            eager: false
+          }
+        },
+        {
+          "react-dom": {
+            version: dependencies['react-dom'],
+            requiredVersion: dependencies['react-dom'],
+            singleton: true,
+            eager: false
+          }
+        },
+        {
+          "react-router-dom": {
+            singleton: true,
+            eager: false
+          }
+        }
+      ]
     }),
   ],
   devServer: {

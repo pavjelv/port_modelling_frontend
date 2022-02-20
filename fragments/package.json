@@ -1,0 +1,12 @@
+{
+  "name": "fragments",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npm run build:port-animation-react",
+    "build:port-animation-react": "cd port-animation-react && npm run build:prod",
+    "postinstall": "npm run deps",
+    "deps": "npm run deps:port-animation-react",
+    "deps:port-animation-react": "cd port-animation-react && npm install"
+  },
+  "dependencies": {}
+}

@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  "port-animation-react-remote-entry": "http://localhost:8080/remoteEntry.js",
 };
 
 /*
