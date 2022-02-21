@@ -6,15 +6,11 @@
     "build": "npm run build:main-app && npm run build:fragments",
     "build:main-app": "cd main-app && npm run build",
     "build:fragments": "cd fragments && npm run build",
-    "deps": "cd main-app && npm ci && cd ../fragments && npm ci",
+    "deps": "cd main-app && npm install && cd ../fragments && npm install",
     "postinstall": "npm run deps"
   },
   "dependencies": {},
-  "devDependencies": {
-    "@angular-devkit/build-angular": "~12.2.14",
-    "@angular/compiler": "12.2.15",
-    "@angular/compiler-cli": "12.2.15"
-  },
+  "devDependencies": {},
   "engines": {
     "node": "14.17.3",
     "npm": "6.14.15"

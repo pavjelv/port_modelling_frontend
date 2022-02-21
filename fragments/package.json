@@ -6,7 +6,7 @@
     "build:port-animation-react": "cd port-animation-react && npm run build:prod",
     "postinstall": "npm run deps",
     "deps": "npm run deps:port-animation-react",
-    "deps:port-animation-react": "cd port-animation-react && npm ci"
+    "deps:port-animation-react": "cd port-animation-react && npm install"
   },
   "dependencies": {}
 }
