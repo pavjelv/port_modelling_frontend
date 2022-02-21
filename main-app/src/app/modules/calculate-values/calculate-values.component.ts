@@ -70,7 +70,7 @@ export class CalculateValuesComponent implements OnInit {
     this.systemParametersForm.registerControl("rangeParameter", this.rangeParameterControl);
     Object.values(this.parameters).forEach((parameter) => {
       const disabled = parameter === SystemParameters.LAMBDA;
-      const control = new FormControl({value: 2, disabled}, Validators.min(0));
+      const control = new FormControl({value: (disabled ? 0.4 : 2), disabled}, Validators.min(0));
       this.controlToParameterMap.set(parameter, control);
       this.systemParametersForm.registerControl(parameter, control);
     });

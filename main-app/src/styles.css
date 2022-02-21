@@ -18,3 +18,7 @@ body {
 .application-content {
   margin: 1% 5%;
 }
+
+.port-modelling-backdrop {
+  background: rgb(0, 0, 0, 0.15);
+}

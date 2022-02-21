@@ -18,13 +18,13 @@
     <div class="modelling-view-form__parameter">
       <mat-form-field appearance="outline">
         <mat-label>Время обслуживания</mat-label>
-        <input matInput type="number" min="0" max="10" [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME">
+        <input matInput type="number" min="0" max="4" [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME">
       </mat-form-field>
       <div class="modelling-view-form__parameter-slider">
-        <mat-slider [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+        <mat-slider [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME" [min]="0" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
         <div class="modelling-view-form__parameter-slider-values">
-          <label class="modelling-view-form__parameter-slider-values-left">1</label>
-          <label class="modelling-view-form__parameter-slider-values-right">10</label>
+          <label class="modelling-view-form__parameter-slider-values-left">0</label>
+          <label class="modelling-view-form__parameter-slider-values-right">4</label>
         </div>
       </div>
     </div>
@@ -56,7 +56,7 @@
     </div>
     <div class="modelling-view-form__parameter">
       <mat-form-field appearance="outline">
-        <mat-label>Время</mat-label>
+        <mat-label>Время моделирования</mat-label>
         <input matInput type="number" min="20" max="40" [value]="controlToParameterMap.get(parameters.TIME).value" [formControlName]="parameters.TIME">
       </mat-form-field>
       <div class="modelling-view-form__parameter-slider">
