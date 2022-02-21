@@ -1,0 +1,20 @@
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+}
+
+.app-root {
+  gap: 1rem;
+}
+
+.application-content {
+  margin: 1% 5%;
+}
