@@ -18,6 +18,7 @@ module.exports = {
     runtimeChunk: false
   },
   resolve: {
+    modules: [path.resolve(__dirname, 'node_modules'), 'node_modules'],
     alias: {
       ...sharedMappings.getAliases(),
     }
