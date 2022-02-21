@@ -9,8 +9,13 @@
     "deps": "cd main-app && npm ci && cd ../fragments && npm ci",
     "postinstall": "npm run deps"
   },
-  "dependencies": {},
-  "devDependencies": {},
+  "dependencies": {
+    "@angular/compiler": "12.2.15",
+    "@angular/compiler-cli": "12.2.15"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~12.2.14"
+  },
   "engines": {
     "node": "14.17.3",
     "npm": "6.14.15"
