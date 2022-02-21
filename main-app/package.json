@@ -12,7 +12,7 @@
     "dev:ssr": "ng run port-modelling-fe-main-app:serve-ssr",
     "start": "node ../dist/port-modelling-fe/server/main.js",
     "build": "ng build --configuration production && ng run port-modelling-fe-main-app:server:production && npm run copy-dist",
-    "copy-dist": "copyfiles -u 1 \"dist/**/*\" ../dist",
+    "copy-dist": "node node_modules/copyfiles -u 1 \"dist/**/*\" ../dist",
     "prerender": "ng run port-modelling-fe-main-app:prerender"
   },
   "private": true,

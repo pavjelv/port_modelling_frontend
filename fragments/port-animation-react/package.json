@@ -10,7 +10,7 @@
     "start:prod": "webpack-cli -p serve",
     "build": "webpack --mode production",
     "build:prod": "webpack --mode production && npm run copy-dist",
-    "copy-dist": "copyfiles -u 1 dist/* ../../dist/port-modelling-fe/browser/assets/microservices/port-animation-react",
+    "copy-dist": "node node_modules/copyfiles -u 1 dist/* ../../dist/port-modelling-fe/browser/assets/microservices/port-animation-react",
     "prettier": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "server": "tsc-watch ./server/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\" --onFailure \"echo Beep! Compilation Failed\" --compiler typescript/bin/tsc",
     "startWithMock": "concurrently \"npm:server\" \"npm:start\""
