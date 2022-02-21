@@ -10,7 +10,11 @@
     "postinstall": "npm run deps"
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~12.2.14",
+    "@angular/compiler": "12.2.15",
+    "@angular/compiler-cli": "12.2.15"
+  },
   "engines": {
     "node": "14.17.3",
     "npm": "6.14.15"
