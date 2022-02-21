@@ -11,7 +11,7 @@
     "dev-start": "ng serve",
     "dev:ssr": "ng run port-modelling-fe:serve-ssr",
     "start": "node ../dist/port-modelling-fe/server/main.js",
-    "build": "ng build --configuration production && ng run port-modelling-fe:server:production && npm run copy-dist",
+    "build": "NODE_PATH=. ng build --configuration production && ng run port-modelling-fe:server:production && npm run copy-dist",
     "copy-dist": "copyfiles -u 1 \"dist/**/*\" ../dist",
     "prerender": "ng run port-modelling-fe:prerender"
   },
