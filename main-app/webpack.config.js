@@ -23,6 +23,7 @@ module.exports = {
       ...sharedMappings.getAliases(),
     }
   },
+  projectRoot: path.resolve(__dirname),
   plugins: [
     new webpack.ProvidePlugin({
       "React": "react",
