@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "port-modelling-fe": {
+    "port-modelling-fe-main-app": {
       "projectType": "application",
       "schematics": {},
       "root": "./",
@@ -65,13 +65,13 @@
           "builder": "ngx-build-plus:dev-server",
           "options": {
             "proxyConfig": "src/proxy.conf.json",
-            "browserTarget": "port-modelling-fe:build",
+            "browserTarget": "port-modelling-fe-main-app:build",
             "extraWebpackConfig": "webpack.config.js",
             "port": 4200
           },
           "configurations": {
             "production": {
-              "browserTarget": "port-modelling-fe:build:production",
+              "browserTarget": "port-modelling-fe-main-app:build:production",
               "extraWebpackConfig": "webpack.prod.config.js"
             }
           }
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "port-modelling-fe:build"
+            "browserTarget": "port-modelling-fe-main-app:build"
           }
         },
         "test": {
@@ -110,11 +110,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "port-modelling-fe:serve"
+            "devServerTarget": "port-modelling-fe-main-app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "port-modelling-fe:serve:production"
+              "devServerTarget": "port-modelling-fe-main-app:serve:production"
             }
           }
         },
@@ -122,7 +122,7 @@
           "builder": "ngx-build-plus:server",
           "options": {
             "outputPath": "dist/port-modelling-fe/server",
-            "main": "server.ts",
+            "main": "server.js",
             "tsConfig": "tsconfig.server.json",
             "sourceMap": true,
             "optimization": false,
@@ -147,21 +147,21 @@
         "serve-ssr": {
           "builder": "@nguniversal/builders:ssr-dev-server",
           "options": {
-            "browserTarget": "port-modelling-fe:build",
-            "serverTarget": "port-modelling-fe:server"
+            "browserTarget": "port-modelling-fe-main-app:build",
+            "serverTarget": "port-modelling-fe-main-app:server"
           },
           "configurations": {
             "production": {
-              "browserTarget": "port-modelling-fe:build:production",
-              "serverTarget": "port-modelling-fe:server:production"
+              "browserTarget": "port-modelling-fe-main-app:build:production",
+              "serverTarget": "port-modelling-fe-main-app:server:production"
             }
           }
         },
         "prerender": {
           "builder": "@nguniversal/builders:prerender",
           "options": {
-            "browserTarget": "port-modelling-fe:build:production",
-            "serverTarget": "port-modelling-fe:server:production",
+            "browserTarget": "port-modelling-fe-main-app:build:production",
+            "serverTarget": "port-modelling-fe-main-app:server:production",
             "routes": [
               "/"
             ]
@@ -173,5 +173,5 @@
       }
     }
   },
-  "defaultProject": "port-modelling-fe"
+  "defaultProject": "port-modelling-fe-main-app"
 }

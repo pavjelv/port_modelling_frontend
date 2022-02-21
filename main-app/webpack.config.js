@@ -23,7 +23,6 @@ module.exports = {
       ...sharedMappings.getAliases(),
     }
   },
-  projectRoot: path.resolve(__dirname),
   plugins: [
     new webpack.ProvidePlugin({
       "React": "react",
@@ -33,7 +32,7 @@ module.exports = {
         '@angular/common/http': {
           requiredVersion: dependencies['@angular/common'],
           singleton: false,
-          eager: true
+          eager: false
         },
         '@angular/common': {
           version: dependencies['@angular/common'],
@@ -69,28 +68,27 @@ module.exports = {
           version: dependencies['@angular/cdk/a11y'],
           requiredVersion: dependencies['@angular/cdk/a11y'],
           singleton: false,
-          eager: true
+          eager: false
         },
         '@angular/animations': {
           version: dependencies['@angular/animations'],
           requiredVersion: dependencies['@angular/animations'],
           singleton: false,
-          eager: true
+          eager: false
         },
         'react': {
           version: dependencies['react'],
           requiredVersion: dependencies['react'],
           singleton: true,
-          eager: true
+          eager: false
         },
         'react-dom': {
           version: dependencies['react-dom'],
           requiredVersion: dependencies['react-dom'],
           singleton: true,
-          eager: true
+          eager: false
         },
       }
-
     })
   ],
 };
