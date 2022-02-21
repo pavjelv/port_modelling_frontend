@@ -11,6 +11,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {ChartsModule} from "ng2-charts";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatRadioModule} from "@angular/material/radio";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 const routes: Route[] = [
   {
@@ -33,6 +34,7 @@ const routes: Route[] = [
     MatButtonModule,
     ChartsModule,
     MatSliderModule,
+    MatSnackBarModule,
     MatRadioModule,
     FormsModule,
   ]

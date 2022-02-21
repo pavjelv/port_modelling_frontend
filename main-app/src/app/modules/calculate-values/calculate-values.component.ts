@@ -8,6 +8,7 @@ import {isPlatformBrowser} from "@angular/common";
 import {SystemParameters, SystemType} from "../../model/theory/system-type";
 import {queueLengthColors, servingProbabilityColors, systemWaitingTimeColors} from "./chart-colors.const";
 import {TheorySummaryModel} from "../../model/theory/theory-summary.model";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-calculate-values",
@@ -50,6 +51,7 @@ export class CalculateValuesComponent implements OnInit {
               private loadingService: LoadingOverlayService,
               private optimalSizeService: TheoryResultsService,
               private cdr: ChangeDetectorRef,
+              private snackBar: MatSnackBar
               )
   {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -60,7 +62,7 @@ export class CalculateValuesComponent implements OnInit {
     this.rangeParameterControl = new FormControl(SystemParameters.LAMBDA);
     this.rangeParameterControl.valueChanges.subscribe((v) => {
       this.systemParametersForm.enable({ emitEvent: false });
-      this.systemParametersForm.get(v).disable();
+      this.systemParametersForm.get(v).disable({ emitEvent: false });
     });
     this.systemParametersForm.registerControl("systemType", new FormControl(SystemType.WITH_QUEUE));
     this.systemParametersForm.registerControl("rangeParameter", this.rangeParameterControl);
@@ -99,9 +101,14 @@ export class CalculateValuesComponent implements OnInit {
       .subscribe((summary) => {
         this.loadingService.hideLoading();
         this.processTheorySummary(summary);
-      }, (error: unknown) => {
+      }, (error: Error) => {
         this.loadingService.hideLoading();
         console.error(error);
+        this.snackBar.open(error.message, null, {
+          duration: 5000,
+          horizontalPosition: "right",
+          verticalPosition: "top",
+        });
       });
   }
 
