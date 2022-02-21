@@ -22,6 +22,9 @@ module.exports = {
     publicPath: 'auto',
   },
   target: 'web',
+  stats: {
+    children: true
+  },
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
     alias: {
