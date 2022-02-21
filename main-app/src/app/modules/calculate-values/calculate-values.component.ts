@@ -8,7 +8,7 @@ import {isPlatformBrowser} from "@angular/common";
 import {SystemParameters, SystemType} from "../../model/theory/system-type";
 import {queueLengthColors, servingProbabilityColors, systemWaitingTimeColors} from "./chart-colors.const";
 import {TheorySummaryModel} from "../../model/theory/theory-summary.model";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-calculate-values",
@@ -24,6 +24,7 @@ export class CalculateValuesComponent implements OnInit {
   public parameters = SystemParameters;
   public rangeParameterControl: FormControl;
   public controlToParameterMap: Map<SystemParameters, FormControl> = new Map<SystemParameters, FormControl>();
+  public disabledParameter: SystemParameters = SystemParameters.LAMBDA;
 
   // charts
   public servingProbabilityData: ChartDataSets[] = [{
@@ -63,6 +64,7 @@ export class CalculateValuesComponent implements OnInit {
     this.rangeParameterControl.valueChanges.subscribe((v) => {
       this.systemParametersForm.enable({ emitEvent: false });
       this.systemParametersForm.get(v).disable({ emitEvent: false });
+      this.disabledParameter = v;
     });
     this.systemParametersForm.registerControl("systemType", new FormControl(SystemType.WITH_QUEUE));
     this.systemParametersForm.registerControl("rangeParameter", this.rangeParameterControl);
@@ -78,7 +80,7 @@ export class CalculateValuesComponent implements OnInit {
   }
 
   private processTheorySummary(summary: TheorySummaryModel): void {
-    this.lineChartLabels = summary.parameter_range.map((v => v + ""));
+    this.lineChartLabels = summary.parameter_range.map((v => String(v)));
     this.servingProbabilityData = [{
         data: summary.result.map((value => value.p_serv)),
         label: "Вероятность обслуживания.",

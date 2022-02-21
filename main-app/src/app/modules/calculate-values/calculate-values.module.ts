@@ -23,20 +23,20 @@ const routes: Route[] = [
 
 @NgModule({
   declarations: [CalculateValuesComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    FlexModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    ChartsModule,
-    MatSliderModule,
-    MatSnackBarModule,
-    MatRadioModule,
-    FormsModule,
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        FlexModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        ChartsModule,
+        MatSliderModule,
+        MatSnackBarModule,
+        MatRadioModule,
+        FormsModule,
+    ]
 })
 export class CalculateValuesModule { }
