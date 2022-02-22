@@ -6,7 +6,6 @@ import { MatButtonModule } from "@angular/material/button";
 import { RouterModule } from "@angular/router";
 import { MatIconModule } from "@angular/material/icon";
 import { MatBadgeModule } from "@angular/material/badge";
-import { FlexLayoutModule } from "@angular/flex-layout";
 import { MatMenuModule } from "@angular/material/menu";
 
 @NgModule({
@@ -20,7 +19,6 @@ import { MatMenuModule } from "@angular/material/menu";
     RouterModule,
     MatIconModule,
     MatBadgeModule,
-    FlexLayoutModule,
     MatMenuModule,
   ],
   exports: [

@@ -18,6 +18,7 @@ export class LoadingOverlayService {
   constructor(private overlay: Overlay) {
     this.spinnerTopRef = this.overlay.create({
       hasBackdrop: true,
+      backdropClass: "port-modelling-backdrop",
       positionStrategy: this.overlay
         .position()
         .global()

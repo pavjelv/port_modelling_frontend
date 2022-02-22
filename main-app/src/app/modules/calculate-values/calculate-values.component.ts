@@ -8,6 +8,7 @@ import {isPlatformBrowser} from "@angular/common";
 import {SystemParameters, SystemType} from "../../model/theory/system-type";
 import {queueLengthColors, servingProbabilityColors, systemWaitingTimeColors} from "./chart-colors.const";
 import {TheorySummaryModel} from "../../model/theory/theory-summary.model";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-calculate-values",
@@ -23,6 +24,7 @@ export class CalculateValuesComponent implements OnInit {
   public parameters = SystemParameters;
   public rangeParameterControl: FormControl;
   public controlToParameterMap: Map<SystemParameters, FormControl> = new Map<SystemParameters, FormControl>();
+  public disabledParameter: SystemParameters = SystemParameters.LAMBDA;
 
   // charts
   public servingProbabilityData: ChartDataSets[] = [{
@@ -50,6 +52,7 @@ export class CalculateValuesComponent implements OnInit {
               private loadingService: LoadingOverlayService,
               private optimalSizeService: TheoryResultsService,
               private cdr: ChangeDetectorRef,
+              private snackBar: MatSnackBar
               )
   {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -60,13 +63,14 @@ export class CalculateValuesComponent implements OnInit {
     this.rangeParameterControl = new FormControl(SystemParameters.LAMBDA);
     this.rangeParameterControl.valueChanges.subscribe((v) => {
       this.systemParametersForm.enable({ emitEvent: false });
-      this.systemParametersForm.get(v).disable();
+      this.systemParametersForm.get(v).disable({ emitEvent: false });
+      this.disabledParameter = v;
     });
     this.systemParametersForm.registerControl("systemType", new FormControl(SystemType.WITH_QUEUE));
     this.systemParametersForm.registerControl("rangeParameter", this.rangeParameterControl);
     Object.values(this.parameters).forEach((parameter) => {
       const disabled = parameter === SystemParameters.LAMBDA;
-      const control = new FormControl({value: 2, disabled}, Validators.min(0));
+      const control = new FormControl({value: (disabled ? 0.4 : 2), disabled}, Validators.min(0));
       this.controlToParameterMap.set(parameter, control);
       this.systemParametersForm.registerControl(parameter, control);
     });
@@ -76,7 +80,7 @@ export class CalculateValuesComponent implements OnInit {
   }
 
   private processTheorySummary(summary: TheorySummaryModel): void {
-    this.lineChartLabels = summary.parameter_range.map((v => v + ""));
+    this.lineChartLabels = summary.parameter_range.map((v => String(v)));
     this.servingProbabilityData = [{
         data: summary.result.map((value => value.p_serv)),
         label: "Вероятность обслуживания.",
@@ -99,9 +103,14 @@ export class CalculateValuesComponent implements OnInit {
       .subscribe((summary) => {
         this.loadingService.hideLoading();
         this.processTheorySummary(summary);
-      }, (error: unknown) => {
+      }, (error: Error) => {
         this.loadingService.hideLoading();
         console.error(error);
+        this.snackBar.open(error.message, null, {
+          duration: 5000,
+          horizontalPosition: "right",
+          verticalPosition: "top",
+        });
       });
   }
 

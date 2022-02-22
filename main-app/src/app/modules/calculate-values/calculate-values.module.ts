@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { CalculateValuesComponent } from "./calculate-values.component";
 import {Route, RouterModule} from "@angular/router";
-import {FlexModule} from "@angular/flex-layout";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -11,6 +10,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {ChartsModule} from "ng2-charts";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatRadioModule} from "@angular/material/radio";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 const routes: Route[] = [
   {
@@ -22,19 +22,19 @@ const routes: Route[] = [
 
 @NgModule({
   declarations: [CalculateValuesComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    FlexModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    ChartsModule,
-    MatSliderModule,
-    MatRadioModule,
-    FormsModule,
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        ChartsModule,
+        MatSliderModule,
+        MatSnackBarModule,
+        MatRadioModule,
+        FormsModule,
+    ]
 })
 export class CalculateValuesModule { }
