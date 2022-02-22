@@ -1,15 +1,11 @@
 import React from "react";
 import {Layer, Stage} from "react-konva";
 
-import {SystemVariablesModel} from "app/models/system-variables.model";
 import ShipImage from "app/components/ship";
 import CraneImage from "app/components/crane";
 import {ServerModel} from "app/models/server.model";
-import "antd/lib/slider/style";
-import {Slider} from "antd";
 import {AnimationPropertiesModel, CustomerAnimationDataModel, CustomerState} from "app/models/animation-properties.model";
 import {SimulationResultModel} from "app/models/simulation-result.model";
-
 
 const processResponse = (response: SimulationResultModel, time: number): AnimationPropertiesModel => {
   console.log(response);
@@ -22,7 +18,7 @@ const processResponse = (response: SimulationResultModel, time: number): Animati
         type: c.type,
         serverNum: i,
       };
-  });
+    });
   const queuedCustomers: CustomerAnimationDataModel[] = response.customer_data
     .filter((c) => c.arrive <= time && c.serve > time)
     .filter((_, i) => i < 4)
@@ -81,60 +77,32 @@ const createCranes = () => {
   return result;
 };
 
-const PortAnimation = (props: {systemVariables: SystemVariablesModel}) => {
+const PortAnimation = (props: {simulationResult: SimulationResultModel, time: number}) => {
   const [animationProperties, setAnimationProperties] = React.useState<AnimationPropertiesModel>({} as AnimationPropertiesModel);
-  const [response, setResponse] = React.useState<SimulationResultModel>(null);
-  const [time, setTime] = React.useState(0);
-  const marks = { 0: "0", 20: "20" };
-  let queryParams = "";
-  if (props.systemVariables) {
-    Object.entries(props.systemVariables)?.forEach(([k, v]: [string, string]) => {
-      queryParams += `${k}=${encodeURIComponent(v)}&`;
-    });
-  }
 
   React.useEffect(() => {
-    if (queryParams) {
-      fetch(`/api/calculate/modelling/poisson/?${queryParams}`)
-        .then(res => res.json())
-        .then(
-          (result: SimulationResultModel) => {
-            setResponse(result);
-            setAnimationProperties(processResponse(result, time));
-          },
-          (err: unknown) => {
-            console.error(err);
-          }
-        );
+    if (props.simulationResult) {
+      setAnimationProperties(processResponse(props.simulationResult, props.time));
     }
-  }, [props]);
-
-  React.useEffect(() => {
-    if (response) {
-      setAnimationProperties(processResponse(response, time));
-    }
-  }, [time]);
+  }, [props.simulationResult, props.time]);
 
   return (
-    <>
-      <Stage height={500} width={800} style={{width: "100%"}}>
-        <Layer>
-          {animationProperties?.servers?.map((crane) => (
-            <CraneImage key={"" + crane.order} number={crane.order}/>
-          ))}
-          {animationProperties?.servingCustomers?.map((ship: CustomerAnimationDataModel) => (
-            <ShipImage key={ship.name} serverNum={ship.serverNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
-          ))}
-          {animationProperties?.queuedCustomers?.map((ship: CustomerAnimationDataModel) => (
-            <ShipImage key={ship.name} queueNum={ship.queueNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
-          ))}
-          {animationProperties?.servedCustomers?.map((ship: CustomerAnimationDataModel) => (
-            <ShipImage key={ship.name} queueNum={ship.queueNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
-          ))}
-        </Layer>
-      </Stage>
-      <Slider tipFormatter={null} min={0} max={20} marks={marks} onChange={(v) => setTime(v)}/>
-    </>
+    <Stage height={500} width={800} style={{width: "100%"}}>
+      <Layer>
+        {animationProperties?.servers?.map((crane) => (
+          <CraneImage key={"" + crane.order} number={crane.order}/>
+        ))}
+        {animationProperties?.servingCustomers?.map((ship: CustomerAnimationDataModel) => (
+          <ShipImage key={ship.name} serverNum={ship.serverNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
+        ))}
+        {animationProperties?.queuedCustomers?.map((ship: CustomerAnimationDataModel) => (
+          <ShipImage key={ship.name} queueNum={ship.queueNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
+        ))}
+        {animationProperties?.servedCustomers?.map((ship: CustomerAnimationDataModel) => (
+          <ShipImage key={ship.name} queueNum={ship.queueNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
+        ))}
+      </Layer>
+    </Stage>
   );
 };
 

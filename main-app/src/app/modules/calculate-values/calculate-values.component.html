@@ -61,12 +61,12 @@
         <mat-radio-button [value]="parameters.SERVE_TIME"></mat-radio-button>
         <mat-form-field appearance="outline">
           <mat-label>Время обслуживания (t)</mat-label>
-          <input matInput type="number" min="0" max="4" [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME">
+          <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME">
         </mat-form-field>
         <div class="calculate-values-form__parameter-slider">
-          <mat-slider [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME" [min]="0" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
+          <mat-slider [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
           <div class="calculate-values-form__parameter-slider-values">
-            <label class="calculate-values-form__parameter-slider-values-left">0</label>
+            <label class="calculate-values-form__parameter-slider-values-left">0.1</label>
             <label class="calculate-values-form__parameter-slider-values-right">4</label>
           </div>
         </div>
@@ -75,12 +75,12 @@
         <mat-radio-button [value]="parameters.LAMBDA"></mat-radio-button>
         <mat-form-field appearance="outline">
           <mat-label>Интенсивность потока заявок (&lambda;) </mat-label>
-          <input matInput type="number" min="0" max="4" [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA">
+          <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA">
         </mat-form-field>
         <div class="calculate-values-form__parameter-slider">
-          <mat-slider [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA" [min]="0" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
+          <mat-slider [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
           <div class="calculate-values-form__parameter-slider-values">
-            <label class="calculate-values-form__parameter-slider-values-left">0</label>
+            <label class="calculate-values-form__parameter-slider-values-left">0.1</label>
             <label class="calculate-values-form__parameter-slider-values-right">4</label>
           </div>
         </div>
@@ -101,8 +101,8 @@
     </div>
   </mat-radio-group>
     <div class="calculate-values-form-info">
-      <mat-label>&mu; = 1 / t = {{1 / controlToParameterMap.get(parameters.SERVE_TIME).value}}</mat-label>
-      <mat-label>&rho; = &lambda; / &mu; = &lambda; * t = {{controlToParameterMap.get(parameters.SERVE_TIME).value * controlToParameterMap.get(parameters.LAMBDA).value}}</mat-label>
+      <mat-label>&mu; = 1 / t = {{(1 / controlToParameterMap.get(parameters.SERVE_TIME).value).toFixed(3)}}</mat-label>
+      <mat-label>&rho; = &lambda; / &mu; = &lambda; * t = {{(controlToParameterMap.get(parameters.SERVE_TIME).value * controlToParameterMap.get(parameters.LAMBDA).value).toFixed(3)}}</mat-label>
     </div>
   </div>
 </div>
