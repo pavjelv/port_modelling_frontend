@@ -5,7 +5,6 @@ import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { SharedModule } from "./modules/shared/shared.module";
 import { HttpClientModule } from "@angular/common/http";
-import { FlexModule } from "@angular/flex-layout";
 import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
@@ -21,7 +20,6 @@ import {ReactWrapperModule} from "./modules/react-wrapper/react-wrapper.module";
     BrowserAnimationsModule,
     SharedModule,
     HttpClientModule,
-    FlexModule,
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,

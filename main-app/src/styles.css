@@ -5,19 +5,16 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  height: 100%;
 }
 
-body {
-  min-height: 100vh;
-}
+/*.app-root {*/
+/*  gap: 1rem;*/
+/*}*/
 
-.app-root {
-  gap: 1rem;
-}
-
-.application-content {
-  margin: 1% 5%;
-}
+/*.application-content {*/
+/*  margin: 1% 5%;*/
+/*}*/
 
 .port-modelling-backdrop {
   background: rgb(0, 0, 0, 0.15);

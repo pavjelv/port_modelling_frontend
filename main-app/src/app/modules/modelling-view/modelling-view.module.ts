@@ -8,6 +8,10 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { MatSliderModule } from "@angular/material/slider";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
+import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatIconModule} from "@angular/material/icon";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatSelectModule} from "@angular/material/select";
 
 const routes: Routes = [
   {
@@ -18,16 +22,20 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [ModellingViewComponent],
-    imports: [
-        CommonModule,
-        RouterModule.forChild(routes),
-        MatButtonModule,
-        ComponentsModule,
-        ReactiveFormsModule,
-        MatSliderModule,
-        MatFormFieldModule,
-        MatInputModule,
-    ],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    MatButtonModule,
+    ComponentsModule,
+    ReactiveFormsModule,
+    MatSliderModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatDividerModule,
+    MatSelectModule,
+  ],
   exports: [RouterModule, ModellingViewComponent],
 })
 export class ModellingViewModule {}

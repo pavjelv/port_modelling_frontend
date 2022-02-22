@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { CalculateValuesComponent } from "./calculate-values.component";
 import {Route, RouterModule} from "@angular/router";
-import {FlexModule} from "@angular/flex-layout";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -26,7 +25,6 @@ const routes: Route[] = [
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
-        FlexModule,
         MatFormFieldModule,
         MatSelectModule,
         ReactiveFormsModule,

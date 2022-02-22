@@ -1,15 +1,17 @@
 import {SystemVariablesModel} from 'app/models/system-variables.model';
 import React from 'react';
 import {SimulationResultModel} from 'app/models/simulation-result.model';
-import {Col, Descriptions, Row, Slider} from 'antd';
+import {Col, Descriptions, Row, Skeleton, Slider} from 'antd';
 import PortAnimation from 'app/components/port-animation';
 
 import "antd/lib/slider/style";
-import "antd/lib/col/style"
-import "antd/lib/row/style"
-import "antd/lib/descriptions/style"
+import "antd/lib/col/style";
+import "antd/lib/row/style";
+import "antd/lib/descriptions/style";
+import "antd/lib/skeleton/style";
 
 const ModellingVisualisation = (props: {systemVariables: SystemVariablesModel}) => {
+  const [loading, setLoading] = React.useState(true);
   const [response, setResponse] = React.useState<SimulationResultModel>(null);
   const [time, setTime] = React.useState(0);
   const marks = { 0: "0", 20: "20" };
@@ -22,10 +24,12 @@ const ModellingVisualisation = (props: {systemVariables: SystemVariablesModel}) 
 
   React.useEffect(() => {
     if (queryParams) {
+      setLoading(true);
       fetch(`/api/calculate/modelling/poisson/?${queryParams}`)
         .then(res => res.json())
         .then(
           (result: SimulationResultModel) => {
+            setLoading(false);
             setTime(0);
             setResponse(result);
           },
@@ -40,14 +44,16 @@ const ModellingVisualisation = (props: {systemVariables: SystemVariablesModel}) 
     <Row>
       <Col span={16}>
         <PortAnimation simulationResult={response} time={time}/>
-        <Slider tipFormatter={null} value={time} min={0} max={20} marks={marks} onChange={(v) => setTime(v)}/>
+        <Slider disabled={loading} tipFormatter={null} value={time} min={0} max={20} marks={marks} onChange={(v) => setTime(v)}/>
       </Col>
       <Col span={8}>
-        <Descriptions title="Результат" bordered column={1}>
-          <Descriptions.Item label="Среднее время пребывания в системе">{response?.wait_system_time && Number.parseFloat(response.wait_system_time).toFixed(3)}</Descriptions.Item>
-          <Descriptions.Item label="Среднее время в очереди">{response?.wait_queue_time && Number.parseFloat(response.wait_queue_time).toFixed(3)}</Descriptions.Item>
-          <Descriptions.Item label="Средняя длина очереди">{response?.average_queue_len && Number.parseFloat(response.average_queue_len).toFixed(3)}</Descriptions.Item>
-        </Descriptions>
+        <Skeleton loading={loading} active={true}>
+          <Descriptions title="Результат" bordered column={1}>
+            <Descriptions.Item label="Среднее время пребывания в системе">{response?.wait_system_time && Number.parseFloat(response.wait_system_time).toFixed(3)}</Descriptions.Item>
+            <Descriptions.Item label="Среднее время в очереди">{response?.wait_queue_time && Number.parseFloat(response.wait_queue_time).toFixed(3)}</Descriptions.Item>
+            <Descriptions.Item label="Средняя длина очереди">{response?.average_queue_len && Number.parseFloat(response.average_queue_len).toFixed(3)}</Descriptions.Item>
+          </Descriptions>
+        </Skeleton>
       </Col>
     </Row>
   );

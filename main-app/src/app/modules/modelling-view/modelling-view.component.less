@@ -1,7 +1,19 @@
 .modelling-view {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  height: 100%;
+
+  .mat-drawer {
+    padding: 1rem;
+  }
+
+  .mat-drawer-content {
+    padding: 1rem;
+  }
+
+  .toggle-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+  }
 
   .konvajs-content {
     border: 1px solid;
@@ -17,18 +29,36 @@
   }
 
   &-form {
+    width: 50vw;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+
+    &__actions {
+      &__button {
+        margin-top: 1rem;
+      }
+    }
+
+    &__parameters {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
     .system-field {
       width: 30%;
     }
     &__parameter {
-      width: 70%;
+      width: 100%;
       display: flex;
       align-items: center;
       padding-bottom: 16px;
       gap: 10px;
 
       .mat-form-field {
-        width: 30%;
+        width: 35%;
       }
 
       &-slider {
