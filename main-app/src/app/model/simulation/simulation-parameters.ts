@@ -5,4 +5,8 @@ export enum SimulationParameters {
   LAMBDA = "lambda",
   QUEUE_LENGTH = "queueLength",
   TIME = "time",
+  NEED_SECOND_TYPE = "needSecondType",
+  SERVE_TIME_CONTAINER = "serveTimeContainer",
+  CONTAINER_APPEARANCE_PROBABILITY = "containerAppearanceProbability",
+  CONTAINER_SERVERS_NUM = "containerServersNum",
 }

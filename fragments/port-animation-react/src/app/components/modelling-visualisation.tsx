@@ -21,11 +21,14 @@ const ModellingVisualisation = (props: {systemVariables: SystemVariablesModel}) 
       queryParams += `${k}=${encodeURIComponent(v)}&`;
     });
   }
+  const requestURL = props?.systemVariables?.needSecondType
+    ? `/api/calculate/modelling/poissonWithTypes/?${queryParams}`
+    : `/api/calculate/modelling/poisson/?${queryParams}`
 
   React.useEffect(() => {
     if (queryParams) {
       setLoading(true);
-      fetch(`/api/calculate/modelling/poisson/?${queryParams}`)
+      fetch(requestURL)
         .then(res => res.json())
         .then(
           (result: SimulationResultModel) => {
@@ -43,7 +46,7 @@ const ModellingVisualisation = (props: {systemVariables: SystemVariablesModel}) 
   return (
     <Row>
       <Col span={16}>
-        <PortAnimation simulationResult={response} time={time}/>
+        <PortAnimation simulationResult={response} time={time} systemParams={props.systemVariables}/>
         <Slider disabled={loading} tipFormatter={null} value={time} min={0} max={20} marks={marks} onChange={(v) => setTime(v)}/>
       </Col>
       <Col span={8}>

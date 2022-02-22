@@ -9,7 +9,6 @@ export enum CustomerState {
 }
 
 export interface CustomerAnimationDataModel extends Omit<CustomerDataModel, "arrive" | "leave" | "serve"> {
-  key?: string;
   customerState: CustomerState;
   serverNum?: number;
   queueNum?: number;
