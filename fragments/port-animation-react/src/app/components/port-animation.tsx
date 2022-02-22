@@ -5,6 +5,7 @@ import {SystemVariablesModel} from "app/models/system-variables.model";
 import ShipImage from "app/components/ship";
 import CraneImage from "app/components/crane";
 import {ServerModel} from "app/models/server.model";
+import "antd/lib/slider/style";
 import {Slider} from "antd";
 import {AnimationPropertiesModel, CustomerAnimationDataModel, CustomerState} from "app/models/animation-properties.model";
 import {SimulationResultModel} from "app/models/simulation-result.model";
