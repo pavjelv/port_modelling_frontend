@@ -23,6 +23,7 @@ export class CalculateValuesComponent implements OnInit {
 
   public parameters = SystemParameters;
   public rangeParameterControl: FormControl;
+  public systemTypeParameterControl: FormControl;
   public controlToParameterMap: Map<SystemParameters, FormControl> = new Map<SystemParameters, FormControl>();
   public disabledParameter: SystemParameters = SystemParameters.LAMBDA;
 
@@ -66,7 +67,13 @@ export class CalculateValuesComponent implements OnInit {
       this.systemParametersForm.get(v).disable({ emitEvent: false });
       this.disabledParameter = v;
     });
-    this.systemParametersForm.registerControl("systemType", new FormControl(SystemType.WITH_QUEUE));
+    this.systemTypeParameterControl = new FormControl(SystemType.WITH_QUEUE);
+    this.systemTypeParameterControl.valueChanges.subscribe((v) => {
+      if (this.rangeParameterControl.value === SystemParameters.QUEUE_LENGTH) {
+        this.rangeParameterControl.setValue(SystemParameters.LAMBDA);
+      }
+    });
+    this.systemParametersForm.registerControl("systemType", this.systemTypeParameterControl);
     this.systemParametersForm.registerControl("rangeParameter", this.rangeParameterControl);
     Object.values(this.parameters).forEach((parameter) => {
       const disabled = parameter === SystemParameters.LAMBDA;

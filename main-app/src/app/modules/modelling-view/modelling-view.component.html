@@ -14,13 +14,13 @@
         <div class="modelling-view-form__parameter">
           <mat-form-field appearance="outline">
             <mat-label>Количество причалов</mat-label>
-            <input matInput type="number" min="2" max="10" [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM">
+            <input matInput type="number" min="1" max="4" [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM">
           </mat-form-field>
           <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM" [min]="2" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+            <mat-slider [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM" [min]="1" [max]="4" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
             <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">2</label>
-              <label class="modelling-view-form__parameter-slider-values-right">10</label>
+              <label class="modelling-view-form__parameter-slider-values-left">1</label>
+              <label class="modelling-view-form__parameter-slider-values-right">4</label>
             </div>
           </div>
         </div>

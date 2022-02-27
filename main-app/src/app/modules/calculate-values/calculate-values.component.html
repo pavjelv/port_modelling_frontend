@@ -85,20 +85,20 @@
           </div>
         </div>
       </div>
-      <div class="calculate-values-form__parameter">
-      <mat-radio-button [value]="parameters.QUEUE_LENGTH"></mat-radio-button>
-      <mat-form-field appearance="outline">
-        <mat-label>Максимальная длина очереди (m)</mat-label>
-        <input matInput type="number" min="0" max="10" [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH">
-      </mat-form-field>
-      <div class="calculate-values-form__parameter-slider">
-        <mat-slider [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-        <div class="calculate-values-form__parameter-slider-values">
-          <label class="calculate-values-form__parameter-slider-values-left">1</label>
-          <label class="calculate-values-form__parameter-slider-values-right">10</label>
+      <div class="calculate-values-form__parameter" *ngIf="systemTypeParameterControl.value === 'queue'">
+        <mat-radio-button [value]="parameters.QUEUE_LENGTH"></mat-radio-button>
+        <mat-form-field appearance="outline">
+          <mat-label>Максимальная длина очереди (m)</mat-label>
+          <input matInput type="number" min="0" max="10" [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH">
+        </mat-form-field>
+        <div class="calculate-values-form__parameter-slider">
+          <mat-slider [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+          <div class="calculate-values-form__parameter-slider-values">
+            <label class="calculate-values-form__parameter-slider-values-left">1</label>
+            <label class="calculate-values-form__parameter-slider-values-right">10</label>
+          </div>
         </div>
       </div>
-    </div>
   </mat-radio-group>
     <div class="calculate-values-form-info">
       <mat-label>&mu; = 1 / t = {{(1 / controlToParameterMap.get(parameters.SERVE_TIME).value).toFixed(3)}}</mat-label>
