@@ -137,16 +137,6 @@
   <br>
   Оптимальное количество каналов обслуживания = 21.
   <div style="display: block;">
-    <canvas *ngIf="isBrowser" baseChart
-            class="chart-canvas"
-            [datasets]="withRefuseData"
-            [labels]="lineChartLabels"
-            [options]="lineChartOptions"
-            [colors]="lineChartColors"
-            [legend]="lineChartLegend"
-            [chartType]="lineChartType"
-            [plugins]="lineChartPlugins">
-    </canvas>
   </div>
 </ng-template>
 
@@ -177,28 +167,8 @@
   <br>
   Оптимальное количество каналов обслуживания = 19.
   <div style="display: block;">
-    <canvas *ngIf="isBrowser" baseChart
-            class="chart-canvas"
-            [datasets]="withQueueData"
-            [labels]="lineChartWithQueueLabels"
-            [options]="lineChartOptions"
-            [colors]="lineChartColors"
-            [legend]="lineChartLegend"
-            [chartType]="lineChartType"
-            [plugins]="lineChartPlugins">
-    </canvas>
   </div>
   <div style="display: block;">
-    <canvas *ngIf="isBrowser" baseChart
-            class="chart-canvas"
-            [datasets]="queueLengthData"
-            [labels]="lineChartWithQueueLabels"
-            [options]="lineChartOptions"
-            [colors]="queueLengthChartColors"
-            [legend]="lineChartLegend"
-            [chartType]="lineChartType"
-            [plugins]="lineChartPlugins">
-    </canvas>
   </div>
 </ng-template>
 

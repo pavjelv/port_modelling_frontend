@@ -47,7 +47,7 @@ const ModellingVisualisation = (props: {systemVariables: SystemVariablesModel}) 
     <Row>
       <Col span={16}>
         <PortAnimation simulationResult={response} time={time} systemParams={props.systemVariables}/>
-        <Slider disabled={loading} tipFormatter={null} value={time} min={0} max={20} marks={marks} onChange={(v) => setTime(v)}/>
+        <Slider style={{width: 795}} disabled={loading} tipFormatter={null} value={time} min={0} max={20} marks={marks} onChange={(v) => setTime(v)}/>
       </Col>
       <Col span={8}>
         <Skeleton loading={loading} active={true}>

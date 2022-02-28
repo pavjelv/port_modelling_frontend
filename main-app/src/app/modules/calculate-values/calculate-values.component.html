@@ -1,116 +1,25 @@
-<div class="calculate-values" [formGroup]="systemParametersForm">
-  <mat-form-field appearance="outline" class="system-field">
-    <mat-label>Тип системы</mat-label>
-    <mat-select [formControlName]="'systemType'">
-      <mat-option *ngFor="let system of systems" [value]="system.id">{{system.value}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <div class="calculate-values__charts-wrapper" *ngIf="isBrowser">
-    <div class="chart-canvas">
-      <canvas baseChart
-              [datasets]="servingProbabilityData"
-              [labels]="lineChartLabels"
-              [options]="{ responsive: true }"
-              [colors]="servingProbabilityColors"
-              [legend]="true"
-              [chartType]="'line'">
-      </canvas>
-      <ng-container [ngTemplateOutlet]="canvasLabel"></ng-container>
-    </div>
-    <div class="chart-canvas">
-      <canvas baseChart
-              [datasets]="queueLengthData"
-              [labels]="lineChartLabels"
-              [options]="{ responsive: true }"
-              [colors]="queueLengthColors"
-              [legend]="true"
-              [chartType]="'line'">
-      </canvas>
-      <ng-container [ngTemplateOutlet]="canvasLabel"></ng-container>
-    </div>
-    <div class="chart-canvas">
-      <canvas baseChart
-              [datasets]="systemTimeData"
-              [labels]="lineChartLabels"
-              [options]="{ responsive: true }"
-              [colors]="systemWaitingTimeColors"
-              [legend]="true"
-              [chartType]="'line'">
-      </canvas>
-      <ng-container [ngTemplateOutlet]="canvasLabel"></ng-container>
-    </div>
+<main class="calculate-values__main">
+  <h1>Рассчитать параметры системы</h1>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sit amet velit eget ligula ullamcorper congue vitae non mi. Vivamus faucibus, tellus in sodales auctor, sem tellus interdum metus, eget vulputate lacus arcu ut tortor. Mauris suscipit eleifend viverra. Maecenas interdum dictum quam, a finibus arcu volutpat id. Integer a enim ligula. Duis fermentum dui eu facilisis ultrices. Donec ac blandit erat. Sed lacinia eros nisl, vitae tempus nisi convallis eget.
+  </p>
+  <p>
+    Phasellus ac tellus tellus. Curabitur bibendum risus sit amet dictum dignissim. Vestibulum sed tempor tortor. Integer fermentum ultricies enim, ut cursus neque tempor ut. Nam eget ante sed eros egestas dapibus. Vestibulum scelerisque id neque eu fermentum. Donec in fringilla eros, pulvinar molestie mauris. Etiam dignissim lobortis elit quis sagittis. Integer aliquet, neque a gravida eleifend, arcu nisl tristique sem, non lobortis erat elit ac ipsum. Vestibulum ut felis condimentum, posuere ex quis, suscipit felis. Proin quis facilisis elit. Nunc egestas ex velit, non luctus est vehicula vitae. Pellentesque lacinia erat a enim pretium aliquet. Curabitur facilisis quis tortor eu mattis.
+  </p>
+  <p>
+    Nulla facilisi. Sed sagittis tincidunt justo id vulputate. Aliquam ac aliquet mi. Etiam tincidunt libero sed neque venenatis luctus. Etiam sit amet neque neque. Phasellus dapibus non nulla nec efficitur. Aliquam porttitor nec eros ac gravida. Aenean cursus consequat vestibulum. Cras pulvinar sit amet sapien at consectetur. Vivamus convallis, odio id egestas elementum, odio nulla iaculis odio, a ultricies dolor purus in eros. Donec mi libero, efficitur ac vulputate ac, ornare ut sapien. Nulla facilisi. Aliquam condimentum rutrum libero quis porttitor.
+  </p>
+  <p>
+    Morbi pulvinar nulla blandit lorem vulputate, at auctor arcu sollicitudin. Morbi volutpat lacus id aliquet porttitor. Suspendisse consectetur lobortis sapien, eu lacinia tellus finibus vitae. Nunc elementum mauris in velit auctor molestie. Nullam malesuada malesuada velit nec ultrices. In a lacinia ipsum, non convallis arcu. Pellentesque non nisl quis felis fermentum dictum at vel erat. Integer scelerisque aliquam eros ac euismod. Nunc lobortis sed nibh eu consequat. Nam purus neque, molestie finibus purus et, posuere blandit mi. Curabitur semper ornare quam, elementum lobortis elit consectetur sit amet. Sed eleifend leo dolor, at finibus magna vestibulum ac. Nam eget ex nec enim vehicula elementum.
+  </p>
+  <h2>Выберите тип системы</h2>
+  <div class="calculate-values__select-system">
+    <mat-form-field appearance="outline" class="calculate-values__select-system__field">
+      <mat-label>Тип системы</mat-label>
+      <mat-select [(value)]="selectedValue">
+        <mat-option *ngFor="let system of systems" [value]="system.id">{{system.value}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button (click)="onContinueClicked()" color="primary">Продолжить</button>
   </div>
-  <div class="calculate-values-form">
-    <mat-radio-group [formControlName]="'rangeParameter'">
-      <mat-label class="calculate-values-form__label">Ось x</mat-label>
-      <div class="calculate-values-form__parameter">
-        <mat-radio-button [value]="parameters.SERVERS_NUM"></mat-radio-button>
-        <mat-form-field appearance="outline">
-          <mat-label>Количество каналов (n)</mat-label>
-          <input matInput type="number" min="2" max="10" [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM">
-        </mat-form-field>
-        <div class="calculate-values-form__parameter-slider">
-          <mat-slider [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM" [min]="2" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-          <div class="calculate-values-form__parameter-slider-values">
-            <label class="calculate-values-form__parameter-slider-values-left">2</label>
-            <label class="calculate-values-form__parameter-slider-values-right">10</label>
-          </div>
-        </div>
-      </div>
-      <div class="calculate-values-form__parameter">
-        <mat-radio-button [value]="parameters.SERVE_TIME"></mat-radio-button>
-        <mat-form-field appearance="outline">
-          <mat-label>Время обслуживания (t)</mat-label>
-          <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME">
-        </mat-form-field>
-        <div class="calculate-values-form__parameter-slider">
-          <mat-slider [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
-          <div class="calculate-values-form__parameter-slider-values">
-            <label class="calculate-values-form__parameter-slider-values-left">0.1</label>
-            <label class="calculate-values-form__parameter-slider-values-right">4</label>
-          </div>
-        </div>
-      </div>
-      <div class="calculate-values-form__parameter">
-        <mat-radio-button [value]="parameters.LAMBDA"></mat-radio-button>
-        <mat-form-field appearance="outline">
-          <mat-label>Интенсивность потока заявок (&lambda;) </mat-label>
-          <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA">
-        </mat-form-field>
-        <div class="calculate-values-form__parameter-slider">
-          <mat-slider [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
-          <div class="calculate-values-form__parameter-slider-values">
-            <label class="calculate-values-form__parameter-slider-values-left">0.1</label>
-            <label class="calculate-values-form__parameter-slider-values-right">4</label>
-          </div>
-        </div>
-      </div>
-      <div class="calculate-values-form__parameter" *ngIf="systemTypeParameterControl.value === 'queue'">
-        <mat-radio-button [value]="parameters.QUEUE_LENGTH"></mat-radio-button>
-        <mat-form-field appearance="outline">
-          <mat-label>Максимальная длина очереди (m)</mat-label>
-          <input matInput type="number" min="0" max="10" [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH">
-        </mat-form-field>
-        <div class="calculate-values-form__parameter-slider">
-          <mat-slider [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-          <div class="calculate-values-form__parameter-slider-values">
-            <label class="calculate-values-form__parameter-slider-values-left">1</label>
-            <label class="calculate-values-form__parameter-slider-values-right">10</label>
-          </div>
-        </div>
-      </div>
-  </mat-radio-group>
-    <div class="calculate-values-form-info">
-      <mat-label>&mu; = 1 / t = {{(1 / controlToParameterMap.get(parameters.SERVE_TIME).value).toFixed(3)}}</mat-label>
-      <mat-label>&rho; = &lambda; / &mu; = &lambda; * t = {{(controlToParameterMap.get(parameters.SERVE_TIME).value * controlToParameterMap.get(parameters.LAMBDA).value).toFixed(3)}}</mat-label>
-    </div>
-  </div>
-</div>
-<ng-template #canvasLabel>
-  <ng-container [ngSwitch]="disabledParameter">
-    <mat-label *ngSwitchCase="parameters.LAMBDA" class="chart-canvas-label">&lambda;</mat-label>
-    <mat-label *ngSwitchCase="parameters.QUEUE_LENGTH" class="chart-canvas-label">m</mat-label>
-    <mat-label *ngSwitchCase="parameters.SERVE_TIME" class="chart-canvas-label">t</mat-label>
-    <mat-label *ngSwitchDefault class="chart-canvas-label">n</mat-label>
-  </ng-container>
-</ng-template>
+</main>

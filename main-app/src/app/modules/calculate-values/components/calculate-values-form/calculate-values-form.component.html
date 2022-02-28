@@ -1,0 +1,76 @@
+<h1>{{systemName}}</h1>
+<div class="calculate-values" [formGroup]="systemParametersForm">
+  <div class="calculate-values__charts-wrapper" *ngIf="isBrowser">
+    <div class="chart-canvas">
+    </div>
+    <div class="chart-canvas">
+    </div>
+    <div class="chart-canvas">
+    </div>
+  </div>
+  <div class="calculate-values-form">
+    <mat-radio-group [formControlName]="'rangeParameter'">
+      <mat-label class="calculate-values-form__label">Ось x</mat-label>
+      <div class="calculate-values-form__parameter">
+        <mat-radio-button [value]="parameters.SERVERS_NUM"></mat-radio-button>
+        <mat-form-field appearance="outline">
+          <mat-label>Количество каналов (n)</mat-label>
+          <input matInput type="number" min="2" max="10" [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM">
+        </mat-form-field>
+        <div class="calculate-values-form__parameter-slider">
+          <mat-slider [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM" [min]="2" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+          <div class="calculate-values-form__parameter-slider-values">
+            <label class="calculate-values-form__parameter-slider-values-left">2</label>
+            <label class="calculate-values-form__parameter-slider-values-right">10</label>
+          </div>
+        </div>
+      </div>
+      <div class="calculate-values-form__parameter">
+        <mat-radio-button [value]="parameters.SERVE_TIME"></mat-radio-button>
+        <mat-form-field appearance="outline">
+          <mat-label>Время обслуживания (t)</mat-label>
+          <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME">
+        </mat-form-field>
+        <div class="calculate-values-form__parameter-slider">
+          <mat-slider [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
+          <div class="calculate-values-form__parameter-slider-values">
+            <label class="calculate-values-form__parameter-slider-values-left">0.1</label>
+            <label class="calculate-values-form__parameter-slider-values-right">4</label>
+          </div>
+        </div>
+      </div>
+      <div class="calculate-values-form__parameter">
+        <mat-radio-button [value]="parameters.LAMBDA"></mat-radio-button>
+        <mat-form-field appearance="outline">
+          <mat-label>Интенсивность потока заявок (&lambda;) </mat-label>
+          <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA">
+        </mat-form-field>
+        <div class="calculate-values-form__parameter-slider">
+          <mat-slider [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
+          <div class="calculate-values-form__parameter-slider-values">
+            <label class="calculate-values-form__parameter-slider-values-left">0.1</label>
+            <label class="calculate-values-form__parameter-slider-values-right">4</label>
+          </div>
+        </div>
+      </div>
+      <div class="calculate-values-form__parameter" *ngIf="systemTypeParameterControl.value === 'queue'">
+        <mat-radio-button [value]="parameters.QUEUE_LENGTH"></mat-radio-button>
+        <mat-form-field appearance="outline">
+          <mat-label>Максимальная длина очереди (m)</mat-label>
+          <input matInput type="number" min="0" max="10" [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH">
+        </mat-form-field>
+        <div class="calculate-values-form__parameter-slider">
+          <mat-slider [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
+          <div class="calculate-values-form__parameter-slider-values">
+            <label class="calculate-values-form__parameter-slider-values-left">1</label>
+            <label class="calculate-values-form__parameter-slider-values-right">10</label>
+          </div>
+        </div>
+      </div>
+    </mat-radio-group>
+    <div class="calculate-values-form-info">
+      <mat-label>&mu; = 1 / t = {{(1 / controlToParameterMap.get(parameters.SERVE_TIME).value).toFixed(3)}}</mat-label>
+      <mat-label>&rho; = &lambda; / &mu; = &lambda; * t = {{(controlToParameterMap.get(parameters.SERVE_TIME).value * controlToParameterMap.get(parameters.LAMBDA).value).toFixed(3)}}</mat-label>
+    </div>
+  </div>
+</div>

@@ -7,21 +7,27 @@ import {MatSelectModule} from "@angular/material/select";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
-import {ChartsModule} from "ng2-charts";
 import {MatSliderModule} from "@angular/material/slider";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { HighchartsChartModule } from "highcharts-angular";
+import { HighchartWrapperComponent } from "./components/highchart-wrapper/highchart-wrapper.component";
+import { CalculateValuesFormComponent } from "./components/calculate-values-form/calculate-values-form.component";
 
 const routes: Route[] = [
   {
-    path: "",
+    path: "form",
+    component: CalculateValuesFormComponent,
+  },
+  {
+    path: "**",
     component: CalculateValuesComponent,
-  }
+  },
 ];
 
 
 @NgModule({
-  declarations: [CalculateValuesComponent],
+  declarations: [CalculateValuesComponent, HighchartWrapperComponent, CalculateValuesFormComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
@@ -30,11 +36,11 @@ const routes: Route[] = [
         ReactiveFormsModule,
         MatInputModule,
         MatButtonModule,
-        ChartsModule,
         MatSliderModule,
         MatSnackBarModule,
         MatRadioModule,
         FormsModule,
+        HighchartsChartModule
     ]
 })
 export class CalculateValuesModule { }

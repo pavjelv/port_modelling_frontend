@@ -1,6 +1,4 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID} from "@angular/core";
-import {Color, Label} from "ng2-charts";
-import {ChartDataSets, ChartOptions, ChartType} from "chart.js";
 import {isPlatformBrowser} from "@angular/common";
 
 export interface PeriodicElement {
@@ -29,7 +27,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class SystemExampleComponent implements OnInit {
   public displayedColumns: string[] = ["position", "name", "arrive", "leave"];
   public dataSource = ELEMENT_DATA;
-  public withRefuseData: ChartDataSets[] = [{
+  public withRefuseData: any[] = [{
       data: [
         0.067,
         0.13,
@@ -55,7 +53,7 @@ export class SystemExampleComponent implements OnInit {
       label: "Вероятность обслуживания",
     },
   ];
-  public withQueueData: ChartDataSets[] = [{
+  public withQueueData: any[] = [{
     data: [
       0.07,
       0.14,
@@ -78,7 +76,7 @@ export class SystemExampleComponent implements OnInit {
     label: "Вероятность обслуживания. Максимальная длина очереди 6",
   },
   ];
-  public queueLengthData: ChartDataSets[] = [{
+  public queueLengthData: any[] = [{
     data: [
       5.92,
       5.83,
@@ -102,26 +100,26 @@ export class SystemExampleComponent implements OnInit {
     label: "Средняя длина очереди. Максимальная длина очереди 6",
   },
   ];
-  public lineChartLabels: Label[] = [];
-  public lineChartWithQueueLabels: Label[] = [];
+  public lineChartLabels: any[] = [];
+  public lineChartWithQueueLabels: any[] = [];
   // @ts-ignore
   public lineChartOptions: (ChartOptions & { annotation: any }) = {
     responsive: true,
   };
-  public lineChartColors: Color[] = [
+  public lineChartColors: any[] = [
     {
       borderColor: "black",
       backgroundColor: "rgba(0,239,141,0.62)",
     },
   ];
-  public queueLengthChartColors: Color[] = [
+  public queueLengthChartColors: any[] = [
     {
       borderColor: "black",
       backgroundColor: "rgba(83,56,225,0.87)",
     },
   ];
   public lineChartLegend = true;
-  public lineChartType: ChartType = "line";
+  public lineChartType: any = "line";
   public lineChartPlugins = [];
   public isBrowser = false;
 

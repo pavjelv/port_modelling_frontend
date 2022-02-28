@@ -99,8 +99,8 @@ const PortAnimation = (props: {simulationResult: SimulationResultModel, time: nu
   return (
     <Stage height={500} width={800} style={{width: "100%"}}>
       <Layer>
-        {animationProperties?.servers?.map((crane) => (
-          <CraneImage key={"" + crane.order} order={crane.order} type={crane.type}/>
+        {animationProperties?.servers?.map((crane, _, array) => (
+          <CraneImage key={"" + crane.order} order={crane.order} type={crane.type} serversCount={array.length}/>
         ))}
         {animationProperties?.servingCustomers?.map((ship: CustomerAnimationDataModel) => (
           <ShipImage key={ship.name} serverNum={ship.serverNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
