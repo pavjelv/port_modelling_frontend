@@ -13,6 +13,12 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { HighchartsChartModule } from "highcharts-angular";
 import { HighchartWrapperComponent } from "./components/highchart-wrapper/highchart-wrapper.component";
 import { CalculateValuesFormComponent } from "./components/calculate-values-form/calculate-values-form.component";
+import {MathjaxModule} from "../mathjax/mathjax.module";
+import { MultChannelRejectPopoverComponent } from "./components/mult-channel-reject-popover/mult-channel-reject-popover.component";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatIconModule} from "@angular/material/icon";
+import {MatListModule} from "@angular/material/list";
+import {ScrollingModule} from "@angular/cdk/scrolling";
 
 const routes: Route[] = [
   {
@@ -27,20 +33,25 @@ const routes: Route[] = [
 
 
 @NgModule({
-  declarations: [CalculateValuesComponent, HighchartWrapperComponent, CalculateValuesFormComponent],
-    imports: [
-        CommonModule,
-        RouterModule.forChild(routes),
-        MatFormFieldModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        MatButtonModule,
-        MatSliderModule,
-        MatSnackBarModule,
-        MatRadioModule,
-        FormsModule,
-        HighchartsChartModule
-    ]
+  declarations: [CalculateValuesComponent, HighchartWrapperComponent, CalculateValuesFormComponent, MultChannelRejectPopoverComponent],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    MatFormFieldModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSliderModule,
+    MatSnackBarModule,
+    MatRadioModule,
+    FormsModule,
+    HighchartsChartModule,
+    MathjaxModule,
+    MatDialogModule,
+    MatIconModule,
+    MatListModule,
+    ScrollingModule
+  ]
 })
 export class CalculateValuesModule { }

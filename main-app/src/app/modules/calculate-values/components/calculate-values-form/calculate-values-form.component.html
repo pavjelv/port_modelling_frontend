@@ -1,16 +1,17 @@
-<h1>{{systemName}}</h1>
+<h1>
+  {{systemName}}
+  <mat-icon class="toggle-icon" (click)="openDialog()">help_outline</mat-icon>
+</h1>
 <div class="calculate-values" [formGroup]="systemParametersForm">
-  <div class="calculate-values__charts-wrapper" *ngIf="isBrowser">
-    <div class="chart-canvas">
-    </div>
-    <div class="chart-canvas">
-    </div>
-    <div class="chart-canvas">
-    </div>
+  <div class="calculate-values__precalculated mat-elevation-z2">
+    <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="calculate-values__precalculated__scroll">
+      <mat-selection-list [multiple]="false">
+        <mat-list-option *cdkVirtualFor="let type of calculatedSystemTypes" [value]="type.id">{{type.value}}</mat-list-option>
+      </mat-selection-list>
+    </cdk-virtual-scroll-viewport>
   </div>
-  <div class="calculate-values-form">
+  <div class="calculate-values-form mat-elevation-z2">
     <mat-radio-group [formControlName]="'rangeParameter'">
-      <mat-label class="calculate-values-form__label">Ось x</mat-label>
       <div class="calculate-values-form__parameter">
         <mat-radio-button [value]="parameters.SERVERS_NUM"></mat-radio-button>
         <mat-form-field appearance="outline">
@@ -68,9 +69,10 @@
         </div>
       </div>
     </mat-radio-group>
-    <div class="calculate-values-form-info">
-      <mat-label>&mu; = 1 / t = {{(1 / controlToParameterMap.get(parameters.SERVE_TIME).value).toFixed(3)}}</mat-label>
-      <mat-label>&rho; = &lambda; / &mu; = &lambda; * t = {{(controlToParameterMap.get(parameters.SERVE_TIME).value * controlToParameterMap.get(parameters.LAMBDA).value).toFixed(3)}}</mat-label>
-    </div>
+    <button class="calculate-values-form__submit-button" mat-button>Рассчитать</button>
+<!--    <div class="calculate-values-form-info">-->
+<!--      <mat-label>&mu; = 1 / t = {{(1 / controlToParameterMap.get(parameters.SERVE_TIME).value).toFixed(3)}}</mat-label>-->
+<!--      <mat-label>&rho; = &lambda; / &mu; = &lambda; * t = {{(controlToParameterMap.get(parameters.SERVE_TIME).value * controlToParameterMap.get(parameters.LAMBDA).value).toFixed(3)}}</mat-label>-->
+<!--    </div>-->
   </div>
 </div>

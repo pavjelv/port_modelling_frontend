@@ -7,7 +7,9 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {isPlatformBrowser} from "@angular/common";
 import {TheorySummaryModel} from "../../../../model/theory/theory-summary.model";
 import {ActivatedRoute} from "@angular/router";
-import {SystemTypeDictionary} from "../../../../dictionaries/system-type.dictionary";
+import {CalculatedSystemTypeDictionary, SystemTypeDictionary} from "../../../../dictionaries/system-type.dictionary";
+import {MatDialog} from "@angular/material/dialog";
+import {MultChannelRejectPopoverComponent} from "../mult-channel-reject-popover/mult-channel-reject-popover.component";
 
 @Component({
   selector: "app-calculate-values-form",
@@ -37,6 +39,13 @@ export class CalculateValuesFormComponent implements OnInit {
   public lineChartLabels: any[] = [];
   public systemName = "";
 
+  public calculatedSystemTypes = Array.from(CalculatedSystemTypeDictionary).map(([key, value]) => {
+    return {
+      id: key,
+      value,
+    };
+  });
+
   constructor(private fb: FormBuilder,
               @Inject(PLATFORM_ID) private platformId: unknown,
               private loadingService: LoadingOverlayService,
@@ -44,6 +53,7 @@ export class CalculateValuesFormComponent implements OnInit {
               private cdr: ChangeDetectorRef,
               private snackBar: MatSnackBar,
               private route: ActivatedRoute,
+              private dialog: MatDialog,
   )
   {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -101,6 +111,14 @@ export class CalculateValuesFormComponent implements OnInit {
       label: "Среднее время пребывания в системе",
     }];
     this.cdr.markForCheck();
+  }
+
+  public openDialog(): void {
+    const dialogRef = this.dialog.open(MultChannelRejectPopoverComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
   _onSubmit(): void {

@@ -10,6 +10,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
 import {FederationPluginService} from "./microfrontends/federation-plugin.service";
 import {ReactWrapperModule} from "./modules/react-wrapper/react-wrapper.module";
+import {MathjaxModule} from "./modules/mathjax/mathjax.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +24,7 @@ import {ReactWrapperModule} from "./modules/react-wrapper/react-wrapper.module";
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
+    MathjaxModule.forRoot(),
   ],
   providers: [FederationPluginService],
   bootstrap: [AppComponent],
