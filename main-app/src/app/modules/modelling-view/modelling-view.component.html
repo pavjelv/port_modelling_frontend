@@ -127,6 +127,6 @@
   </mat-drawer>
   <mat-drawer-content>
     <mat-icon class="toggle-icon" (click)="drawer.toggle()">chevron_right</mat-icon>
-    <app-common-react-wrapper [props]="simulationVariables" class="modelling-view-canvas-wrapper"></app-common-react-wrapper>
+    <app-common-react-wrapper *ngIf="isBrowser" [props]="simulationVariables" class="modelling-view-canvas-wrapper"></app-common-react-wrapper>
   </mat-drawer-content>
 </mat-drawer-container>

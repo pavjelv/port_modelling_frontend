@@ -8,16 +8,19 @@ import { AppServerModule } from "./src/main.server";
 import { APP_BASE_HREF } from "@angular/common";
 import { existsSync } from "fs";
 import {createProxyMiddleware} from "http-proxy-middleware";
+import * as morgan from "morgan";
+import * as compression from "compression";
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
   const distFolder = join(process.cwd(), "dist/port-modelling-fe/browser");
   const indexHtml = existsSync(join(distFolder, "index.original.html")) ? "index.original.html" : "index";
-  const morgan = require("morgan");
+  // tslint:disable-next-line:no-shadowed-variable
   const { createProxyMiddleware } = require("http-proxy-middleware");
 
-  server.use(morgan("dev"));
+  server.use(compression());
+  server.use(morgan("tiny"));
   // Proxy endpoints
   server.use("/api/calculate", createProxyMiddleware({
     target: process.env.BACKEND_URL || "http://localhost:8000",

@@ -1,19 +1,18 @@
-import { Observer, ReplaySubject, Observable } from "rxjs";
-import { Injectable } from "@angular/core";
-
-declare global {
-    interface Window {
-        hubReady: Observer<boolean>;
-    }
-}
+import {ReplaySubject, Observable, Observer} from "rxjs";
+import {Inject, Injectable, PLATFORM_ID} from "@angular/core";
+import {isPlatformBrowser} from "@angular/common";
 
 @Injectable()
 export class MathService {
     private readonly notifier: ReplaySubject<boolean>;
 
-    constructor() {
-        this.notifier = new ReplaySubject<boolean>();
-        window.hubReady = this.notifier;
+    constructor(@Inject(PLATFORM_ID) private platformId: unknown) {
+      this.notifier = new ReplaySubject<boolean>();
+      const isBrowser = isPlatformBrowser(this.platformId);
+      if (isBrowser) {
+        console.log("INIT HUB READY");
+        (window as unknown as { hubReady: Observer<any> }).hubReady = this.notifier;
+      }
     }
 
     ready(): Observable<boolean> {

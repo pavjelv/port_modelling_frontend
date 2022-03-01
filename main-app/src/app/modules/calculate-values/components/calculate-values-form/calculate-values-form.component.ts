@@ -69,7 +69,7 @@ export class CalculateValuesFormComponent implements OnInit {
       this.disabledParameter = v;
     });
     this.systemTypeParameterControl = new FormControl(SystemType.WITH_QUEUE);
-    this.systemTypeParameterControl.valueChanges.subscribe((v) => {
+    this.systemTypeParameterControl.valueChanges.subscribe(() => {
       if (this.rangeParameterControl.value === SystemParameters.QUEUE_LENGTH) {
         this.rangeParameterControl.setValue(SystemParameters.LAMBDA);
       }
@@ -82,10 +82,6 @@ export class CalculateValuesFormComponent implements OnInit {
       this.controlToParameterMap.set(parameter, control);
       this.systemParametersForm.registerControl(parameter, control);
     });
-    this.systemParametersForm.valueChanges.subscribe((v) => {
-      this._onSubmit();
-    });
-    this.systemParametersForm.updateValueAndValidity();
   }
 
   private processTheorySummary(summary: TheorySummaryModel): void {
