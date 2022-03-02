@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID} from "@angular/core";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {SystemParameters, SystemType} from "../../../../model/theory/system-type";
+import {SystemParameters} from "../../../../model/theory/system-type";
 import {LoadingOverlayService} from "../../../../services/loading-overlay.service";
 import {TheoryResultsService} from "../../../../services/theory-results.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -27,10 +27,7 @@ export class CalculateValuesFormComponent implements OnInit {
 
   public parameters = SystemParameters;
   public rangeParameterControl: FormControl;
-  public systemTypeParameterControl: FormControl;
   public systemCharacteristicParameterControl: FormControl;
-  public controlToParameterMap: Map<SystemParameters, FormControl> = new Map<SystemParameters, FormControl>();
-  public disabledParameter: SystemParameters = SystemParameters.LAMBDA;
 
   public systemName = "";
 
@@ -72,15 +69,14 @@ export class CalculateValuesFormComponent implements OnInit {
   ngOnInit(): void {
     this.systemName = SystemTypeDictionary.get(this.route.snapshot.queryParamMap.get("systemType"));
     this.systemParametersForm = new FormGroup({});
-    this.rangeParameterControl = new FormControl();
-    this.systemTypeParameterControl = new FormControl(SystemType.WITH_QUEUE);
+    this.rangeParameterControl = new FormControl(SystemParameters.LAMBDA);
     this.systemCharacteristicParameterControl = new FormControl([]);
-    this.systemParametersForm.registerControl("systemType", this.systemTypeParameterControl);
     this.systemParametersForm.registerControl("rangeParameter", this.rangeParameterControl);
     this.systemParametersForm.registerControl("step", new FormControl());
+    this.systemParametersForm.registerControl("rangeFrom", new FormControl(1.0));
+    this.systemParametersForm.registerControl("rangeTo", new FormControl(2.1));
     Object.values(this.parameters).forEach((parameter) => {
       const control = new FormControl(0, Validators.min(0));
-      this.controlToParameterMap.set(parameter, control);
       this.systemParametersForm.registerControl(parameter, control);
     });
   }
