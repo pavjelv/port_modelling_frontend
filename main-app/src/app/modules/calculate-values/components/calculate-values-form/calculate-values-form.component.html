@@ -1,78 +1,76 @@
-<h1>
-  {{systemName}}
-  <mat-icon class="toggle-icon" (click)="openDialog()">help_outline</mat-icon>
-</h1>
-<div class="calculate-values" [formGroup]="systemParametersForm">
-  <div class="calculate-values__precalculated mat-elevation-z2">
-    <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="calculate-values__precalculated__scroll">
-      <mat-selection-list [multiple]="false">
-        <mat-list-option *cdkVirtualFor="let type of calculatedSystemTypes" [value]="type.id">{{type.value}}</mat-list-option>
-      </mat-selection-list>
-    </cdk-virtual-scroll-viewport>
-  </div>
-  <div class="calculate-values-form mat-elevation-z2">
-    <mat-radio-group [formControlName]="'rangeParameter'">
-      <div class="calculate-values-form__parameter">
-        <mat-radio-button [value]="parameters.SERVERS_NUM"></mat-radio-button>
+<div class="breadcrumbs">
+  <a routerLink="/calculate">Выбор системы</a>
+  <span class="calculate-values-form-breadcrumbs__divider">/</span>
+  <span>{{systemName}}</span>
+</div>
+<div class="calculate-values-form">
+  <h1 class="calculate-values-form-title">
+    {{systemName}}
+    <mat-icon class="toggle-icon" (click)="openDialog()">help_outline</mat-icon>
+  </h1>
+  <div class="calculate-values-form-parameters">
+    <div class="calculate-values-form-parameters__examples mat-elevation-z1">
+      <span class="description-span">Примеры</span>
+      <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="list">
+        <mat-selection-list [multiple]="false">
+          <mat-list-option *cdkVirtualFor="let type of calculatedSystemTypes" [value]="type.id">{{type.value}}</mat-list-option>
+        </mat-selection-list>
+      </cdk-virtual-scroll-viewport>
+    </div>
+    <div class="calculate-values-form-parameters__system mat-elevation-z1" [formGroup]="systemParametersForm">
+      <span class="description-span">Ось Х</span>
+      <mat-form-field appearance="outline" class="calculate-values-form-parameters__system-axis">
+        <mat-label>Параметр</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let parameter of systemParameters" [innerHTML]="parameter.value" [value]="parameter.id"></mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="calculate-values-form-parameters__system-range">
+        <mat-slider [matTooltipPosition]="'left'" [matTooltip]="'Разброс значений'" discrete [min]="10" [max]="20" class="range-slider">
+          <input matSliderStartThumb>
+          <input matSliderEndThumb>
+        </mat-slider>
+        <mat-form-field appearance="outline" class="step-field">
+          <mat-label>Шаг</mat-label>
+          <input matInput type="number" min="0.1" max="2" [formControlName]="'step'">
+        </mat-form-field>
+      </div>
+      <mat-divider class="calculate-values-form-parameters__divider"></mat-divider>
+      <span class="description-span">Параметры системы</span>
+      <div class="calculate-values-form-parameters__system-variables">
         <mat-form-field appearance="outline">
           <mat-label>Количество каналов (n)</mat-label>
-          <input matInput type="number" min="2" max="10" [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM">
+          <input matInput type="number" min="2" max="10" [formControlName]="parameters.SERVERS_NUM">
         </mat-form-field>
-        <div class="calculate-values-form__parameter-slider">
-          <mat-slider [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM" [min]="2" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-          <div class="calculate-values-form__parameter-slider-values">
-            <label class="calculate-values-form__parameter-slider-values-left">2</label>
-            <label class="calculate-values-form__parameter-slider-values-right">10</label>
-          </div>
-        </div>
-      </div>
-      <div class="calculate-values-form__parameter">
-        <mat-radio-button [value]="parameters.SERVE_TIME"></mat-radio-button>
         <mat-form-field appearance="outline">
           <mat-label>Время обслуживания (t)</mat-label>
-          <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME">
+          <input matInput type="number" min="0.1" max="4" [formControlName]="parameters.SERVE_TIME">
         </mat-form-field>
-        <div class="calculate-values-form__parameter-slider">
-          <mat-slider [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
-          <div class="calculate-values-form__parameter-slider-values">
-            <label class="calculate-values-form__parameter-slider-values-left">0.1</label>
-            <label class="calculate-values-form__parameter-slider-values-right">4</label>
-          </div>
-        </div>
-      </div>
-      <div class="calculate-values-form__parameter">
-        <mat-radio-button [value]="parameters.LAMBDA"></mat-radio-button>
         <mat-form-field appearance="outline">
           <mat-label>Интенсивность потока заявок (&lambda;) </mat-label>
-          <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA">
+          <input matInput type="number" min="0.1" max="4" [formControlName]="parameters.LAMBDA">
         </mat-form-field>
-        <div class="calculate-values-form__parameter-slider">
-          <mat-slider [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
-          <div class="calculate-values-form__parameter-slider-values">
-            <label class="calculate-values-form__parameter-slider-values-left">0.1</label>
-            <label class="calculate-values-form__parameter-slider-values-right">4</label>
-          </div>
-        </div>
-      </div>
-      <div class="calculate-values-form__parameter" *ngIf="systemTypeParameterControl.value === 'queue'">
-        <mat-radio-button [value]="parameters.QUEUE_LENGTH"></mat-radio-button>
         <mat-form-field appearance="outline">
           <mat-label>Максимальная длина очереди (m)</mat-label>
-          <input matInput type="number" min="0" max="10" [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH">
+          <input matInput type="number" min="0" max="10" [formControlName]="parameters.QUEUE_LENGTH">
         </mat-form-field>
-        <div class="calculate-values-form__parameter-slider">
-          <mat-slider [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-          <div class="calculate-values-form__parameter-slider-values">
-            <label class="calculate-values-form__parameter-slider-values-left">1</label>
-            <label class="calculate-values-form__parameter-slider-values-right">10</label>
-          </div>
-        </div>
       </div>
-    </mat-radio-group>
-    <button class="calculate-values-form__submit-button" mat-button>Рассчитать</button>
-<!--    <div class="calculate-values-form-info">-->
-<!--      <mat-label>&mu; = 1 / t = {{(1 / controlToParameterMap.get(parameters.SERVE_TIME).value).toFixed(3)}}</mat-label>-->
-<!--      <mat-label>&rho; = &lambda; / &mu; = &lambda; * t = {{(controlToParameterMap.get(parameters.SERVE_TIME).value * controlToParameterMap.get(parameters.LAMBDA).value).toFixed(3)}}</mat-label>-->
-<!--    </div>-->
+      <mat-divider class="calculate-values-form-parameters__divider last"></mat-divider>
+      <mat-form-field appearance="outline" class="calculate-values-form-parameters__system-characteristic">
+        <mat-label>График характеристики</mat-label>
+        <mat-select [formControl]="systemCharacteristicParameterControl" multiple>
+          <mat-select-trigger>
+            {{systemCharacteristicParameterControl.value ? systemCharacteristicParameterControl.value[0] : ''}}
+            <span *ngIf="systemCharacteristicParameterControl.value?.length > 1" class="example-additional-selection">
+              (+{{systemCharacteristicParameterControl.value.length - 1}} {{systemCharacteristicParameterControl.value?.length === 2 ? 'other' : 'others'}})
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let characteristic of availableSystemCharacteristics" [id]="characteristic.id" [value]="characteristic.value">{{characteristic.value}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="calculate-values-form-parameters__submit">
+        <button color="primary" mat-raised-button>Рассчитать</button>
+      </div>
+    </div>
   </div>
 </div>

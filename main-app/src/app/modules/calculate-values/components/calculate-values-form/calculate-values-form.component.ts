@@ -10,6 +10,11 @@ import {ActivatedRoute} from "@angular/router";
 import {CalculatedSystemTypeDictionary, SystemTypeDictionary} from "../../../../dictionaries/system-type.dictionary";
 import {MatDialog} from "@angular/material/dialog";
 import {MultChannelRejectPopoverComponent} from "../mult-channel-reject-popover/mult-channel-reject-popover.component";
+import {
+  AvailableSystemCharacteristicsDictionary,
+  SystemParametersDictionary
+} from "../../../../dictionaries/available-system-characteristics.dictionary";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: "app-calculate-values-form",
@@ -23,23 +28,27 @@ export class CalculateValuesFormComponent implements OnInit {
   public parameters = SystemParameters;
   public rangeParameterControl: FormControl;
   public systemTypeParameterControl: FormControl;
+  public systemCharacteristicParameterControl: FormControl;
   public controlToParameterMap: Map<SystemParameters, FormControl> = new Map<SystemParameters, FormControl>();
   public disabledParameter: SystemParameters = SystemParameters.LAMBDA;
 
-  // charts
-  public servingProbabilityData: any[] = [{
-    label: "Вероятность обслуживания.",
-  }];
-  public queueLengthData: any[] = [{
-    label: "Средняя длина очереди",
-  }];
-  public systemTimeData: any[] = [{
-    label: "Среднее время пребывания в системе",
-  }];
-  public lineChartLabels: any[] = [];
   public systemName = "";
 
   public calculatedSystemTypes = Array.from(CalculatedSystemTypeDictionary).map(([key, value]) => {
+    return {
+      id: key,
+      value,
+    };
+  });
+
+  public systemParameters = Array.from(SystemParametersDictionary).map(([key, value]) => {
+    return {
+      id: key,
+      value: this.sanitizer.bypassSecurityTrustHtml(value),
+    };
+  });
+
+  public availableSystemCharacteristics = Array.from(AvailableSystemCharacteristicsDictionary).map(([key, value]) => {
     return {
       id: key,
       value,
@@ -54,6 +63,7 @@ export class CalculateValuesFormComponent implements OnInit {
               private snackBar: MatSnackBar,
               private route: ActivatedRoute,
               private dialog: MatDialog,
+              private sanitizer: DomSanitizer,
   )
   {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -62,30 +72,20 @@ export class CalculateValuesFormComponent implements OnInit {
   ngOnInit(): void {
     this.systemName = SystemTypeDictionary.get(this.route.snapshot.queryParamMap.get("systemType"));
     this.systemParametersForm = new FormGroup({});
-    this.rangeParameterControl = new FormControl(SystemParameters.LAMBDA);
-    this.rangeParameterControl.valueChanges.subscribe((v) => {
-      this.systemParametersForm.enable({ emitEvent: false });
-      this.systemParametersForm.get(v).disable({ emitEvent: false });
-      this.disabledParameter = v;
-    });
+    this.rangeParameterControl = new FormControl();
     this.systemTypeParameterControl = new FormControl(SystemType.WITH_QUEUE);
-    this.systemTypeParameterControl.valueChanges.subscribe(() => {
-      if (this.rangeParameterControl.value === SystemParameters.QUEUE_LENGTH) {
-        this.rangeParameterControl.setValue(SystemParameters.LAMBDA);
-      }
-    });
+    this.systemCharacteristicParameterControl = new FormControl([]);
     this.systemParametersForm.registerControl("systemType", this.systemTypeParameterControl);
     this.systemParametersForm.registerControl("rangeParameter", this.rangeParameterControl);
+    this.systemParametersForm.registerControl("step", new FormControl());
     Object.values(this.parameters).forEach((parameter) => {
-      const disabled = parameter === SystemParameters.LAMBDA;
-      const control = new FormControl({value: (disabled ? 0.4 : 2), disabled}, Validators.min(0));
+      const control = new FormControl(0, Validators.min(0));
       this.controlToParameterMap.set(parameter, control);
       this.systemParametersForm.registerControl(parameter, control);
     });
   }
 
   private processTheorySummary(summary: TheorySummaryModel): void {
-    this.lineChartLabels = summary.parameter_range.map((v => String(v)));
     // @ts-ignore
     this.chartOptions.series[0].data = summary.result.map(((value, i) => {
       return {
@@ -93,19 +93,6 @@ export class CalculateValuesFormComponent implements OnInit {
         y: value.p_serv,
       };
     }));
-    this.servingProbabilityData = [{
-      data: summary.result.map((value => value.p_serv)),
-      label: "Вероятность обслуживания.",
-    },
-    ];
-    this.queueLengthData = [{
-      data: summary.result.map((value => value.l_queue)),
-      label: "Средняя длина очереди",
-    }];
-    this.systemTimeData = [{
-      data: summary.result.map((value => value.t_sys)),
-      label: "Среднее время пребывания в системе",
-    }];
     this.cdr.markForCheck();
   }
 
