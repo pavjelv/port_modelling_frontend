@@ -1,13 +1,7 @@
 import {SystemType} from "../model/theory/system-type";
 
-export const SystemTypeDictionary = new Map<string, string>([
+export const SystemTypeDictionary = new Map<SystemType, string>([
   [SystemType.INFINITE_QUEUE, "Многоканальная СМО с бесконечной очередью"],
   [SystemType.WITH_REJECT, "Многоканальная СМО с отказами"],
   [SystemType.WITH_QUEUE, "Многоканальная СМО с ограниченной очередью"],
-]);
-
-export const CalculatedSystemTypeDictionary = new Map<string, string>([
-  ["1", "big lambda"],
-  ["2", "small lambda"],
-  ["3", "big queue"],
 ]);

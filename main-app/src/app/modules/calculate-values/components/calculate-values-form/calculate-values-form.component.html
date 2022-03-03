@@ -12,8 +12,8 @@
     <div class="calculate-values-form-parameters__examples mat-elevation-z1">
       <span class="description-span">Примеры</span>
       <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="list">
-        <mat-selection-list [multiple]="false">
-          <mat-list-option *cdkVirtualFor="let type of calculatedSystemTypes" [value]="type.id">{{type.value}}</mat-list-option>
+        <mat-selection-list [multiple]="false" (selectionChange)="onPrefilledParameterSelect($event)">
+          <mat-list-option *cdkVirtualFor="let type of prefilledSystemTypes" [value]="type.value">{{type.text}}</mat-list-option>
         </mat-selection-list>
       </cdk-virtual-scroll-viewport>
     </div>
@@ -40,7 +40,7 @@
       <div class="calculate-values-form-parameters__system-variables">
         <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.SERVERS_NUM">
           <mat-label>Количество каналов (n)</mat-label>
-          <input matInput type="number" min="2" max="10" [formControlName]="parameters.SERVERS_NUM">
+          <input matInput type="number" min="1" max="10" [formControlName]="parameters.SERVERS_NUM">
         </mat-form-field>
         <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.SERVE_TIME">
           <mat-label>Время обслуживания (t)</mat-label>
@@ -52,7 +52,7 @@
         </mat-form-field>
         <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.QUEUE_LENGTH">
           <mat-label>Максимальная длина очереди (m)</mat-label>
-          <input matInput type="number" min="0" max="10" [formControlName]="parameters.QUEUE_LENGTH">
+          <input matInput type="number" min="1" max="10" [formControlName]="parameters.QUEUE_LENGTH">
         </mat-form-field>
       </div>
       <mat-divider class="calculate-values-form-parameters__divider last"></mat-divider>
@@ -73,4 +73,7 @@
       </div>
     </div>
   </div>
+</div>
+<div class="calculate-values-form__charts-wrapper" *ngIf="charts?.length">
+  <app-highchart-wrapper class="mat-elevation-z2" *ngFor="let data of charts; let i = index" [dataModel]="data" [needScroll]="i === 0"></app-highchart-wrapper>
 </div>

@@ -4,7 +4,7 @@ import {APPLICATION_ROUTES} from "./application-routes.const";
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(APPLICATION_ROUTES),
+    RouterModule.forRoot(APPLICATION_ROUTES, { anchorScrolling: "enabled" }),
   ],
   exports: [RouterModule],
 })
