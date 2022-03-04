@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { HomepageComponent } from "./homepage.component";
 import { RouterModule, Routes } from "@angular/router";
 import {MatButtonModule} from "@angular/material/button";
+import {MatCardModule} from "@angular/material/card";
 
 const routes: Routes = [
   {
@@ -13,7 +14,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [HomepageComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), MatButtonModule],
+    imports: [CommonModule, RouterModule.forChild(routes), MatButtonModule, MatCardModule],
   exports: [RouterModule, HomepageComponent],
 })
 export class HomepageModule {}
