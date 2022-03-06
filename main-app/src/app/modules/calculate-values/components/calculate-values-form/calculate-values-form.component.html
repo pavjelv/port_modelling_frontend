@@ -11,11 +11,11 @@
     <mat-icon class="toggle-icon" (click)="openDialog()">help_outline</mat-icon>
   </h1>
   <div class="calculate-values-form__compare-toggle">
-    <mat-slide-toggle [(ngModel)]="compareModeSwitch" (change)="onCompareModeChange($event)">Перейти в режим сравнения</mat-slide-toggle>
+    <mat-slide-toggle [(ngModel)]="compareModeSwitch" (change)="onCompareModeChange($event)">Режим сравнения</mat-slide-toggle>
     <mat-icon class="toggle-icon" (click)="openDialog()">help_outline</mat-icon>
   </div>
   <div class="calculate-values-form-parameters">
-    <div class="calculate-values-form-parameters__examples mat-elevation-z1">
+    <div *ngIf="!isCompareMode" class="calculate-values-form-parameters__examples mat-elevation-z1">
       <h3>Примеры</h3>
       <mat-divider class="calculate-values-form__top-divider"></mat-divider>
       <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="list">
@@ -50,15 +50,20 @@
       <mat-divider class="calculate-values-form-parameters__divider last"></mat-divider>
       <ng-container *ngIf="!isCompareMode" [ngTemplateOutlet]="characteristicControl"></ng-container>
       <div class="calculate-values-form-parameters__submit">
-        <button color="primary" mat-raised-button (click)="_onSubmit()">Рассчитать</button>
+        <button color="primary" mat-raised-button (click)="_onSubmit()">{{ isCompareMode ? 'Добавить к сравнению' : 'Рассчитать'}}</button>
       </div>
     </div>
     <div class="calculate-values-form-parameters__examples mat-elevation-z1" *ngIf="isCompareMode">
-      <h3>Режим сравнения характеристик</h3>
+      <h3>Добавленные характеристики</h3>
       <mat-divider class="calculate-values-form__top-divider"></mat-divider>
       <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="list">
-        <mat-selection-list [multiple]="false" (selectionChange)="onPrefilledParameterSelect($event)">
-          <mat-list-option *cdkVirtualFor="let type of prefilledSystemTypes" [value]="type.value">{{type.text}}</mat-list-option>
+        <mat-selection-list [multiple]="false">
+          <mat-list-option *ngFor="let savedVariable of savedSystemVariables">
+            <div class="calculate-values-form__saved-variable">
+              <mat-icon (click)="removeSeries(savedVariable)">remove_circle_outline</mat-icon>
+              <span [innerHTML]="savedVariable"></span>
+            </div>
+          </mat-list-option>
         </mat-selection-list>
       </cdk-virtual-scroll-viewport>
     </div>
@@ -113,6 +118,6 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close (click)="onCompareDialogCancel()">Отмена</button>
-    <button color="primary" [mat-dialog-close]="true" mat-raised-button (click)="onCompareParametersApply()">Применить</button>
+    <button color="primary" mat-raised-button (click)="onCompareParametersApply()">Применить</button>
   </mat-dialog-actions>
 </ng-template>

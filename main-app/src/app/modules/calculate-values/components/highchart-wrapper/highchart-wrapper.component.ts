@@ -26,6 +26,10 @@ export class HighchartWrapperComponent implements OnInit, AfterViewInit {
     title: {
       text: "Вероятность обслуживания",
     },
+    chart: {
+      zoomType: "x",
+      width: 650,
+    },
     xAxis: {
       title: {
         text: "&lambda;",
@@ -47,17 +51,32 @@ export class HighchartWrapperComponent implements OnInit, AfterViewInit {
     credits: {
       enabled: false,
     },
-    series: [
-      { type: "line", data: [] },
-    ],
+    series: [],
   };
   constructor(private scroller: ViewportScroller) {
   }
 
   ngOnInit(): void {
+    const isMultipleSeries = this.dataModel?.data?.size > 1;
+    if (isMultipleSeries) {
+      this.chartOptions.plotOptions = {
+        line: {
+          dataLabels: {
+            enabled: false,
+          },
+          enableMouseTracking: true,
+        }
+      };
+    }
     this.chartOptions.title.text = this.dataModel?.title;
     (this.chartOptions.xAxis as Highcharts.XAxisOptions).title.text = this.dataModel?.xAxisName;
-    (this.chartOptions.series[0] as Highcharts.SeriesLineOptions).data = this.dataModel?.data;
+    this.dataModel?.data.forEach((dm, name) => {
+      this.chartOptions.series.push({
+        name,
+        type: "line",
+        data: dm,
+      });
+    });
   }
 
   ngAfterViewInit(): void {

@@ -15,7 +15,7 @@ import {
   SystemParametersDictionary
 } from "../../../../dictionaries/available-system-characteristics.dictionary";
 import {DomSanitizer} from "@angular/platform-browser";
-import {ChartDataModel} from "../../../../model/chart-data.model";
+import {ChartDataModel, ChartSeriesData} from "../../../../model/chart-data.model";
 import {MatSelectionList, MatSelectionListChange} from "@angular/material/list";
 import {PrefilledSystemParametersListType, PrefilledSystemParametersMap} from "../../../../dictionaries/prefilled-system-parameters-set";
 import {MatSlideToggleChange} from "@angular/material/slide-toggle";
@@ -43,6 +43,8 @@ export class CalculateValuesFormComponent implements OnInit {
   public isCompareMode = false;
   public compareModeSwitch = false;
   public compareModeDialogVisible = false;
+  public savedSystemVariables: Array<string> = new Array<string>();
+  public systemVariablesToCalculatedDataMap: Map<string, Map<string, ChartSeriesData>> = new Map<string, Map<string, ChartSeriesData>>();
 
   public systemName = "";
 
@@ -108,14 +110,55 @@ export class CalculateValuesFormComponent implements OnInit {
     });
   }
 
+  private createSeriesName({lambda, serveTime, serversNum, queueLength}: any): string {
+    return `&lambda;: ${lambda}, t: ${serveTime}, n: ${serversNum}, m: ${queueLength}`;
+  }
+
+  public removeSeries(key: string): void {
+    const index = this.savedSystemVariables.indexOf(key);
+    if (index !== -1) {
+      this.savedSystemVariables.splice(index, 1);
+      this.systemVariablesToCalculatedDataMap.delete(key);
+      this.charts = [];
+      (this.systemCharacteristicParameterControl.value as Array<{id: string, value: string}>).forEach((v) => {
+        const data = Array.from(this.systemVariablesToCalculatedDataMap.entries())
+          .reduce((aggregator, [k, value]) => aggregator.set(k, value.get(v.id)), new Map<string, ChartSeriesData>());
+        this.charts.push({
+          id: v.id,
+          xAxisName: SystemParametersDictionary.get(this.rangeParameterControl.value),
+          title: v.value,
+          data,
+        });
+      });
+      this.cdr.markForCheck();
+    }
+  }
+
   private processTheorySummary(summary: TheorySummaryModel): void {
     this.charts = [];
+    if (this.isCompareMode) {
+      const key = this.createSeriesName(this.systemParametersForm.getRawValue());
+      if (!this.systemVariablesToCalculatedDataMap.has(key)) {
+        const chartsData = new Map<string, ChartSeriesData>();
+        (this.systemCharacteristicParameterControl.value as Array<{id: string, value: string}>).forEach((v) => {
+          chartsData.set(v.id, summary.result.map((value, i) => [summary.parameter_range[i], value[v.id]]));
+        });
+        this.savedSystemVariables.push(key);
+        this.systemVariablesToCalculatedDataMap.set(key, chartsData);
+      }
+    }
     (this.systemCharacteristicParameterControl.value as Array<{id: string, value: string}>).forEach((v) => {
+      const data = this.isCompareMode
+        ? Array.from(this.systemVariablesToCalculatedDataMap.entries())
+          .reduce((aggregator, [key, value]) => aggregator.set(key, value.get(v.id)), new Map<string, ChartSeriesData>())
+        : new Map<string, ChartSeriesData>([
+            ["series", summary.result.map((value, i) => [summary.parameter_range[i], value[v.id]]) as ChartSeriesData],
+          ]);
       this.charts.push({
         id: v.id,
         xAxisName: SystemParametersDictionary.get(this.rangeParameterControl.value),
         title: v.value,
-        data: summary.result.map((value, i) => [summary.parameter_range[i], value[v.id]]),
+        data,
       });
     });
     this.cdr.markForCheck();
@@ -138,12 +181,20 @@ export class CalculateValuesFormComponent implements OnInit {
       this.dialog.open(this.compareModeDialog, { disableClose: true });
     } else {
       this.isCompareMode = false;
+      this.systemVariablesToCalculatedDataMap = new Map<string, Map<string, ChartSeriesData>>();
+      this.savedSystemVariables = [];
+      this.charts = [];
     }
     this.cdr.markForCheck();
   }
 
   public onCompareParametersApply(): void {
-    this.isCompareMode = true;
+    if (this.systemParametersForm.valid && this.systemCharacteristicParameterControl.valid) {
+      this.isCompareMode = true;
+      this.savedSystemVariables = [];
+      this.charts = [];
+      this.dialog.closeAll();
+    }
   }
 
   public onCompareDialogCancel(): void {
