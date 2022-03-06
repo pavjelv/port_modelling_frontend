@@ -20,6 +20,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatListModule} from "@angular/material/list";
 import {ScrollingModule} from "@angular/cdk/scrolling";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 const routes: Route[] = [
   {
@@ -35,25 +36,26 @@ const routes: Route[] = [
 
 @NgModule({
   declarations: [CalculateValuesComponent, HighchartWrapperComponent, CalculateValuesFormComponent, MultChannelRejectPopoverComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSliderModule,
-    MatSnackBarModule,
-    MatRadioModule,
-    FormsModule,
-    HighchartsChartModule,
-    MathjaxModule,
-    MatDialogModule,
-    MatIconModule,
-    MatListModule,
-    ScrollingModule,
-    MatTooltipModule
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatSliderModule,
+        MatSnackBarModule,
+        MatRadioModule,
+        FormsModule,
+        HighchartsChartModule,
+        MathjaxModule,
+        MatDialogModule,
+        MatIconModule,
+        MatListModule,
+        ScrollingModule,
+        MatTooltipModule,
+        MatSlideToggleModule
+    ]
 })
 export class CalculateValuesModule { }

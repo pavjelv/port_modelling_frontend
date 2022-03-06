@@ -10,9 +10,14 @@
     {{systemName}}
     <mat-icon class="toggle-icon" (click)="openDialog()">help_outline</mat-icon>
   </h1>
+  <div class="calculate-values-form__compare-toggle">
+    <mat-slide-toggle [(ngModel)]="compareModeSwitch" (change)="onCompareModeChange($event)">Перейти в режим сравнения</mat-slide-toggle>
+    <mat-icon class="toggle-icon" (click)="openDialog()">help_outline</mat-icon>
+  </div>
   <div class="calculate-values-form-parameters">
     <div class="calculate-values-form-parameters__examples mat-elevation-z1">
-      <span class="description-span">Примеры</span>
+      <h3>Примеры</h3>
+      <mat-divider class="calculate-values-form__top-divider"></mat-divider>
       <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="list">
         <mat-selection-list [multiple]="false" (selectionChange)="onPrefilledParameterSelect($event)">
           <mat-list-option *cdkVirtualFor="let type of prefilledSystemTypes" [value]="type.value">{{type.text}}</mat-list-option>
@@ -20,24 +25,9 @@
       </cdk-virtual-scroll-viewport>
     </div>
     <div class="calculate-values-form-parameters__system mat-elevation-z1" [formGroup]="systemParametersForm">
-      <span class="description-span">Ось Х</span>
-      <mat-form-field appearance="outline" class="calculate-values-form-parameters__system-axis">
-        <mat-label>Параметр</mat-label>
-        <mat-select [formControlName]="'rangeParameter'">
-          <mat-option *ngFor="let parameter of systemParameters" [innerHTML]="parameter.value" [value]="parameter.id"></mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div class="calculate-values-form-parameters__system-range">
-        <mat-slider [matTooltipPosition]="'left'" [matTooltip]="'Разброс значений'" discrete [min]="0.1" [max]="3" [step]="0.1" class="range-slider">
-          <input [formControlName]="'rangeFrom'" matSliderStartThumb>
-          <input [formControlName]="'rangeTo'" matSliderEndThumb>
-        </mat-slider>
-        <mat-form-field appearance="outline" class="step-field">
-          <mat-label>Шаг</mat-label>
-          <input matInput type="number" min="0.1" max="2" [formControlName]="'step'">
-        </mat-form-field>
-      </div>
-      <mat-divider class="calculate-values-form-parameters__divider"></mat-divider>
+      <h3>График характеристики системы</h3>
+      <mat-divider class="calculate-values-form__top-divider"></mat-divider>
+      <ng-container *ngIf="!isCompareMode" [ngTemplateOutlet]="xAxisForm"></ng-container>
       <span class="description-span">Параметры системы</span>
       <div class="calculate-values-form-parameters__system-variables">
         <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.SERVERS_NUM">
@@ -58,24 +48,71 @@
         </mat-form-field>
       </div>
       <mat-divider class="calculate-values-form-parameters__divider last"></mat-divider>
-      <mat-form-field appearance="outline" class="calculate-values-form-parameters__system-characteristic">
-        <mat-label>График характеристики</mat-label>
-        <mat-select [formControl]="systemCharacteristicParameterControl" multiple>
-          <mat-select-trigger>
-            {{systemCharacteristicParameterControl.value?.[0]?.value ?? ''}}
-            <span *ngIf="systemCharacteristicParameterControl.value?.length > 1" class="example-additional-selection">
-              (+{{systemCharacteristicParameterControl.value.length - 1}} {{systemCharacteristicParameterControl.value?.length === 2 ? 'характеристика' : 'характеристики'}})
-            </span>
-          </mat-select-trigger>
-          <mat-option *ngFor="let characteristic of availableSystemCharacteristics" [value]="characteristic">{{characteristic.value}}</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <ng-container *ngIf="!isCompareMode" [ngTemplateOutlet]="characteristicControl"></ng-container>
       <div class="calculate-values-form-parameters__submit">
         <button color="primary" mat-raised-button (click)="_onSubmit()">Рассчитать</button>
       </div>
+    </div>
+    <div class="calculate-values-form-parameters__examples mat-elevation-z1" *ngIf="isCompareMode">
+      <h3>Режим сравнения характеристик</h3>
+      <mat-divider class="calculate-values-form__top-divider"></mat-divider>
+      <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="list">
+        <mat-selection-list [multiple]="false" (selectionChange)="onPrefilledParameterSelect($event)">
+          <mat-list-option *cdkVirtualFor="let type of prefilledSystemTypes" [value]="type.value">{{type.text}}</mat-list-option>
+        </mat-selection-list>
+      </cdk-virtual-scroll-viewport>
     </div>
   </div>
 </div>
 <div class="calculate-values-form__charts-wrapper" *ngIf="charts?.length">
   <app-highchart-wrapper class="mat-elevation-z2" *ngFor="let data of charts; let i = index" [dataModel]="data" [needScroll]="i === 0"></app-highchart-wrapper>
 </div>
+
+<ng-template #characteristicControl [formGroup]="systemParametersForm">
+  <span class="description-span">Ось Y</span>
+  <mat-form-field appearance="outline" class="calculate-values-form-parameters__system-characteristic">
+    <mat-label>Характеристика</mat-label>
+    <mat-select [formControl]="systemCharacteristicParameterControl" multiple>
+      <mat-select-trigger>
+        {{systemCharacteristicParameterControl.value?.[0]?.value ?? ''}}
+        <span *ngIf="systemCharacteristicParameterControl.value?.length > 1" class="example-additional-selection">
+              (+{{systemCharacteristicParameterControl.value.length - 1}} {{systemCharacteristicParameterControl.value?.length === 2 ? 'характеристика' : 'характеристики'}})
+            </span>
+      </mat-select-trigger>
+      <mat-option *ngFor="let characteristic of availableSystemCharacteristics" [value]="characteristic">{{characteristic.value}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</ng-template>
+
+<ng-template #xAxisForm [formGroup]="systemParametersForm">
+  <span class="description-span">Ось Х</span>
+  <mat-form-field appearance="outline" class="calculate-values-form-parameters__system-axis">
+    <mat-label>Параметр</mat-label>
+    <mat-select [formControlName]="'rangeParameter'">
+      <mat-option *ngFor="let parameter of systemParameters" [innerHTML]="parameter.value" [value]="parameter.id"></mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="calculate-values-form-parameters__system-range">
+    <mat-slider [matTooltipPosition]="'left'" [matTooltip]="'Разброс значений'" discrete [min]="0.1" [max]="3" [step]="0.1" class="range-slider">
+      <input [formControlName]="'rangeFrom'" matSliderStartThumb>
+      <input [formControlName]="'rangeTo'" matSliderEndThumb>
+    </mat-slider>
+    <mat-form-field appearance="outline" class="step-field">
+      <mat-label>Шаг</mat-label>
+      <input matInput type="number" min="0.1" max="2" [formControlName]="'step'">
+    </mat-form-field>
+  </div>
+  <mat-divider class="calculate-values-form-parameters__divider"></mat-divider>
+</ng-template>
+
+<ng-template #compareModeDialog>
+  <h1>Укажите параметры графика</h1>
+  <mat-dialog-content class="calculate-values-form__compare-mode-dialog">
+    <ng-container [ngTemplateOutlet]="xAxisForm"></ng-container>
+    <ng-container [ngTemplateOutlet]="characteristicControl"></ng-container>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="onCompareDialogCancel()">Отмена</button>
+    <button color="primary" [mat-dialog-close]="true" mat-raised-button (click)="onCompareParametersApply()">Применить</button>
+  </mat-dialog-actions>
+</ng-template>

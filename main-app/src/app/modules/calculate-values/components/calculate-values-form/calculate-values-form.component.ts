@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewChild} from "@angular/core";
+import {ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, TemplateRef, ViewChild} from "@angular/core";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {SystemParameters, SystemType} from "../../../../model/theory/system-type";
 import {LoadingOverlayService} from "../../../../services/loading-overlay.service";
@@ -18,6 +18,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {ChartDataModel} from "../../../../model/chart-data.model";
 import {MatSelectionList, MatSelectionListChange} from "@angular/material/list";
 import {PrefilledSystemParametersListType, PrefilledSystemParametersMap} from "../../../../dictionaries/prefilled-system-parameters-set";
+import {MatSlideToggleChange} from "@angular/material/slide-toggle";
 
 @Component({
   selector: "app-calculate-values-form",
@@ -29,12 +30,19 @@ export class CalculateValuesFormComponent implements OnInit {
   @ViewChild(MatSelectionList)
   private prefilledSystemList: MatSelectionList;
 
+  @ViewChild("compareModeDialog")
+  public compareModeDialog: TemplateRef<unknown>;
+
   public systemParametersForm: FormGroup;
   public isBrowser = false;
 
   public parameters = SystemParameters;
   public rangeParameterControl: FormControl;
   public systemCharacteristicParameterControl: FormControl;
+
+  public isCompareMode = false;
+  public compareModeSwitch = false;
+  public compareModeDialogVisible = false;
 
   public systemName = "";
 
@@ -123,6 +131,24 @@ export class CalculateValuesFormComponent implements OnInit {
 
   public onPrefilledParameterSelect(event: MatSelectionListChange): void {
     this.systemParametersForm.patchValue(event.options[0].value);
+  }
+
+  public onCompareModeChange(event: MatSlideToggleChange): void {
+    if (event.checked) {
+      this.dialog.open(this.compareModeDialog, { disableClose: true });
+    } else {
+      this.isCompareMode = false;
+    }
+    this.cdr.markForCheck();
+  }
+
+  public onCompareParametersApply(): void {
+    this.isCompareMode = true;
+  }
+
+  public onCompareDialogCancel(): void {
+    this.compareModeSwitch = false;
+    this.isCompareMode = false;
   }
 
   public _onSubmit(): void {

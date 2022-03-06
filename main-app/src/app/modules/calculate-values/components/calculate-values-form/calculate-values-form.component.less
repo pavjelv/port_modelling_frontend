@@ -5,6 +5,21 @@
     opacity: 0.75;
   }
 
+  &__compare-toggle {
+    margin: 0 0 16px;
+    display: flex;
+    gap: 1rem;
+
+    .mat-icon {
+      font-size: 1rem;
+    }
+  }
+
+  &__top-divider {
+    width: 100%;
+    padding: 10px 0;
+  }
+
   &__charts-wrapper {
     padding: 1rem 4rem;
     display: flex;
@@ -28,7 +43,7 @@
 
   &-parameters {
     display: flex;
-    column-gap: 34px;
+    column-gap: 2rem;
     width: 100%;
 
     .description-span {
@@ -36,11 +51,11 @@
     }
 
     &__examples {
-      width: 500px;
+      width: 30%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 16px;
+      padding: 16px;
 
       .list {
         height: 100%;
@@ -58,7 +73,7 @@
     }
 
     &__system {
-      width: 650px;
+      width: 60%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -74,7 +89,7 @@
         justify-content: space-between;
 
         .range-slider {
-          width: 500px;
+          width: calc(100% - 116px);
         }
 
         .step-field {
@@ -104,5 +119,10 @@
         float: right;
       }
     }
+  }
+
+  &__compare-mode-dialog {
+    width: 600px;
+    height: 400px;
   }
 }
