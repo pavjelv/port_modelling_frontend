@@ -12,4 +12,6 @@ export interface SystemSummary {
   served_customers_number: string;
   wait_queue_time: string;
   wait_system_time: string;
+  idle_probability: string;
+  reject_probability: string;
 }

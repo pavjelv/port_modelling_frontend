@@ -63,6 +63,8 @@ const ModellingVisualisation = (props: {systemVariables: SystemVariablesModel}) 
                   <Descriptions.Item label="Среднее время пребывания в системе">{model.wait_system_time && Number.parseFloat(model.wait_system_time).toFixed(3)}</Descriptions.Item>
                   <Descriptions.Item label="Среднее время в очереди">{model.wait_queue_time && Number.parseFloat(model.wait_queue_time).toFixed(3)}</Descriptions.Item>
                   <Descriptions.Item label="Средняя длина очереди">{model.average_queue_len && Number.parseFloat(model.average_queue_len).toFixed(3)}</Descriptions.Item>
+                  <Descriptions.Item label="Вероятность простоя">{model.idle_probability && Number.parseFloat(model.idle_probability).toFixed(3)}</Descriptions.Item>
+                  <Descriptions.Item label="Вероятность отказа">{model.reject_probability && Number.parseFloat(model.reject_probability).toFixed(3)}</Descriptions.Item>
                   <Descriptions.Item label="Количество обслуженных судов">{model.served_customers_number}</Descriptions.Item>
                   <Descriptions.Item label="Количество судов, покинувших систему">{model.left_customers_number}</Descriptions.Item>
                 </Descriptions>
