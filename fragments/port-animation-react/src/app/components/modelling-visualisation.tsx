@@ -1,14 +1,19 @@
 import {SystemVariablesModel} from 'app/models/system-variables.model';
 import React from 'react';
-import {SimulationResultModel} from 'app/models/simulation-result.model';
-import {Col, Descriptions, Row, Skeleton, Slider} from 'antd';
+import {SimulationResultModel, SystemSummary} from 'app/models/simulation-result.model';
+import {Col, Descriptions, Row, Skeleton, Slider, Space} from 'antd';
 import PortAnimation from 'app/components/port-animation';
+import { Collapse } from 'antd';
+
+const { Panel } = Collapse;
 
 import "antd/lib/slider/style";
 import "antd/lib/col/style";
 import "antd/lib/row/style";
 import "antd/lib/descriptions/style";
 import "antd/lib/skeleton/style";
+import "antd/lib/collapse/style";
+import "antd/lib/space/style";
 
 const ModellingVisualisation = (props: {systemVariables: SystemVariablesModel}) => {
   const [loading, setLoading] = React.useState(true);
@@ -45,17 +50,25 @@ const ModellingVisualisation = (props: {systemVariables: SystemVariablesModel}) 
 
   return (
     <Row>
-      <Col span={16}>
+      <Col span={15}>
         <PortAnimation simulationResult={response} time={time} systemParams={props.systemVariables}/>
         <Slider style={{width: 795}} disabled={loading} tipFormatter={null} value={time} min={0} max={20} marks={marks} onChange={(v) => setTime(v)}/>
       </Col>
-      <Col span={8}>
+      <Col span={9}>
         <Skeleton loading={loading} active={true}>
-          <Descriptions title="Результат" bordered column={1}>
-            <Descriptions.Item label="Среднее время пребывания в системе">{response?.wait_system_time && Number.parseFloat(response.wait_system_time).toFixed(3)}</Descriptions.Item>
-            <Descriptions.Item label="Среднее время в очереди">{response?.wait_queue_time && Number.parseFloat(response.wait_queue_time).toFixed(3)}</Descriptions.Item>
-            <Descriptions.Item label="Средняя длина очереди">{response?.average_queue_len && Number.parseFloat(response.average_queue_len).toFixed(3)}</Descriptions.Item>
-          </Descriptions>
+          <Collapse defaultActiveKey={['0']}>
+            {response?.models_summary.map((model: SystemSummary, index) => (
+              <Panel key={index} header={model.name}>
+                <Descriptions key={index} bordered column={1}>
+                  <Descriptions.Item label="Среднее время пребывания в системе">{model.wait_system_time && Number.parseFloat(model.wait_system_time).toFixed(3)}</Descriptions.Item>
+                  <Descriptions.Item label="Среднее время в очереди">{model.wait_queue_time && Number.parseFloat(model.wait_queue_time).toFixed(3)}</Descriptions.Item>
+                  <Descriptions.Item label="Средняя длина очереди">{model.average_queue_len && Number.parseFloat(model.average_queue_len).toFixed(3)}</Descriptions.Item>
+                  <Descriptions.Item label="Количество обслуженных судов">{model.served_customers_number}</Descriptions.Item>
+                  <Descriptions.Item label="Количество судов, покинувших систему">{model.left_customers_number}</Descriptions.Item>
+                </Descriptions>
+              </Panel>
+            ))}
+          </Collapse>
         </Skeleton>
       </Col>
     </Row>
