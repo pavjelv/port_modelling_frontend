@@ -1,132 +1,75 @@
-<mat-drawer-container [hasBackdrop]="true" autosize class="modelling-view">
-  <mat-drawer #drawer [opened]="true">
-    <mat-icon class="toggle-icon" (click)="drawer.toggle()">chevron_left</mat-icon>
+<div class="breadcrumbs">
+  <a routerLink="/">Домой</a>
+  <span class="divider">/</span>
+  <span>Моделирование системы</span>
+</div>
+<mat-stepper class="modelling-view" linear (selectionChange)="onStepSelectChange($event)">
+  <mat-step [stepControl]="systemParametersForm">
     <div class="modelling-view-form" [formGroup]="systemParametersForm">
+      <ng-template matStepLabel>Параметры системы</ng-template>
       <div class="modelling-view-form__parameters">
-        <div class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Тип потока заявок</mat-label>
-            <mat-select [formControlName]="parameters.ARRIVAL_DISTRIBUTION">
-              <mat-option *ngFor="let distribution of distributions" [value]="distribution.id">{{distribution.value}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Количество причалов</mat-label>
-            <input matInput type="number" min="1" max="4" [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM" [min]="1" [max]="4" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">1</label>
-              <label class="modelling-view-form__parameter-slider-values-right">4</label>
-            </div>
-          </div>
-        </div>
-        <div class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Время обслуживания</mat-label>
-            <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">0</label>
-              <label class="modelling-view-form__parameter-slider-values-right">4</label>
-            </div>
-          </div>
-        </div>
-        <div class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Интенсивность потока судов</mat-label>
-            <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">0</label>
-              <label class="modelling-view-form__parameter-slider-values-right">4</label>
-            </div>
-          </div>
-        </div>
-        <div class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Максимальная длина очереди</mat-label>
-            <input matInput type="number" min="0" max="10" [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">1</label>
-              <label class="modelling-view-form__parameter-slider-values-right">10</label>
-            </div>
-          </div>
-        </div>
-        <div class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Время моделирования</mat-label>
-            <input matInput type="number" min="20" max="40" [value]="controlToParameterMap.get(parameters.TIME).value" [formControlName]="parameters.TIME">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.TIME).value" [formControlName]="parameters.TIME" [min]="20" [max]="40" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">20</label>
-              <label class="modelling-view-form__parameter-slider-values-right">40</label>
-            </div>
-          </div>
-        </div>
-        <div class="modelling-view-form__parameter">
-          <mat-slide-toggle (change)="toggleChange($event)" [formControlName]="parameters.NEED_SECOND_TYPE">Добавить новый тип судна</mat-slide-toggle>
-        </div>
-        <div *ngIf="showDifferentShips" class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Вероятность появления контейнера</mat-label>
-            <input matInput type="number" min="0" max="1" [value]="controlToParameterMap.get(parameters.CONTAINER_APPEARANCE_PROBABILITY).value" [formControlName]="parameters.CONTAINER_APPEARANCE_PROBABILITY">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.CONTAINER_APPEARANCE_PROBABILITY).value" [formControlName]="parameters.CONTAINER_APPEARANCE_PROBABILITY" [min]="0" [max]="1" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">0</label>
-              <label class="modelling-view-form__parameter-slider-values-right">1</label>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="showDifferentShips" class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Время обслуживания контейнерного судна</mat-label>
-            <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.SERVE_TIME_CONTAINER).value" [formControlName]="parameters.SERVE_TIME_CONTAINER">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.SERVE_TIME_CONTAINER).value" [formControlName]="parameters.SERVE_TIME_CONTAINER" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">0</label>
-              <label class="modelling-view-form__parameter-slider-values-right">4</label>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="showDifferentShips" class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Количество причалов для контейнерных судов</mat-label>
-            <input matInput type="number" min="1" max="3" [value]="controlToParameterMap.get(parameters.CONTAINER_SERVERS_NUM).value" [formControlName]="parameters.CONTAINER_SERVERS_NUM">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.CONTAINER_SERVERS_NUM).value" [formControlName]="parameters.CONTAINER_SERVERS_NUM" [min]="1" [max]="3" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">1</label>
-              <label class="modelling-view-form__parameter-slider-values-right">3</label>
-            </div>
-          </div>
-        </div>
+        <mat-form-field appearance="outline" class="modelling-view-form__parameter wide">
+          <mat-label>Тип потока заявок</mat-label>
+          <mat-select required [formControlName]="parameters.ARRIVAL_DISTRIBUTION">
+            <mat-option *ngFor="let distribution of distributions" [value]="distribution.id">{{distribution.value}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+          <mat-label>Количество причалов</mat-label>
+          <input matInput required type="number" min="1" max="4" [formControlName]="parameters.SERVERS_NUM">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+          <mat-label>Время обслуживания</mat-label>
+          <input matInput required type="number" min="0.1" max="4" [formControlName]="parameters.SERVE_TIME">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+          <mat-label>Интенсивность потока судов</mat-label>
+          <input matInput required type="number" min="0.1" max="4" [formControlName]="parameters.LAMBDA">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+          <mat-label>Максимальная длина очереди</mat-label>
+          <input matInput required type="number" min="0" max="10" [formControlName]="parameters.QUEUE_LENGTH">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+          <mat-label>Время моделирования</mat-label>
+          <input matInput required type="number" min="20" max="40" [formControlName]="parameters.TIME">
+        </mat-form-field>
       </div>
       <div class="modelling-view-form__actions">
-        <mat-divider></mat-divider>
-        <button class="modelling-view-form__actions__button" mat-raised-button color="primary" (click)="applyValues()">Применить</button>
+        <button mat-button matStepperNext>Далее</button>
       </div>
     </div>
-  </mat-drawer>
-  <mat-drawer-content>
-    <mat-icon class="toggle-icon" (click)="drawer.toggle()">chevron_right</mat-icon>
+  </mat-step>
+  <mat-step [optional]="true" [stepControl]="additionalShipTypeForm">
+    <div class="modelling-view-form" [formGroup]="additionalShipTypeForm">
+      <ng-template matStepLabel>Дополнительный тип судна</ng-template>
+      <div class="modelling-view-form__parameters">
+        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+          <mat-label>Вероятность появления контейнера</mat-label>
+          <input matInput required type="number" min="0" max="1" [formControlName]="additionalShipTypeParameters.CONTAINER_APPEARANCE_PROBABILITY">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+          <mat-label>Время обслуживания контейнерного судна</mat-label>
+          <input matInput required type="number" min="0.1" max="4" [formControlName]="additionalShipTypeParameters.SERVE_TIME_CONTAINER">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+          <mat-label>Количество причалов для контейнерных судов</mat-label>
+          <input matInput required type="number" min="1" max="3" [formControlName]="additionalShipTypeParameters.CONTAINER_SERVERS_NUM">
+        </mat-form-field>
+      </div>
+      <div class="modelling-view-form__actions">
+        <button mat-button matStepperPrevious>Назад</button>
+        <button mat-button matStepperNext>Далее</button>
+      </div>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Построение модели</ng-template>
     <app-common-react-wrapper *ngIf="isBrowser" [props]="simulationVariables" class="modelling-view-canvas-wrapper"></app-common-react-wrapper>
-  </mat-drawer-content>
-</mat-drawer-container>
+    <div class="modelling-view-form__actions">
+      <button mat-button matStepperPrevious>Назад</button>
+      <button mat-button mat-raised-button color="primary" (click)="applyValues()" [id]="'applyValuesButton'">Смоделировать</button>
+    </div>
+  </mat-step>
+</mat-stepper>
+

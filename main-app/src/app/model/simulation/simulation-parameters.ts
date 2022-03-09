@@ -5,7 +5,9 @@ export enum SimulationParameters {
   LAMBDA = "lambda",
   QUEUE_LENGTH = "queueLength",
   TIME = "time",
-  NEED_SECOND_TYPE = "needSecondType",
+}
+
+export enum AdditionalShipTypeParameters {
   SERVE_TIME_CONTAINER = "serveTimeContainer",
   CONTAINER_APPEARANCE_PROBABILITY = "containerAppearanceProbability",
   CONTAINER_SERVERS_NUM = "containerServersNum",

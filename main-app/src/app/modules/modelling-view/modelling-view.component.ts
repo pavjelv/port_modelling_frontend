@@ -2,18 +2,23 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
+  Inject, Injectable,
   OnInit,
   PLATFORM_ID,
-  ViewChild,
   ViewEncapsulation
 } from "@angular/core";
-import {FormControl, FormGroup} from "@angular/forms";
-import {isPlatformBrowser} from "@angular/common";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {isPlatformBrowser, ViewportScroller} from "@angular/common";
 import {SimulationVariablesModel} from "../../model/simulation/simulation-variables.model";
-import {SimulationParameters} from "../../model/simulation/simulation-parameters";
-import {MatDrawer} from "@angular/material/sidenav";
-import {MatSlideToggleChange} from "@angular/material/slide-toggle";
+import {AdditionalShipTypeParameters, SimulationParameters} from "../../model/simulation/simulation-parameters";
+import {STEPPER_GLOBAL_OPTIONS, StepperSelectionEvent} from "@angular/cdk/stepper";
+import {MatStepperIntl} from "@angular/material/stepper";
+
+
+@Injectable()
+export class StepperIntl extends MatStepperIntl {
+   optionalLabel = "Необязательно";
+}
 
 @Component({
   selector: "app-view-modelling",
@@ -21,18 +26,25 @@ import {MatSlideToggleChange} from "@angular/material/slide-toggle";
   templateUrl: "./modelling-view.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: {displayDefaultIndicatorType: false},
+    },
+    {
+      provide: MatStepperIntl,
+      useClass: StepperIntl
+    },
+  ],
 })
 export class ModellingViewComponent implements OnInit {
 
-  @ViewChild("drawer")
-  public drawer: MatDrawer;
-
   public systemParametersForm: FormGroup;
+  public additionalShipTypeForm: FormGroup;
   public isBrowser = false;
-  public showDifferentShips = false;
 
   public parameters = SimulationParameters;
-  public controlToParameterMap: Map<SimulationParameters, FormControl> = new Map<SimulationParameters, FormControl>();
+  public additionalShipTypeParameters = AdditionalShipTypeParameters;
 
   public simulationVariables: { systemVariables: SimulationVariablesModel };
 
@@ -41,31 +53,45 @@ export class ModellingViewComponent implements OnInit {
   ];
 
   constructor(@Inject(PLATFORM_ID) private platformId: unknown,
-              private cdr: ChangeDetectorRef) {
+              private cdr: ChangeDetectorRef,
+              private _matStepperIntl: MatStepperIntl,
+              private scroller: ViewportScroller) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.systemParametersForm = new FormGroup({});
     Object.values(this.parameters).forEach((parameter) => {
-      const control = new FormControl(parameter === SimulationParameters.TIME ? 20 : 2);
-      this.controlToParameterMap.set(parameter, control);
+      const control = new FormControl(null, Validators.required);
       this.systemParametersForm.registerControl(parameter, control);
     });
-    this.controlToParameterMap.get(SimulationParameters.NEED_SECOND_TYPE).setValue(false);
-    this.controlToParameterMap.get(SimulationParameters.ARRIVAL_DISTRIBUTION).setValue("poisson");
-    this.controlToParameterMap.get(SimulationParameters.CONTAINER_APPEARANCE_PROBABILITY).setValue(0.2);
+
+    this.additionalShipTypeForm = new FormGroup({});
+    Object.values(this.additionalShipTypeParameters).forEach((parameter) => {
+      const control = new FormControl(null, Validators.required);
+      this.additionalShipTypeForm.registerControl(parameter, control);
+    });
   }
 
-  applyValues(): void {
-    if (this.systemParametersForm.valid) {
-      this.simulationVariables = { systemVariables: this.systemParametersForm.value };
-      this.drawer.close().then();
+  public onStepSelectChange(event: StepperSelectionEvent): void {
+    if (event.selectedIndex === 2) {
+      setTimeout(() => {
+        this.scroller.scrollToAnchor("applyValuesButton");
+      }, 30);
     }
   }
 
-  public toggleChange(event: MatSlideToggleChange): void {
-    this.showDifferentShips = event.checked;
-    this.cdr.markForCheck();
+  public applyValues(): void {
+    if (this.systemParametersForm.valid) {
+      const variables = { systemVariables: this.systemParametersForm.value };
+      if (this.additionalShipTypeForm.valid) {
+        variables.systemVariables = {
+          ...variables.systemVariables,
+          ...this.additionalShipTypeForm.value,
+          needSecondType: true,
+        };
+      }
+      this.simulationVariables = variables;
+    }
   }
 }

@@ -85,7 +85,7 @@ export class CalculateValuesFormComponent implements OnInit {
     this.systemName = SystemTypeDictionary.get(systemType);
     this.prefilledSystemTypes = PrefilledSystemParametersMap.get(systemType);
     this.systemCharacteristicParameterControl = new FormControl([], Validators.required);
-    this.createForm();
+    this.createForm(systemType);
 
     this.systemParametersForm.valueChanges.subscribe(() => {
       this.prefilledSystemList.deselectAll();
@@ -96,16 +96,16 @@ export class CalculateValuesFormComponent implements OnInit {
     });
   }
 
-  private createForm(): void {
+  private createForm(systemType: string): void {
     this.systemParametersForm = new FormGroup({});
     this.rangeParameterControl = new FormControl(SystemParameters.LAMBDA);
     this.systemParametersForm.registerControl("rangeParameter", this.rangeParameterControl);
-    this.systemParametersForm.registerControl("systemType", new FormControl(this.route.snapshot.queryParamMap.get("systemType")));
-    this.systemParametersForm.registerControl("step", new FormControl(1, [Validators.min(0.1), Validators.max(2)]));
+    this.systemParametersForm.registerControl("systemType", new FormControl(systemType, Validators.required));
+    this.systemParametersForm.registerControl("step", new FormControl(1, [Validators.required, Validators.min(0.1), Validators.max(2)]));
     this.systemParametersForm.registerControl("rangeFrom", new FormControl(1.0));
     this.systemParametersForm.registerControl("rangeTo", new FormControl(2.1));
     Object.values(this.parameters).forEach((parameter) => {
-      const control = new FormControl(1, [Validators.min(0.1), Validators.max(10)]);
+      const control = new FormControl(1, [Validators.required, Validators.min(0.1), Validators.max(10)]);
       this.systemParametersForm.registerControl(parameter, control);
     });
   }
@@ -203,6 +203,8 @@ export class CalculateValuesFormComponent implements OnInit {
   }
 
   public _onSubmit(): void {
+    this.systemParametersForm.markAllAsTouched();
+    this.systemCharacteristicParameterControl.markAllAsTouched();
     if (this.systemParametersForm.valid && this.systemCharacteristicParameterControl.valid) {
       this.loadingService.showLoading();
       this.optimalSizeService.calculateWithQueue(this.systemParametersForm.getRawValue())
