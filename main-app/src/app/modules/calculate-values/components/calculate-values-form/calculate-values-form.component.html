@@ -24,6 +24,20 @@
         </mat-selection-list>
       </cdk-virtual-scroll-viewport>
     </div>
+    <div class="calculate-values-form-parameters__examples mat-elevation-z1" *ngIf="isCompareMode">
+      <h3>Добавленные характеристики</h3>
+      <mat-divider class="calculate-values-form__top-divider"></mat-divider>
+      <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="list">
+        <mat-selection-list [multiple]="false">
+          <mat-list-option *ngFor="let savedVariable of savedSystemVariables">
+            <div class="calculate-values-form__saved-variable">
+              <mat-icon (click)="removeSeries(savedVariable)">remove_circle_outline</mat-icon>
+              <span [innerHTML]="savedVariable"></span>
+            </div>
+          </mat-list-option>
+        </mat-selection-list>
+      </cdk-virtual-scroll-viewport>
+    </div>
     <div class="calculate-values-form-parameters__system mat-elevation-z1" [formGroup]="systemParametersForm">
       <h3>График характеристики системы</h3>
       <mat-divider class="calculate-values-form__top-divider"></mat-divider>
@@ -53,24 +67,10 @@
         <button color="primary" mat-raised-button (click)="_onSubmit()">{{ isCompareMode ? 'Добавить к сравнению' : 'Рассчитать'}}</button>
       </div>
     </div>
-    <div class="calculate-values-form-parameters__examples mat-elevation-z1" *ngIf="isCompareMode">
-      <h3>Добавленные характеристики</h3>
-      <mat-divider class="calculate-values-form__top-divider"></mat-divider>
-      <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="list">
-        <mat-selection-list [multiple]="false">
-          <mat-list-option *ngFor="let savedVariable of savedSystemVariables">
-            <div class="calculate-values-form__saved-variable">
-              <mat-icon (click)="removeSeries(savedVariable)">remove_circle_outline</mat-icon>
-              <span [innerHTML]="savedVariable"></span>
-            </div>
-          </mat-list-option>
-        </mat-selection-list>
-      </cdk-virtual-scroll-viewport>
-    </div>
   </div>
 </div>
 <div class="calculate-values-form__charts-wrapper" *ngIf="charts?.length">
-  <app-highchart-wrapper class="mat-elevation-z2" *ngFor="let data of charts; let i = index" [dataModel]="data" [needScroll]="i === 0"></app-highchart-wrapper>
+  <app-highchart-wrapper class="mat-elevation-z2" *ngFor="let data of charts; let i = index" [dataModel]="data" [needScroll]="!isCompareMode && i === 0"></app-highchart-wrapper>
 </div>
 
 <ng-template #characteristicControl [formGroup]="systemParametersForm">
