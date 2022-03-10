@@ -5,7 +5,7 @@ export interface SystemVariablesModel {
   serversNum: number;
   time: number;
   needSecondType: boolean;
-  containerAppearanceProbability: number;
-  serveTimeContainer: number;
-  containerServersNum: number;
+  cargoAppearanceProbability: number;
+  serveTimeCargo: number;
+  cargoServersNum: number;
 }

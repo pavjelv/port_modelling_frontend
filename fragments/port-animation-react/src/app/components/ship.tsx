@@ -4,6 +4,7 @@ import Konva from 'konva';
 import {CustomerAnimationDataModel, CustomerState} from 'app/models/animation-properties.model';
 import {ShipType} from 'app/models/customer-data.model';
 import KonvaEventObject = Konva.KonvaEventObject;
+import {calculateCraneHeight, calculateCraneYCoordinate} from 'app/components/crane';
 
 const ShipImage = (props: CustomerAnimationDataModel) => {
   const click = (e: KonvaEventObject<MouseEvent>) => {
@@ -17,7 +18,16 @@ const ShipImage = (props: CustomerAnimationDataModel) => {
     }
   };
 
-  const y = props.customerState === CustomerState.SERVING ? 100 + (150 * props.serverNum) :
+  const shipHeight = 400;
+  const craneHeight = calculateCraneHeight(props.serversCount);
+  const craneYPosition = calculateCraneYCoordinate(props.serversCount, props.serverNum);
+
+  // ship height three times less than crane height
+  const yPosition = craneYPosition + craneHeight * 2 / 3;
+  const scale = craneHeight / (shipHeight * 3);
+
+
+  const y = props.customerState === CustomerState.SERVING ? yPosition :
             props.customerState === CustomerState.WAITING ? 210 :
             props.customerState === CustomerState.SERVED  ? 60 : 0;
 
@@ -28,7 +38,7 @@ const ShipImage = (props: CustomerAnimationDataModel) => {
   return (
     <Shape
       sceneFunc={(context, shape) => {
-        if (props.type !== ShipType.CARGO_SHIP) {
+        if (props.type === ShipType.CARGO_SHIP) {
           context.beginPath();
           // низ судна
           context._context.fillStyle = "#213243";
@@ -113,7 +123,7 @@ const ShipImage = (props: CustomerAnimationDataModel) => {
       }}
       draggable
       onClick={click}
-      scale={{x: 0.15, y: 0.15}}
+      scale={{x: scale, y: scale}}
       y={y}
       x={x}
     />

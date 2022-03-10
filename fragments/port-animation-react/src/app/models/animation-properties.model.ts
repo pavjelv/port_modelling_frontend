@@ -12,6 +12,7 @@ export interface CustomerAnimationDataModel extends Omit<CustomerDataModel, "arr
   customerState: CustomerState;
   serverNum?: number;
   queueNum?: number;
+  serversCount?: number;
 }
 
 export interface AnimationPropertiesModel {

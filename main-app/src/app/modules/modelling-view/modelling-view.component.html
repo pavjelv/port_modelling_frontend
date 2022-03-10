@@ -36,7 +36,7 @@
         </mat-form-field>
       </div>
       <div class="modelling-view-form__actions">
-        <button mat-button matStepperNext>Далее</button>
+        <button mat-button mat-stroked-button matStepperNext>Далее</button>
       </div>
     </div>
   </mat-step>
@@ -45,21 +45,21 @@
       <ng-template matStepLabel>Дополнительный тип судна</ng-template>
       <div class="modelling-view-form__parameters">
         <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-          <mat-label>Вероятность появления контейнера</mat-label>
-          <input matInput required type="number" min="0" max="1" [formControlName]="additionalShipTypeParameters.CONTAINER_APPEARANCE_PROBABILITY">
+          <mat-label>Вероятность появления сухогруза</mat-label>
+          <input matInput required type="number" min="0" max="1" [formControlName]="additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY">
         </mat-form-field>
         <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-          <mat-label>Время обслуживания контейнерного судна</mat-label>
-          <input matInput required type="number" min="0.1" max="4" [formControlName]="additionalShipTypeParameters.SERVE_TIME_CONTAINER">
+          <mat-label>Время обслуживания сухогруза</mat-label>
+          <input matInput required type="number" min="0.1" max="4" [formControlName]="additionalShipTypeParameters.SERVE_TIME_CARGO">
         </mat-form-field>
         <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-          <mat-label>Количество причалов для контейнерных судов</mat-label>
-          <input matInput required type="number" min="1" max="3" [formControlName]="additionalShipTypeParameters.CONTAINER_SERVERS_NUM">
+          <mat-label>Количество причалов для сухогруза</mat-label>
+          <input matInput required type="number" min="1" max="3" [formControlName]="additionalShipTypeParameters.CARGO_SERVERS_NUM">
         </mat-form-field>
       </div>
       <div class="modelling-view-form__actions">
         <button mat-button matStepperPrevious>Назад</button>
-        <button mat-button matStepperNext>Далее</button>
+        <button mat-button mat-stroked-button matStepperNext>Далее</button>
       </div>
     </div>
   </mat-step>

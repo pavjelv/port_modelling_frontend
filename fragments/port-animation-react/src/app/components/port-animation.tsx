@@ -3,7 +3,7 @@ import {Layer, Stage} from "react-konva";
 
 import ShipImage from "app/components/ship";
 import CraneImage from "app/components/crane";
-import {ServerModel} from "app/models/server.model";
+import {SERVER_TYPE, ServerModel} from 'app/models/server.model';
 import {AnimationPropertiesModel, CustomerAnimationDataModel, CustomerState} from "app/models/animation-properties.model";
 import {SimulationResultModel} from "app/models/simulation-result.model";
 import {SystemVariablesModel} from 'app/models/system-variables.model';
@@ -73,14 +73,14 @@ const createCranes = (systemParams: SystemVariablesModel) => {
   for (; i < systemParams.serversNum; i++) {
     result.push({
       order: i,
-      type: "cargo",
+      type: SERVER_TYPE.CONTAINER,
     });
   }
   if (systemParams.needSecondType) {
-    for (let j = 0; j < systemParams.containerServersNum; j++) {
+    for (let j = 0; j < systemParams.cargoServersNum; j++) {
       result.push({
         order: i + j,
-        type: "dry",
+        type: SERVER_TYPE.CARGO,
       });
     }
   }
@@ -103,13 +103,13 @@ const PortAnimation = (props: {simulationResult: SimulationResultModel, time: nu
           <CraneImage key={"" + crane.order} order={crane.order} type={crane.type} serversCount={array.length}/>
         ))}
         {animationProperties?.servingCustomers?.map((ship: CustomerAnimationDataModel) => (
-          <ShipImage key={ship.name} serverNum={ship.serverNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
+          <ShipImage key={ship.name} serversCount={animationProperties.servers.length} serverNum={ship.serverNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
         ))}
         {animationProperties?.queuedCustomers?.map((ship: CustomerAnimationDataModel) => (
-          <ShipImage key={ship.name} queueNum={ship.queueNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
+          <ShipImage key={ship.name} serversCount={animationProperties.servers.length} queueNum={ship.queueNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
         ))}
         {animationProperties?.servedCustomers?.map((ship: CustomerAnimationDataModel) => (
-          <ShipImage key={ship.name} queueNum={ship.queueNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
+          <ShipImage key={ship.name} serversCount={animationProperties.servers.length} queueNum={ship.queueNum} name={ship.name} type={ship.type} customerState={ship.customerState}/>
         ))}
       </Layer>
     </Stage>
