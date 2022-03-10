@@ -1,6 +1,6 @@
 export enum ShipType {
-  SHIP = "ship",
-  CARGO_SHIP = "container",
+  CARGO_SHIP = "ship",
+  CONTAINER_SHIP = "container",
 }
 
 export interface CustomerDataModel {

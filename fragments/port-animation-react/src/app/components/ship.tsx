@@ -3,8 +3,9 @@ import React from 'react';
 import Konva from 'konva';
 import {CustomerAnimationDataModel, CustomerState} from 'app/models/animation-properties.model';
 import {ShipType} from 'app/models/customer-data.model';
-import KonvaEventObject = Konva.KonvaEventObject;
 import {calculateCraneHeight, calculateCraneYCoordinate} from 'app/components/crane';
+import KonvaEventObject = Konva.KonvaEventObject;
+import {SCREEN_HEIGHT} from 'app/models/screen-size.constant';
 
 const ShipImage = (props: CustomerAnimationDataModel) => {
   const click = (e: KonvaEventObject<MouseEvent>) => {
@@ -19,26 +20,34 @@ const ShipImage = (props: CustomerAnimationDataModel) => {
   };
 
   const shipHeight = 400;
+  const shipWidth = 600;
+
   const craneHeight = calculateCraneHeight(props.serversCount);
   const craneYPosition = calculateCraneYCoordinate(props.serversCount, props.serverNum);
 
   // ship height three times less than crane height
   const yPosition = craneYPosition + craneHeight * 2 / 3;
   const scale = craneHeight / (shipHeight * 3);
+  const actualWidth = scale * shipWidth;
+  const actualHeight = scale * shipHeight;
+
+  const queuePosition = props.type === ShipType.CARGO_SHIP
+                        ? (SCREEN_HEIGHT * 2 / 3 - actualHeight)
+                        : (SCREEN_HEIGHT / 3 - actualHeight);
 
 
   const y = props.customerState === CustomerState.SERVING ? yPosition :
-            props.customerState === CustomerState.WAITING ? 210 :
-            props.customerState === CustomerState.SERVED  ? 60 : 0;
+            props.customerState === CustomerState.WAITING ? queuePosition :
+            props.customerState === CustomerState.SERVED  ? queuePosition : 0;
 
   const x = props.customerState === CustomerState.SERVING ? 425 :
-            props.customerState === CustomerState.WAITING ? 70 * props.queueNum :
-            props.customerState === CustomerState.SERVED  ? 600 : 0;
+            props.customerState === CustomerState.WAITING ? actualWidth * props.queueNum + (20 * props.queueNum) :
+            props.customerState === CustomerState.SERVED  ? 700 : 0;
 
   return (
     <Shape
       sceneFunc={(context, shape) => {
-        if (props.type === ShipType.CARGO_SHIP) {
+        if (props.type === ShipType.CONTAINER_SHIP) {
           context.beginPath();
           // низ судна
           context._context.fillStyle = "#213243";

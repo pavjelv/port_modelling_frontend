@@ -7,6 +7,7 @@ import {SERVER_TYPE, ServerModel} from 'app/models/server.model';
 import {AnimationPropertiesModel, CustomerAnimationDataModel, CustomerState} from "app/models/animation-properties.model";
 import {SimulationResultModel} from "app/models/simulation-result.model";
 import {SystemVariablesModel} from 'app/models/system-variables.model';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from 'app/models/screen-size.constant';
 
 const processResponse = (response: SimulationResultModel, time: number, systemParams: SystemVariablesModel): AnimationPropertiesModel => {
   console.log(response);
@@ -97,7 +98,7 @@ const PortAnimation = (props: {simulationResult: SimulationResultModel, time: nu
   }, [props.simulationResult, props.time]);
 
   return (
-    <Stage height={500} width={800} style={{width: "100%"}}>
+    <Stage height={SCREEN_HEIGHT} width={SCREEN_WIDTH} style={{width: "100%"}}>
       <Layer>
         {animationProperties?.servers?.map((crane, _, array) => (
           <CraneImage key={"" + crane.order} order={crane.order} type={crane.type} serversCount={array.length}/>
