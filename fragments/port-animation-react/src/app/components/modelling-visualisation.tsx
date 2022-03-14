@@ -57,7 +57,7 @@ const ModellingVisualisation = (props: {systemVariables: SystemVariablesModel}) 
       </Col>
       <Col span={9}>
         <Skeleton loading={loading} active={true}>
-          <Collapse defaultActiveKey={['0']}>
+          <Collapse defaultActiveKey={['0']} style={{overflow: "auto", maxHeight: "500px"}}>
             {response?.models_summary.map((model: SystemSummary, index) => (
               <Panel key={index} header={model.name}>
                 <Descriptions key={index} bordered column={1}>
