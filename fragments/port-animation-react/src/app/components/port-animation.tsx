@@ -8,7 +8,7 @@ import {AnimationPropertiesModel, CustomerAnimationDataModel, CustomerState} fro
 import {SimulationResultModel} from 'app/models/simulation-result.model';
 import {SystemVariablesModel} from 'app/models/system-variables.model';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from 'app/models/screen-size.constant';
-import {ShipType} from 'app/models/customer-data.model';
+import {CustomerDataModel, ShipType} from 'app/models/customer-data.model';
 
 const processResponse = (response: SimulationResultModel, time: number, systemParams: SystemVariablesModel): AnimationPropertiesModel => {
   const servingCustomers: CustomerAnimationDataModel[] = response.customer_data
@@ -21,9 +21,11 @@ const processResponse = (response: SimulationResultModel, time: number, systemPa
         serverNum: c.type === ShipType.CARGO_SHIP ? (c.server_num + systemParams.serversNum) : c.server_num,
       };
     });
-  const queuedCustomers: CustomerAnimationDataModel[] = response.customer_data
-    .filter((c) => c.arrive <= time && c.serve > time)
-    .sort((c1, c2) => c1.arrive - c2.arrive || c1.serve - c2.serve)
+  const allQueuedCustomers: CustomerDataModel[] = response.customer_data
+      .filter((c) => c.arrive <= time && (c.serve > time || (c.serve === null && c.leave === null)))
+      .sort((c1, c2) => c1.arrive - c2.arrive);
+  const cargoQueuedCustomers: CustomerAnimationDataModel[] = allQueuedCustomers
+    .filter((c) => c.type === ShipType.CARGO_SHIP)
     .map((c, i) => {
       return {
         name: c.name,
@@ -32,6 +34,18 @@ const processResponse = (response: SimulationResultModel, time: number, systemPa
         queueNum: i,
       };
     });
+  const containerQueuedCustomers: CustomerAnimationDataModel[] = allQueuedCustomers
+    .filter((c) => c.type === ShipType.CONTAINER_SHIP)
+    .map((c, i) => {
+      return {
+        name: c.name,
+        customerState: CustomerState.WAITING,
+        type: c.type,
+        queueNum: i,
+      };
+    });
+  const queuedCustomers: CustomerAnimationDataModel[] = [...cargoQueuedCustomers, ...containerQueuedCustomers];
+
   const servedCustomers: CustomerAnimationDataModel[] = response.customer_data
     .filter((c) => c.serve !== null && c.leave !== null && c.leave <= time)
     .reverse()
@@ -46,7 +60,7 @@ const processResponse = (response: SimulationResultModel, time: number, systemPa
     });
 
   const rejectedCustomers: CustomerAnimationDataModel[] = response.customer_data
-    .filter((c) => c.serve === null && c.arrive <= time)
+    .filter((c) => c.serve === null && c.arrive <= time && c.leave !== null)
     .reverse()
     .sort((c1, c2) => c2.leave - c1.leave)
     .map((c, i) => {
