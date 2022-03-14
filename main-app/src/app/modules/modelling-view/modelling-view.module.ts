@@ -10,6 +10,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSelectModule } from "@angular/material/select";
 import { MatStepperModule } from "@angular/material/stepper";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 const routes: Routes = [
   {
@@ -30,6 +31,7 @@ const routes: Routes = [
         MatInputModule,
         MatIconModule,
         MatSelectModule,
+        MatSnackBarModule,
         MatStepperModule,
     ],
   exports: [RouterModule, ModellingViewComponent],

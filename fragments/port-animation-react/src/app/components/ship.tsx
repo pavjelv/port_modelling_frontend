@@ -40,7 +40,7 @@ const ShipImage = (props: CustomerAnimationDataModel) => {
             props.customerState === CustomerState.WAITING ? queuePosition :
             props.customerState === CustomerState.SERVED  ? queuePosition : 0;
 
-  const x = props.customerState === CustomerState.SERVING ? 425 :
+  const x = props.customerState === CustomerState.SERVING ? 425 + props.serversCount * 2 :
             props.customerState === CustomerState.WAITING ? (350 - actualWidth * props.queueNum - (20 * props.queueNum)) :
             props.customerState === CustomerState.SERVED  ? (600 + actualWidth * props.queueNum + (20 * props.queueNum)) : 0;
 

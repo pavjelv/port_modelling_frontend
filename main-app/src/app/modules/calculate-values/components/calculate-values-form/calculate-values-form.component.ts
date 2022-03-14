@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, TemplateRef, ViewChild} from "@angular/core";
+import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, TemplateRef, ViewChild} from "@angular/core";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {SystemParameters, SystemType} from "../../../../model/theory/system-type";
 import {LoadingOverlayService} from "../../../../services/loading-overlay.service";
@@ -19,13 +19,15 @@ import {ChartDataModel, ChartSeriesData} from "../../../../model/chart-data.mode
 import {MatSelectionList, MatSelectionListChange} from "@angular/material/list";
 import {PrefilledSystemParametersListType, PrefilledSystemParametersMap} from "../../../../dictionaries/prefilled-system-parameters-set";
 import {MatSlideToggleChange} from "@angular/material/slide-toggle";
+import {RxUnsubscribe} from "../../../../utils/rx-unsubscribe";
+import {take, takeUntil} from "rxjs/operators";
 
 @Component({
   selector: "app-calculate-values-form",
   templateUrl: "./calculate-values-form.component.html",
   styleUrls: ["./calculate-values-form.component.less"]
 })
-export class CalculateValuesFormComponent implements OnInit {
+export class CalculateValuesFormComponent extends RxUnsubscribe implements OnInit, OnDestroy {
 
   @ViewChild(MatSelectionList)
   private prefilledSystemList: MatSelectionList;
@@ -77,6 +79,7 @@ export class CalculateValuesFormComponent implements OnInit {
               private sanitizer: DomSanitizer,
   )
   {
+    super();
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
@@ -87,11 +90,11 @@ export class CalculateValuesFormComponent implements OnInit {
     this.systemCharacteristicParameterControl = new FormControl([], Validators.required);
     this.createForm(systemType);
 
-    this.systemParametersForm.valueChanges.subscribe(() => {
+    this.systemParametersForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.prefilledSystemList.deselectAll();
     });
 
-    this.rangeParameterControl.valueChanges.subscribe((v) => {
+    this.rangeParameterControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((v) => {
       this.systemParametersForm.get(v)?.patchValue(1);
     });
   }
@@ -202,12 +205,17 @@ export class CalculateValuesFormComponent implements OnInit {
     this.isCompareMode = false;
   }
 
+  public ngOnDestroy(): void {
+    super.ngOnDestroy();
+  }
+
   public _onSubmit(): void {
     this.systemParametersForm.markAllAsTouched();
     this.systemCharacteristicParameterControl.markAllAsTouched();
     if (this.systemParametersForm.valid && this.systemCharacteristicParameterControl.valid) {
       this.loadingService.showLoading();
       this.optimalSizeService.calculateWithQueue(this.systemParametersForm.getRawValue())
+        .pipe(takeUntil(this.destroy$))
         .subscribe((summary) => {
           this.loadingService.hideLoading();
           this.processTheorySummary(summary);

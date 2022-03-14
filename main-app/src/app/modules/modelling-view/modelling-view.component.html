@@ -66,10 +66,6 @@
   <mat-step>
     <ng-template matStepLabel>Построение модели</ng-template>
     <app-common-react-wrapper *ngIf="isBrowser" [props]="simulationVariables" class="modelling-view-canvas-wrapper"></app-common-react-wrapper>
-    <div class="modelling-view-form__actions">
-      <button mat-button matStepperPrevious>Назад</button>
-      <button mat-button mat-raised-button color="primary" (click)="applyValues()" [id]="'applyValuesButton'">Смоделировать</button>
-    </div>
   </mat-step>
 </mat-stepper>
 

@@ -2,17 +2,20 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject, Injectable,
+  Inject, Injectable, OnDestroy,
   OnInit,
   PLATFORM_ID,
   ViewEncapsulation
 } from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {isPlatformBrowser, ViewportScroller} from "@angular/common";
+import {isPlatformBrowser} from "@angular/common";
 import {SimulationVariablesModel} from "../../model/simulation/simulation-variables.model";
 import {AdditionalShipTypeParameters, SimulationParameters} from "../../model/simulation/simulation-parameters";
 import {STEPPER_GLOBAL_OPTIONS, StepperSelectionEvent} from "@angular/cdk/stepper";
 import {MatStepperIntl} from "@angular/material/stepper";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {RxUnsubscribe} from "../../utils/rx-unsubscribe";
+import {takeUntil} from "rxjs/operators";
 
 
 @Injectable()
@@ -37,7 +40,7 @@ export class StepperIntl extends MatStepperIntl {
     },
   ],
 })
-export class ModellingViewComponent implements OnInit {
+export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnDestroy {
 
   public systemParametersForm: FormGroup;
   public additionalShipTypeForm: FormGroup;
@@ -52,10 +55,14 @@ export class ModellingViewComponent implements OnInit {
     { value: "Пуассоновский", id: "poisson" }
   ];
 
+  private lastFormValue: Record<string, unknown> = null;
+  private lastAdditionalParametersFormValue: Record<string, unknown> = null;
+
   constructor(@Inject(PLATFORM_ID) private platformId: unknown,
               private cdr: ChangeDetectorRef,
               private _matStepperIntl: MatStepperIntl,
-              private scroller: ViewportScroller) {
+              private snackBar: MatSnackBar) {
+    super();
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
@@ -75,14 +82,51 @@ export class ModellingViewComponent implements OnInit {
 
   public onStepSelectChange(event: StepperSelectionEvent): void {
     if (event.selectedIndex === 2) {
-      setTimeout(() => {
-        this.scroller.scrollToAnchor("applyValuesButton");
-      }, 30);
+      if (this.isFormsValueChanged()) {
+        let message = "Параметры системы были изменены";
+        if (this.lastFormValue === null) {
+          message = "Необходимые параметры заполнены";
+        }
+        this.snackBar.open(message, "Смоделировать", {
+          horizontalPosition: "right",
+          verticalPosition: "top",
+        }).onAction().pipe(takeUntil(this.destroy$)).subscribe(() => {
+          this.applyValues();
+          this.cdr.detectChanges();
+        });
+      }
+    } else {
+      this.snackBar.dismiss();
     }
+  }
+
+  public ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.snackBar.dismiss();
+  }
+
+  private isFormsValueChanged(): boolean {
+    if (this.lastFormValue === null) {
+      return true;
+    }
+    let isUnchanged = true;
+    Object.entries(this.systemParametersForm.value).forEach(([key, value]) => {
+      isUnchanged = isUnchanged && this.lastFormValue[key] === value;
+    });
+    if (this.additionalShipTypeForm.valid) {
+      Object.entries(this.additionalShipTypeForm.value).forEach(([key, value]) => {
+        isUnchanged = isUnchanged && this.lastAdditionalParametersFormValue[key] === value;
+      });
+    }
+    return !isUnchanged;
   }
 
   public applyValues(): void {
     if (this.systemParametersForm.valid) {
+      if (this.isFormsValueChanged()) {
+        this.lastFormValue = this.systemParametersForm.value;
+        this.lastAdditionalParametersFormValue = this.additionalShipTypeForm.value;
+      }
       const variables = { systemVariables: this.systemParametersForm.value };
       if (this.additionalShipTypeForm.valid) {
         variables.systemVariables = {
