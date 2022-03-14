@@ -9,4 +9,5 @@ export interface CustomerDataModel {
   leave: number;
   serve: number;
   type: ShipType;
+  server_num: number;
 }

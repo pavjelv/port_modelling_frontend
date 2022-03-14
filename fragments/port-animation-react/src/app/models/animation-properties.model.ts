@@ -8,7 +8,7 @@ export enum CustomerState {
   SERVED = "green",
 }
 
-export interface CustomerAnimationDataModel extends Omit<CustomerDataModel, "arrive" | "leave" | "serve"> {
+export interface CustomerAnimationDataModel extends Omit<CustomerDataModel, "arrive" | "leave" | "serve" | "server_num"> {
   customerState: CustomerState;
   serverNum?: number;
   queueNum?: number;

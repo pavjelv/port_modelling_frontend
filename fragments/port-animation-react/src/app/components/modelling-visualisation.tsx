@@ -19,9 +19,10 @@ const ModellingVisualisation = (props: {systemVariables: SystemVariablesModel}) 
   const [loading, setLoading] = React.useState(true);
   const [response, setResponse] = React.useState<SimulationResultModel>(null);
   const [time, setTime] = React.useState(0);
-  const marks = { 0: "0", 20: "20" };
+  const marks = { 0: "0" };
   let queryParams = "";
   if (props.systemVariables) {
+    marks[Number(props.systemVariables.time)] = props.systemVariables.time;
     Object.entries(props.systemVariables)?.forEach(([k, v]: [string, string]) => {
       queryParams += `${k}=${encodeURIComponent(v)}&`;
     });
@@ -52,7 +53,7 @@ const ModellingVisualisation = (props: {systemVariables: SystemVariablesModel}) 
     <Row>
       <Col span={15}>
         <PortAnimation simulationResult={response} time={time} systemParams={props.systemVariables}/>
-        <Slider style={{width: 795}} disabled={loading} tipFormatter={null} value={time} min={0} max={20} marks={marks} onChange={(v) => setTime(v)}/>
+        <Slider style={{width: 795}} disabled={loading} tipFormatter={null} value={time} min={0} max={props.systemVariables?.time ?? 10} marks={marks} onChange={(v) => setTime(v)}/>
       </Col>
       <Col span={9}>
         <Skeleton loading={loading} active={true}>
