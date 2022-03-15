@@ -1,0 +1,75 @@
+<h2>{{ "port-modelling-fe.kendall.title" | translate }}</h2>
+<p [innerHTML]="'port-modelling-fe.kendall.description' | translate"></p>
+<mat-card>
+    <mat-card-header>
+      <span
+        class="kendall-notation__kendall-character"
+        (mouseover)="selectKendallCharacter(KendallCharacters.A)"
+        [class.selected-character]="selectedKendallCharacter === KendallCharacters.A"
+      >A</span>
+      /
+      <span
+        class="kendall-notation__kendall-character"
+        (mouseover)="selectKendallCharacter(KendallCharacters.B)"
+        [class.selected-character]="selectedKendallCharacter === KendallCharacters.B"
+      >B</span>
+      /
+      <span
+        class="kendall-notation__kendall-character"
+        (mouseover)="selectKendallCharacter(KendallCharacters.c)"
+        [class.selected-character]="selectedKendallCharacter === KendallCharacters.c"
+      >c</span>
+      /
+      <span
+        class="kendall-notation__kendall-character"
+        (mouseover)="selectKendallCharacter(KendallCharacters.K)"
+        [class.selected-character]="selectedKendallCharacter === KendallCharacters.K"
+      >K</span>
+      /
+      <span
+        class="kendall-notation__kendall-character"
+        (mouseover)="selectKendallCharacter(KendallCharacters.n)"
+        [class.selected-character]="selectedKendallCharacter === KendallCharacters.n"
+      >n</span>
+      /
+      <span
+        class="kendall-notation__kendall-character"
+        (mouseover)="selectKendallCharacter(KendallCharacters.D)"
+        [class.selected-character]="selectedKendallCharacter === KendallCharacters.D"
+      >D</span>
+    </mat-card-header>
+  <mat-card-content>
+    <mat-selection-list [multiple]="false">
+      <mat-list-option
+        (mouseover)="selectKendallCharacter(KendallCharacters.A)"
+        [class.selected-list]="selectedKendallCharacter === KendallCharacters.A">
+        <span><b>A - </b> {{"port-modelling-fe.kendall.descriptionA" | translate}}</span>
+      </mat-list-option>
+      <mat-list-option
+        (mouseover)="selectKendallCharacter(KendallCharacters.B)"
+        [class.selected-list]="selectedKendallCharacter === KendallCharacters.B">
+        <span><b>B - </b> {{"port-modelling-fe.kendall.descriptionB" | translate}}</span>
+      </mat-list-option>
+      <mat-list-option
+        (mouseover)="selectKendallCharacter(KendallCharacters.c)"
+        [class.selected-list]="selectedKendallCharacter === KendallCharacters.c">
+        <span><b>c - </b> {{"port-modelling-fe.kendall.descriptionC" | translate}}</span>
+      </mat-list-option>
+      <mat-list-option
+        (mouseover)="selectKendallCharacter(KendallCharacters.K)"
+        [class.selected-list]="selectedKendallCharacter === KendallCharacters.K">
+        <span><b>K - </b> {{"port-modelling-fe.kendall.descriptionK" | translate}}</span>
+      </mat-list-option>
+      <mat-list-option
+        (mouseover)="selectKendallCharacter(KendallCharacters.n)"
+        [class.selected-list]="selectedKendallCharacter === KendallCharacters.n">
+        <span><b>n - </b> {{"port-modelling-fe.kendall.descriptionN" | translate}}</span>
+      </mat-list-option>
+      <mat-list-option
+        (mouseover)="selectKendallCharacter(KendallCharacters.D)"
+        [class.selected-list]="selectedKendallCharacter === KendallCharacters.D">
+        <span><b>D - </b>{{"port-modelling-fe.kendall.descriptionD" | translate}}</span>
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-card-content>
+</mat-card>
