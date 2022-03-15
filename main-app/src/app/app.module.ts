@@ -11,7 +11,8 @@ import {MatButtonModule} from "@angular/material/button";
 import {FederationPluginService} from "./microfrontends/federation-plugin.service";
 import {ReactWrapperModule} from "./modules/react-wrapper/react-wrapper.module";
 import {MathjaxModule} from "./modules/mathjax/mathjax.module";
-import {LocalizationModule} from "./localization.module";
+import {LocalizationModule} from "./i18n/localization.module";
+import { TransferHttpCacheModule } from "@nguniversal/common";
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import {LocalizationModule} from "./localization.module";
     BrowserAnimationsModule,
     SharedModule,
     HttpClientModule,
+    TransferHttpCacheModule,
     LocalizationModule,
     MatInputModule,
     MatFormFieldModule,
