@@ -4,6 +4,7 @@ import { HomepageComponent } from "./homepage.component";
 import { RouterModule, Routes } from "@angular/router";
 import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
+import {TranslateModule} from "@ngx-translate/core";
 
 const routes: Routes = [
   {
@@ -14,7 +15,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [HomepageComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), MatButtonModule, MatCardModule],
+    imports: [CommonModule, RouterModule.forChild(routes), MatButtonModule, MatCardModule, TranslateModule.forChild()],
   exports: [RouterModule, HomepageComponent],
 })
 export class HomepageModule {}
