@@ -1,12 +1,26 @@
 .kendall-notation {
-  b {
-    font-weight: bold !important;
-  }
-  .mat-card-header {
-    justify-content: center;
+  &__content {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    font-size: large;
-    gap: 0.5rem;
+    gap: 1rem;
+
+    &__header {
+      font-size: large;
+      padding-top: 2rem;
+    }
+
+    &__accordion {
+      width: 100%;
+      .mat-expansion-panel-header {
+        &-description {
+          color: black!important;
+        }
+        &-title {
+          color: black!important;
+        }
+      }
+    }
   }
   &__kendall-character {
     padding: 0.5rem;
@@ -14,7 +28,7 @@
   & .selected-list {
     border-radius: 5px;
     color: white;
-    background: #007bff;
+    background: #007bff !important;
   }
   & .selected-character {
     border-radius: 5px;

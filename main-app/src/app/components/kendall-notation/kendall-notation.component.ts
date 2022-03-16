@@ -21,9 +21,9 @@ export class KendallNotationComponent {
 
 enum KendallCharacters {
     A = "A",
-    B = "B",
+    S = "S",
     c = "c",
     K = "K",
-    n = "n",
+    N = "N",
     D = "D"
 }

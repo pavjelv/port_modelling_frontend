@@ -8,6 +8,7 @@ import {KendallNotationComponent} from "./kendall-notation/kendall-notation.comp
 import {TranslateModule} from "@ngx-translate/core";
 import {MatCardModule} from "@angular/material/card";
 import {MatListModule} from "@angular/material/list";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 
 
@@ -18,12 +19,13 @@ import {MatListModule} from "@angular/material/list";
         CommonReactWrapperComponent,
         KendallNotationComponent,
     ],
-  imports: [
-    CommonModule,
-    MatSliderModule,
-    TranslateModule.forChild(),
-    MatCardModule,
-    MatListModule,
-  ]
+    imports: [
+        CommonModule,
+        MatSliderModule,
+        TranslateModule.forChild(),
+        MatCardModule,
+        MatListModule,
+        MatExpansionModule,
+    ]
 })
 export class ComponentsModule { }
