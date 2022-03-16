@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component, HostBinding, ViewEncapsulation} from "@angular/core";
+import {ArrivalProcessDataSource, QueueDisciplineDataSource, ServiceProcessDataSource} from "./codes-example.data";
 
 @Component({
     selector: "app-kendall-notation-component",
@@ -13,6 +14,10 @@ export class KendallNotationComponent {
 
     public KendallCharacters = KendallCharacters;
     public selectedKendallCharacter: KendallCharacters = this.KendallCharacters.A;
+    public displayedColumns: string[] = ["symbol", "name", "description"];
+    public arrivalProcessDataSource = ArrivalProcessDataSource;
+    public serviceProcessDataSource = ServiceProcessDataSource;
+    public queueDisciplineDataSource = QueueDisciplineDataSource;
 
     public selectKendallCharacter(kendallCharacter: KendallCharacters): void {
         this.selectedKendallCharacter = kendallCharacter;
