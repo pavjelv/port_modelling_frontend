@@ -11,6 +11,9 @@ const routes: Routes = [
   {
     path: "",
     component: HomepageComponent,
+    data: {
+      reusable: true,
+    },
   },
 ];
 

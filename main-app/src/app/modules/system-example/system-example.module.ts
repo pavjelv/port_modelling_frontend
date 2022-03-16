@@ -7,25 +7,30 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatStepperModule} from "@angular/material/stepper";
 import {TranslateModule} from "@ngx-translate/core";
 import {ComponentsModule} from "../../components/components.module";
+import {MathjaxModule} from "../mathjax/mathjax.module";
 
 const routes: Routes = [
   {
     path: "",
     component: SystemExampleComponent,
+    data: {
+      reusable: true,
+    },
   },
 ];
 
 @NgModule({
   declarations: [SystemExampleComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    MatTableModule,
-    MatTabsModule,
-    MatStepperModule,
-    TranslateModule.forChild(),
-    ComponentsModule,
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatTableModule,
+        MatTabsModule,
+        MatStepperModule,
+        TranslateModule.forChild(),
+        ComponentsModule,
+        MathjaxModule,
+    ],
   exports: [RouterModule, SystemExampleComponent],
 })
 export class SystemExampleModule {}

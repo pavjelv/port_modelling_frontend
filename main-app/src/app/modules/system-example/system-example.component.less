@@ -1,20 +1,20 @@
 .system-example {
-  &-content {
-    display: flex;
-    column-gap: 2rem;
+  padding: 0 calc(4rem - 24px);
+  &-symbols {
+    padding-bottom: 1rem;
+    &__definitions {
+      li {
+        padding-top: 1rem;
+      }
+    }
   }
-
-  &-wrapper {
-    padding: 2rem;
-  }
-
-  ul {
-    list-style: none;
-  }
-
-  .chart-canvas {
-    max-width: 600px;
-    max-height: 600px;
+  &-calculations {
+    &__table {
+      width: 50%;
+      table {
+        width: 100%;
+      }
+    }
   }
 
 }
