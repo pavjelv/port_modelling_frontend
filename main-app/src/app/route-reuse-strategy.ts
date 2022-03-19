@@ -38,6 +38,6 @@ export class AppRouteReuseStrategy extends BaseRouteReuseStrategy {
 
     private getKey(route: ActivatedRouteSnapshot): string {
         return route.pathFromRoot
-          .reduce((aggregator, current) => aggregator += "/" + current.routeConfig?.path, "/");
+          .reduce((aggregator, current) => aggregator += current.routeConfig?.path + "/", "/");
     }
 }
