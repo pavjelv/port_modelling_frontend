@@ -8,11 +8,14 @@ import { MatStepperModule } from "@angular/material/stepper";
 import { TranslateModule } from "@ngx-translate/core";
 import { ComponentsModule } from "../../components/components.module";
 import { MathjaxModule } from "../mathjax/mathjax.module";
+import { MathContentRouterGuard } from "../../math-content.router-guard";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 const routes: Routes = [
     {
         path: "",
         component: SystemExampleComponent,
+        canDeactivate: [MathContentRouterGuard],
         data: {
             reusable: true,
         },
@@ -21,7 +24,8 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [SystemExampleComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), MatTableModule, MatTabsModule, MatStepperModule, TranslateModule.forChild(), ComponentsModule, MathjaxModule],
+    imports: [CommonModule, RouterModule.forChild(routes), MatTableModule, MatTabsModule, MatStepperModule, TranslateModule.forChild(), ComponentsModule, MathjaxModule, MatSnackBarModule],
+    providers: [MathContentRouterGuard],
     exports: [RouterModule, SystemExampleComponent],
 })
 export class SystemExampleModule {}

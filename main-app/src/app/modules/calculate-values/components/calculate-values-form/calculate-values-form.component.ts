@@ -32,6 +32,9 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     @ViewChild("compareModeDialog")
     public compareModeDialog: TemplateRef<unknown>;
 
+    @ViewChild("compareModeDescription")
+    public compareModeDescriptionDialog: TemplateRef<unknown>;
+
     public systemParametersForm: FormGroup;
     public isBrowser = false;
 
@@ -46,24 +49,15 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     public systemVariablesToCalculatedDataMap: Map<string, Map<string, ChartSeriesData>> = new Map<string, Map<string, ChartSeriesData>>();
 
     public systemName = "";
+    public hasQueue = false;
 
     public charts: ChartDataModel[] = [];
 
     public prefilledSystemTypes: PrefilledSystemParametersListType;
 
-    public systemParameters = Array.from(SystemParametersDictionary).map(([key, value]) => {
-        return {
-            id: key,
-            value,
-        };
-    });
+    public systemParameters: Array<{id: string; value: string}>;
 
-    public availableSystemCharacteristics = Array.from(AvailableSystemCharacteristicsDictionary).map(([key, value]) => {
-        return {
-            id: key,
-            value,
-        };
-    });
+    public availableSystemCharacteristics: Array<{id: string; value: string}>;
 
     constructor(
         private fb: FormBuilder,
@@ -82,6 +76,24 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
 
     ngOnInit(): void {
         const systemType: SystemType = this.route.snapshot.queryParamMap.get("systemType") as SystemType;
+        this.hasQueue = systemType === SystemType.WITH_QUEUE;
+        this.availableSystemCharacteristics = Array.from(AvailableSystemCharacteristicsDictionary)
+            .filter(([k, v]) => (this.hasQueue || k !== "l_queue" && k !== "wait"))
+            .map(([key, value]) => {
+                return {
+                    id: key,
+                    value,
+                };
+            });
+        this.systemParameters = Array.from(SystemParametersDictionary)
+            .filter(([k, v]) => (this.hasQueue || k !== SystemParameters.QUEUE_LENGTH))
+            .map(([key, value]) => {
+                return {
+                    id: key,
+                    value,
+                };
+            });
+
         this.systemName = SystemTypeDictionary.get(systemType);
         this.prefilledSystemTypes = PrefilledSystemParametersMap.get(systemType);
         this.systemCharacteristicParameterControl = new FormControl([], Validators.required);
@@ -122,7 +134,8 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
             this.systemVariablesToCalculatedDataMap.delete(key);
             this.charts = [];
             (this.systemCharacteristicParameterControl.value as Array<{ id: string; value: string }>).forEach((v) => {
-                const data = Array.from(this.systemVariablesToCalculatedDataMap.entries()).reduce((aggregator, [k, value]) => aggregator.set(k, value.get(v.id)), new Map<string, ChartSeriesData>());
+                const data = Array.from(this.systemVariablesToCalculatedDataMap.entries())
+                    .reduce((aggregator, [k, value]) => aggregator.set(k, value.get(v.id)), new Map<string, ChartSeriesData>());
                 this.charts.push({
                     id: v.id,
                     xAxisName: SystemParametersDictionary.get(this.rangeParameterControl.value),
@@ -186,6 +199,10 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         dialogRef.afterClosed().subscribe((result) => {
             console.log(`Dialog result: ${result}`);
         });
+    }
+
+    public openCompareModeDescriptionDialog(): void {
+        this.dialog.open(this.compareModeDescriptionDialog);
     }
 
     public onPrefilledParameterSelect(event: MatSelectionListChange): void {

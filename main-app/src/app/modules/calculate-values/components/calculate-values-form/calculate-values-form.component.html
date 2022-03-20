@@ -11,8 +11,8 @@
         <mat-icon class="toggle-icon" (click)="openDialog()">help_outline</mat-icon>
     </h1>
     <div class="calculate-values-form__compare-toggle">
-        <mat-slide-toggle [(ngModel)]="compareModeSwitch" (change)="onCompareModeChange($event)">Режим сравнения</mat-slide-toggle>
-        <mat-icon class="toggle-icon" (click)="openDialog()">help_outline</mat-icon>
+        <mat-slide-toggle [(ngModel)]="compareModeSwitch" (change)="onCompareModeChange($event)">{{ "port-modelling-fe.calculateValues.compareMode" | translate }}</mat-slide-toggle>
+        <mat-icon class="toggle-icon" (click)="openCompareModeDescriptionDialog()">help_outline</mat-icon>
     </div>
     <div class="calculate-values-form-parameters">
         <div *ngIf="!isCompareMode" class="calculate-values-form-parameters__examples mat-elevation-z1">
@@ -62,7 +62,7 @@
                     <mat-hint align="start">{{ "port-modelling-fe.calculateValues.lambdaHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.QUEUE_LENGTH">
+                <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.QUEUE_LENGTH && hasQueue">
                     <mat-label>{{ "port-modelling-fe.calculateValues.queueLength" | translate }}</mat-label>
                     <input matInput required type="number" min="1" max="10" [formControlName]="parameters.QUEUE_LENGTH" />
                     <mat-hint align="start">{{ "port-modelling-fe.calculateValues.queueLengthHint" | translate }}</mat-hint>
@@ -72,7 +72,7 @@
             <mat-divider class="calculate-values-form-parameters__divider last"></mat-divider>
             <ng-container *ngIf="!isCompareMode" [ngTemplateOutlet]="characteristicControl"></ng-container>
             <div class="calculate-values-form-parameters__submit">
-                <button color="primary" mat-raised-button (click)="_onSubmit()">{{ isCompareMode ? "Добавить к сравнению" : "Рассчитать" }}</button>
+                <button color="primary" mat-raised-button (click)="_onSubmit()">{{ (isCompareMode ? "port-modelling-fe.common.compare" : "port-modelling-fe.common.calculate") | translate }}</button>
             </div>
         </div>
     </div>
@@ -139,7 +139,19 @@
         <ng-container [ngTemplateOutlet]="characteristicControl"></ng-container>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-        <button mat-button mat-dialog-close (click)="onCompareDialogCancel()">Отмена</button>
-        <button color="primary" mat-raised-button (click)="onCompareParametersApply()">Применить</button>
+        <button mat-button mat-dialog-close (click)="onCompareDialogCancel()">{{ "port-modelling-fe.common.cancel" | translate }}</button>
+        <button color="primary" mat-raised-button (click)="onCompareParametersApply()">{{ "port-modelling-fe.common.apply" | translate }}</button>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #compareModeDescription>
+    <h2>{{ "port-modelling-fe.calculateValues.compareMode" | translate }}</h2>
+    <mat-dialog-content class="calculate-values-form__compare-mode-dialog">
+        <p>{{ "port-modelling-fe.calculateValues.compareModeDescription" | translate }}</p>
+        <h2>{{"port-modelling-fe.common.instruction" | translate}}</h2>
+        <div [innerHTML]="'port-modelling-fe.calculateValues.compareModeInstruction' | translate"></div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>{{ "port-modelling-fe.common.close" | translate }}</button>
     </mat-dialog-actions>
 </ng-template>

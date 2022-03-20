@@ -4,6 +4,14 @@
     <span>Моделирование системы</span>
 </div>
 <mat-stepper class="modelling-view" linear (selectionChange)="onStepSelectChange($event)">
+    <mat-step [optional]="true">
+        <div class="modelling-view-form">
+            <div class="modelling-view-form__actions">
+                <button mat-button mat-stroked-button matStepperNext>Далее</button>
+            </div>
+        </div>
+        <ng-template matStepLabel>{{"port-modelling-fe.common.instruction" | translate}}</ng-template>
+    </mat-step>
     <mat-step [stepControl]="systemParametersForm">
         <div class="modelling-view-form" [formGroup]="systemParametersForm">
             <ng-template matStepLabel>Параметры системы</ng-template>
@@ -36,6 +44,7 @@
                 </mat-form-field>
             </div>
             <div class="modelling-view-form__actions">
+                <button mat-button matStepperPrevious>Назад</button>
                 <button mat-button mat-stroked-button matStepperNext>Далее</button>
             </div>
         </div>
