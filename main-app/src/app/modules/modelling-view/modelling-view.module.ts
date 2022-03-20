@@ -10,17 +10,17 @@ import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSelectModule } from "@angular/material/select";
 import { MatStepperModule } from "@angular/material/stepper";
-import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 const routes: Routes = [
-  {
-    path: "",
-    component: ModellingViewComponent,
-  },
+    {
+        path: "",
+        component: ModellingViewComponent,
+    },
 ];
 
 @NgModule({
-  declarations: [ModellingViewComponent],
+    declarations: [ModellingViewComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
@@ -34,6 +34,6 @@ const routes: Routes = [
         MatSnackBarModule,
         MatStepperModule,
     ],
-  exports: [RouterModule, ModellingViewComponent],
+    exports: [RouterModule, ModellingViewComponent],
 })
 export class ModellingViewModule {}

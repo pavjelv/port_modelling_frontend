@@ -4,8 +4,8 @@ import { take, takeUntil } from "rxjs/operators";
 import { MathService } from "./math.service";
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
-    selector: "[mathContent]"
+    // tslint:disable-next-line:directive-selector
+    selector: "[mathContent]",
 })
 export class MathContentDirective implements OnInit, OnChanges, OnDestroy {
     private alive$ = new Subject<boolean>();

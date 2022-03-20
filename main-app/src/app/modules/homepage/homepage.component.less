@@ -1,67 +1,67 @@
 .homepage-component {
-  position: relative;
-  padding: 0 4rem;
-  &-description {
-    width: 100%;
-    height: calc(100vh - 64px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: relative;
+    padding: 0 4rem;
+    &-description {
+        width: 100%;
+        height: calc(100vh - 64px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-    .headline {
-      padding: 5rem 0;
-      width: 550px;
-      h1 {
-        text-align: center;
-        font-size: 30px;
-        font-weight: 700;
-        line-height: 30px;
-      }
-      &__hint {
-        text-align: center;
-        a {
-          text-decoration: underline;
-          cursor: pointer;
+        .headline {
+            padding: 5rem 0;
+            width: 550px;
+            h1 {
+                text-align: center;
+                font-size: 30px;
+                font-weight: 700;
+                line-height: 30px;
+            }
+            &__hint {
+                text-align: center;
+                a {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
         }
-      }
-    }
-  }
-
-  &__card {
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 30%;
-
-    .mat-card-title {
-      text-align: center;
-      height: 2.5rem;
     }
 
-    .mat-card-image {
-      width: 128px;
-      height: 128px;
+    &__card {
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 30%;
+
+        .mat-card-title {
+            text-align: center;
+            height: 2.5rem;
+        }
+
+        .mat-card-image {
+            width: 128px;
+            height: 128px;
+        }
+
+        .mat-card-content {
+            text-align: center;
+        }
     }
 
-    .mat-card-content {
-      text-align: center;
+    &__system-functions {
+        gap: 1rem;
+        display: flex;
+        justify-content: center;
     }
-  }
 
-  &__system-functions {
-    gap: 1rem;
-    display: flex;
-    justify-content: center;
-  }
-
-  .after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: none;
-    //background: rgba(0, 0, 0, .6);
-  }
+    .after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        //background: rgba(0, 0, 0, .6);
+    }
 }

@@ -1,65 +1,65 @@
 .kendall-notation {
-  &__content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1rem;
 
-    &__header {
-      font-size: large;
-      padding-top: 2rem;
+        &__header {
+            font-size: large;
+            padding-top: 2rem;
+        }
+
+        &__accordion {
+            width: 100%;
+            .mat-table {
+                width: 100%;
+                padding-top: 1rem;
+            }
+            .mat-expansion-panel-header {
+                &-description {
+                    color: black;
+                }
+                &-title {
+                    color: black;
+                }
+            }
+            .mat-expansion-panel-header[aria-disabled="true"] {
+                .mat-expansion-panel-header {
+                    &-title {
+                        color: black;
+                    }
+
+                    &-description {
+                        color: black;
+                    }
+                }
+            }
+
+            .selected-list {
+                background: #007bff !important;
+                .mat-expansion-panel-header {
+                    &-description {
+                        color: white !important;
+                    }
+                    &-title {
+                        color: white !important;
+                    }
+                }
+                .mat-expansion-indicator::after {
+                    color: white;
+                }
+            }
+        }
+    }
+    &__kendall-character {
+        padding: 0.5rem;
     }
 
-    &__accordion {
-      width: 100%;
-      .mat-table {
-        width: 100%;
-        padding-top: 1rem;
-      }
-      .mat-expansion-panel-header {
-        &-description {
-          color: black;
-        }
-        &-title {
-          color: black;
-        }
-      }
-      .mat-expansion-panel-header[aria-disabled=true] {
-        .mat-expansion-panel-header {
-          &-title {
-            color: black;
-          }
-
-          &-description {
-            color: black;
-          }
-        }
-      }
-
-      .selected-list {
-        background: #007bff !important;
-        .mat-expansion-panel-header {
-          &-description {
-            color: white !important;
-          }
-          &-title {
-            color: white !important;
-          }
-        }
-        .mat-expansion-indicator::after {
-          color: white;
-        }
-      }
+    & .selected-character {
+        border-radius: 5px;
+        color: white;
+        background: #007bff;
     }
-  }
-  &__kendall-character {
-    padding: 0.5rem;
-  }
-
-  & .selected-character {
-    border-radius: 5px;
-    color: white;
-    background: #007bff;
-  }
 }

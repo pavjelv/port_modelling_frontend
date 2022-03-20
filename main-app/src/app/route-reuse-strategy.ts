@@ -1,8 +1,4 @@
-import {
-    ActivatedRouteSnapshot,
-    BaseRouteReuseStrategy,
-    DetachedRouteHandle,
-} from "@angular/router";
+import { ActivatedRouteSnapshot, BaseRouteReuseStrategy, DetachedRouteHandle } from "@angular/router";
 
 /** Interface for object which can store both:
  * An ActivatedRouteSnapshot, which is useful for determining whether or not you should attach a route (see this.shouldAttach)
@@ -10,7 +6,6 @@ import {
  */
 
 export class AppRouteReuseStrategy extends BaseRouteReuseStrategy {
-
     private storedRoutes = new Map<string, DetachedRouteHandle>();
 
     constructor() {
@@ -37,7 +32,6 @@ export class AppRouteReuseStrategy extends BaseRouteReuseStrategy {
     }
 
     private getKey(route: ActivatedRouteSnapshot): string {
-        return route.pathFromRoot
-          .reduce((aggregator, current) => aggregator += current.routeConfig?.path + "/", "/");
+        return route.pathFromRoot.reduce((aggregator, current) => (aggregator += current.routeConfig?.path + "/"), "/");
     }
 }

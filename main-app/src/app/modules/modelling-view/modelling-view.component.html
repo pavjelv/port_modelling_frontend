@@ -1,71 +1,70 @@
 <div class="breadcrumbs">
-  <a routerLink="/">Домой</a>
-  <span class="divider">/</span>
-  <span>Моделирование системы</span>
+    <a routerLink="/">Домой</a>
+    <span class="divider">/</span>
+    <span>Моделирование системы</span>
 </div>
 <mat-stepper class="modelling-view" linear (selectionChange)="onStepSelectChange($event)">
-  <mat-step [stepControl]="systemParametersForm">
-    <div class="modelling-view-form" [formGroup]="systemParametersForm">
-      <ng-template matStepLabel>Параметры системы</ng-template>
-      <div class="modelling-view-form__parameters">
-        <mat-form-field appearance="outline" class="modelling-view-form__parameter wide">
-          <mat-label>Тип потока заявок</mat-label>
-          <mat-select required [formControlName]="parameters.ARRIVAL_DISTRIBUTION">
-            <mat-option *ngFor="let distribution of distributions" [value]="distribution.id">{{distribution.value}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-          <mat-label>Количество причалов</mat-label>
-          <input matInput required type="number" min="1" max="4" [formControlName]="parameters.SERVERS_NUM">
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-          <mat-label>Время обслуживания</mat-label>
-          <input matInput required type="number" min="0.1" max="4" [formControlName]="parameters.SERVE_TIME">
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-          <mat-label>Интенсивность потока судов</mat-label>
-          <input matInput required type="number" min="0.1" max="4" [formControlName]="parameters.LAMBDA">
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-          <mat-label>Максимальная длина очереди</mat-label>
-          <input matInput required type="number" min="0" max="10" [formControlName]="parameters.QUEUE_LENGTH">
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-          <mat-label>Время моделирования</mat-label>
-          <input matInput required type="number" min="20" max="40" [formControlName]="parameters.TIME">
-        </mat-form-field>
-      </div>
-      <div class="modelling-view-form__actions">
-        <button mat-button mat-stroked-button matStepperNext>Далее</button>
-      </div>
-    </div>
-  </mat-step>
-  <mat-step [optional]="true" [stepControl]="additionalShipTypeForm">
-    <div class="modelling-view-form" [formGroup]="additionalShipTypeForm">
-      <ng-template matStepLabel>Дополнительный тип судна</ng-template>
-      <div class="modelling-view-form__parameters">
-        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-          <mat-label>Вероятность появления сухогруза</mat-label>
-          <input matInput required type="number" min="0" max="1" [formControlName]="additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY">
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-          <mat-label>Время обслуживания сухогруза</mat-label>
-          <input matInput required type="number" min="0.1" max="4" [formControlName]="additionalShipTypeParameters.SERVE_TIME_CARGO">
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-          <mat-label>Количество причалов для сухогруза</mat-label>
-          <input matInput required type="number" min="1" max="3" [formControlName]="additionalShipTypeParameters.CARGO_SERVERS_NUM">
-        </mat-form-field>
-      </div>
-      <div class="modelling-view-form__actions">
-        <button mat-button matStepperPrevious>Назад</button>
-        <button mat-button mat-stroked-button matStepperNext>Далее</button>
-      </div>
-    </div>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Построение модели</ng-template>
-    <app-common-react-wrapper *ngIf="isBrowser" [props]="simulationVariables" class="modelling-view-canvas-wrapper"></app-common-react-wrapper>
-  </mat-step>
+    <mat-step [stepControl]="systemParametersForm">
+        <div class="modelling-view-form" [formGroup]="systemParametersForm">
+            <ng-template matStepLabel>Параметры системы</ng-template>
+            <div class="modelling-view-form__parameters">
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter wide">
+                    <mat-label>Тип потока заявок</mat-label>
+                    <mat-select required [formControlName]="parameters.ARRIVAL_DISTRIBUTION">
+                        <mat-option *ngFor="let distribution of distributions" [value]="distribution.id">{{ distribution.value }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>Количество причалов</mat-label>
+                    <input matInput required type="number" min="1" max="4" [formControlName]="parameters.SERVERS_NUM" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>Время обслуживания</mat-label>
+                    <input matInput required type="number" min="0.1" max="4" [formControlName]="parameters.SERVE_TIME" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>Интенсивность потока судов</mat-label>
+                    <input matInput required type="number" min="0.1" max="4" [formControlName]="parameters.LAMBDA" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>Максимальная длина очереди</mat-label>
+                    <input matInput required type="number" min="0" max="10" [formControlName]="parameters.QUEUE_LENGTH" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>Время моделирования</mat-label>
+                    <input matInput required type="number" min="20" max="40" [formControlName]="parameters.TIME" />
+                </mat-form-field>
+            </div>
+            <div class="modelling-view-form__actions">
+                <button mat-button mat-stroked-button matStepperNext>Далее</button>
+            </div>
+        </div>
+    </mat-step>
+    <mat-step [optional]="true" [stepControl]="additionalShipTypeForm">
+        <div class="modelling-view-form" [formGroup]="additionalShipTypeForm">
+            <ng-template matStepLabel>Дополнительный тип судна</ng-template>
+            <div class="modelling-view-form__parameters">
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>Вероятность появления сухогруза</mat-label>
+                    <input matInput required type="number" min="0" max="1" [formControlName]="additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>Время обслуживания сухогруза</mat-label>
+                    <input matInput required type="number" min="0.1" max="4" [formControlName]="additionalShipTypeParameters.SERVE_TIME_CARGO" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>Количество причалов для сухогруза</mat-label>
+                    <input matInput required type="number" min="1" max="3" [formControlName]="additionalShipTypeParameters.CARGO_SERVERS_NUM" />
+                </mat-form-field>
+            </div>
+            <div class="modelling-view-form__actions">
+                <button mat-button matStepperPrevious>Назад</button>
+                <button mat-button mat-stroked-button matStepperNext>Далее</button>
+            </div>
+        </div>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Построение модели</ng-template>
+        <app-common-react-wrapper *ngIf="isBrowser" [props]="simulationVariables" class="modelling-view-canvas-wrapper"></app-common-react-wrapper>
+    </mat-step>
 </mat-stepper>
-

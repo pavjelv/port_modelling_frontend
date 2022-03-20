@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, HostBinding, ViewEncapsulation} from "@angular/core";
-import {ArrivalProcessDataSource, QueueDisciplineDataSource, ServiceProcessDataSource} from "./codes-example.data";
+import { ChangeDetectionStrategy, Component, HostBinding, ViewEncapsulation } from "@angular/core";
+import { ArrivalProcessDataSource, QueueDisciplineDataSource, ServiceProcessDataSource } from "./codes-example.data";
 
 @Component({
     selector: "app-kendall-notation-component",
@@ -9,7 +9,6 @@ import {ArrivalProcessDataSource, QueueDisciplineDataSource, ServiceProcessDataS
     encapsulation: ViewEncapsulation.None,
 })
 export class KendallNotationComponent {
-
     @HostBinding("class.kendall-notation") hostClass = true;
 
     public KendallCharacters = KendallCharacters;
@@ -30,5 +29,5 @@ enum KendallCharacters {
     c = "c",
     K = "K",
     N = "N",
-    D = "D"
+    D = "D",
 }

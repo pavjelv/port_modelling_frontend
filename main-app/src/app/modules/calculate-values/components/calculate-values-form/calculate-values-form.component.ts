@@ -152,8 +152,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         }
         (this.systemCharacteristicParameterControl.value as Array<{ id: string; value: string }>).forEach((v) => {
             const data = this.isCompareMode
-                ? Array.from(this.systemVariablesToCalculatedDataMap.entries())
-                    .reduce((aggregator, [key, value]) => aggregator.set(key, value.get(v.id)), new Map<string, ChartSeriesData>())
+                ? Array.from(this.systemVariablesToCalculatedDataMap.entries()).reduce((aggregator, [key, value]) => aggregator.set(key, value.get(v.id)), new Map<string, ChartSeriesData>())
                 : new Map<string, ChartSeriesData>([["series", summary.result.map((value, i) => [summary.parameter_range[i], value[v.id]]) as ChartSeriesData]]);
             this.charts.push({
                 id: v.id,

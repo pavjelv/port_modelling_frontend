@@ -1,16 +1,7 @@
 <div class="system-animation">
-  <div class="system-animation-canvas__wrapper">
-    <canvas class="system-animation-canvas__view" #craneCanvas width="600" height="300"></canvas>
-    <canvas class="system-animation-canvas__view" #canvas width="600" height="300"></canvas>
-  </div>
-  <mat-slider
-    class="system-animation__slider"
-    [min]="0"
-    [max]="20"
-    [step]="1"
-    [tickInterval]="1"
-    [thumbLabel]="true"
-    [(value)]="currentTime"
-    (valueChange)="onTimeChange($event)"
-  ></mat-slider>
+    <div class="system-animation-canvas__wrapper">
+        <canvas class="system-animation-canvas__view" #craneCanvas width="600" height="300"></canvas>
+        <canvas class="system-animation-canvas__view" #canvas width="600" height="300"></canvas>
+    </div>
+    <mat-slider class="system-animation__slider" [min]="0" [max]="20" [step]="1" [tickInterval]="1" [thumbLabel]="true" [(value)]="currentTime" (valueChange)="onTimeChange($event)"></mat-slider>
 </div>

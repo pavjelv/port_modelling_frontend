@@ -1,63 +1,78 @@
 <div class="homepage-component">
-  <div class="homepage-component-description">
-    <div class="headline">
-      <h1>{{"port-modelling-fe.homepage.title" | translate}}</h1>
-      <div class="headline__hint">
-        <a (click)="openQueueingSystemTheoryDialog()">{{"port-modelling-fe.homepage.whatIsIt" | translate}}</a>
-      </div>
+    <div class="homepage-component-description">
+        <div class="headline">
+            <h1>{{ "port-modelling-fe.homepage.title" | translate }}</h1>
+            <div class="headline__hint">
+                <a (click)="openQueueingSystemTheoryDialog()">{{ "port-modelling-fe.homepage.whatIsIt" | translate }}</a>
+            </div>
+        </div>
+        <div class="homepage-component__system-functions">
+            <mat-card class="homepage-component__card" [routerLink]="'/calculate'">
+                <mat-card-header>
+                    <mat-card-title>{{ "port-modelling-fe.homepage.buildCharts" | translate }}</mat-card-title>
+                </mat-card-header>
+                <img mat-card-image src="/assets/images/line-chart.png" alt="Image of a line chart" />
+                <mat-card-content>
+                    <p>{{ "port-modelling-fe.homepage.buildChartsDescription" | translate }}</p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="homepage-component__card" [routerLink]="'/system-example'">
+                <mat-card-header>
+                    <mat-card-title>{{ "port-modelling-fe.homepage.viewModelExample" | translate }}</mat-card-title>
+                </mat-card-header>
+                <img mat-card-image src="/assets/images/analytics.png" alt="Image of a chart" />
+                <mat-card-content>
+                    <p>{{ "port-modelling-fe.homepage.viewModelExampleDescription" | translate }}</p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="homepage-component__card" [routerLink]="'/modelling-view'">
+                <mat-card-header>
+                    <mat-card-title>{{ "port-modelling-fe.homepage.buildModel" | translate }}</mat-card-title>
+                </mat-card-header>
+                <img mat-card-image src="/assets/images/port.png" alt="Image of a port" />
+                <mat-card-content>
+                    <p>{{ "port-modelling-fe.homepage.buildModelDescription" | translate }}</p>
+                </mat-card-content>
+            </mat-card>
+        </div>
     </div>
-    <div class="homepage-component__system-functions">
-      <mat-card class="homepage-component__card" [routerLink]="'/calculate'">
-        <mat-card-header>
-          <mat-card-title>{{"port-modelling-fe.homepage.buildCharts" | translate}}</mat-card-title>
-        </mat-card-header>
-        <img mat-card-image src="/assets/images/line-chart.png" alt="Image of a line chart">
-        <mat-card-content>
-          <p>{{"port-modelling-fe.homepage.buildChartsDescription" | translate}}</p>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="homepage-component__card" [routerLink]="'/system-example'">
-        <mat-card-header>
-          <mat-card-title>{{"port-modelling-fe.homepage.viewModelExample" | translate}}</mat-card-title>
-        </mat-card-header>
-        <img mat-card-image src="/assets/images/analytics.png" alt="Image of a chart">
-        <mat-card-content>
-          <p>{{"port-modelling-fe.homepage.viewModelExampleDescription" | translate}}</p>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="homepage-component__card" [routerLink]="'/modelling-view'">
-        <mat-card-header>
-          <mat-card-title>{{"port-modelling-fe.homepage.buildModel" | translate}}</mat-card-title>
-        </mat-card-header>
-        <img mat-card-image src="/assets/images/port.png" alt="Image of a port">
-        <mat-card-content>
-          <p>{{"port-modelling-fe.homepage.buildModelDescription" | translate}}</p>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  </div>
-  <div class="after"></div>
+    <div class="after"></div>
 </div>
 
 <ng-template #queueingSystemTheoryDialog>
-    <h2 mat-dialog-title>{{"port-modelling-fe.queueingSystem.name" | translate}}</h2>
+    <h2 mat-dialog-title>{{ "port-modelling-fe.queueingSystem.name" | translate }}</h2>
     <mat-dialog-content>
-      <p><b>{{"port-modelling-fe.queueingSystem.name" | translate}}</b>{{"port-modelling-fe.queueingSystem.description" | translate}}</p>
-      <ul>
-        <li>{{"port-modelling-fe.queueingSystem.withReject" | translate}}</li>
-        <li>{{"port-modelling-fe.queueingSystem.withInfQueue" | translate}}</li>
-        <li>{{"port-modelling-fe.queueingSystem.withQueue" | translate}}</li>
-      </ul>
-      <p>{{"port-modelling-fe.queueingSystem.queueDescription" | translate}}</p>
-      <h3>{{"port-modelling-fe.queueingSystem.definitions.title" | translate}}</h3>
-      <ul>
-        <li><b>{{"port-modelling-fe.common.request" | translate}}</b>{{"port-modelling-fe.queueingSystem.definitions.request" | translate}}</li>
-        <li><b>{{"port-modelling-fe.common.arrivals" | translate}}</b>{{"port-modelling-fe.queueingSystem.definitions.arrivals" | translate}}</li>
-        <li><b>{{"port-modelling-fe.common.serveTime" | translate}}</b>{{"port-modelling-fe.queueingSystem.definitions.serveTime" | translate}}</li>
-        <li><b>{{"port-modelling-fe.common.model" | translate}}</b>{{"port-modelling-fe.queueingSystem.definitions.model" | translate}}</li>
-      </ul>
+        <p
+            ><b>{{ "port-modelling-fe.queueingSystem.name" | translate }}</b
+            >{{ "port-modelling-fe.queueingSystem.description" | translate }}</p
+        >
+        <ul>
+            <li>{{ "port-modelling-fe.queueingSystem.withReject" | translate }}</li>
+            <li>{{ "port-modelling-fe.queueingSystem.withInfQueue" | translate }}</li>
+            <li>{{ "port-modelling-fe.queueingSystem.withQueue" | translate }}</li>
+        </ul>
+        <p>{{ "port-modelling-fe.queueingSystem.queueDescription" | translate }}</p>
+        <h3>{{ "port-modelling-fe.queueingSystem.definitions.title" | translate }}</h3>
+        <ul>
+            <li
+                ><b>{{ "port-modelling-fe.common.request" | translate }}</b
+                >{{ "port-modelling-fe.queueingSystem.definitions.request" | translate }}</li
+            >
+            <li
+                ><b>{{ "port-modelling-fe.common.arrivals" | translate }}</b
+                >{{ "port-modelling-fe.queueingSystem.definitions.arrivals" | translate }}</li
+            >
+            <li
+                ><b>{{ "port-modelling-fe.common.serveTime" | translate }}</b
+                >{{ "port-modelling-fe.queueingSystem.definitions.serveTime" | translate }}</li
+            >
+            <li
+                ><b>{{ "port-modelling-fe.common.model" | translate }}</b
+                >{{ "port-modelling-fe.queueingSystem.definitions.model" | translate }}</li
+            >
+        </ul>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>{{"port-modelling-fe.common.close" | translate}}</button>
+        <button mat-button mat-dialog-close>{{ "port-modelling-fe.common.close" | translate }}</button>
     </mat-dialog-actions>
 </ng-template>

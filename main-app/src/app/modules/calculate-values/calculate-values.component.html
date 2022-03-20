@@ -1,31 +1,41 @@
 <div class="breadcrumbs">
-  <a routerLink="/">Домой</a>
-  <span class="divider">/</span>
-  <span>Выбор системы</span>
+    <a routerLink="/">Домой</a>
+    <span class="divider">/</span>
+    <span>Выбор системы</span>
 </div>
 
 <main class="calculate-values__main">
-  <h1>Рассчитать параметры системы</h1>
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sit amet velit eget ligula ullamcorper congue vitae non mi. Vivamus faucibus, tellus in sodales auctor, sem tellus interdum metus, eget vulputate lacus arcu ut tortor. Mauris suscipit eleifend viverra. Maecenas interdum dictum quam, a finibus arcu volutpat id. Integer a enim ligula. Duis fermentum dui eu facilisis ultrices. Donec ac blandit erat. Sed lacinia eros nisl, vitae tempus nisi convallis eget.
-  </p>
-  <p>
-    Phasellus ac tellus tellus. Curabitur bibendum risus sit amet dictum dignissim. Vestibulum sed tempor tortor. Integer fermentum ultricies enim, ut cursus neque tempor ut. Nam eget ante sed eros egestas dapibus. Vestibulum scelerisque id neque eu fermentum. Donec in fringilla eros, pulvinar molestie mauris. Etiam dignissim lobortis elit quis sagittis. Integer aliquet, neque a gravida eleifend, arcu nisl tristique sem, non lobortis erat elit ac ipsum. Vestibulum ut felis condimentum, posuere ex quis, suscipit felis. Proin quis facilisis elit. Nunc egestas ex velit, non luctus est vehicula vitae. Pellentesque lacinia erat a enim pretium aliquet. Curabitur facilisis quis tortor eu mattis.
-  </p>
-  <p>
-    Nulla facilisi. Sed sagittis tincidunt justo id vulputate. Aliquam ac aliquet mi. Etiam tincidunt libero sed neque venenatis luctus. Etiam sit amet neque neque. Phasellus dapibus non nulla nec efficitur. Aliquam porttitor nec eros ac gravida. Aenean cursus consequat vestibulum. Cras pulvinar sit amet sapien at consectetur. Vivamus convallis, odio id egestas elementum, odio nulla iaculis odio, a ultricies dolor purus in eros. Donec mi libero, efficitur ac vulputate ac, ornare ut sapien. Nulla facilisi. Aliquam condimentum rutrum libero quis porttitor.
-  </p>
-  <p>
-    Morbi pulvinar nulla blandit lorem vulputate, at auctor arcu sollicitudin. Morbi volutpat lacus id aliquet porttitor. Suspendisse consectetur lobortis sapien, eu lacinia tellus finibus vitae. Nunc elementum mauris in velit auctor molestie. Nullam malesuada malesuada velit nec ultrices. In a lacinia ipsum, non convallis arcu. Pellentesque non nisl quis felis fermentum dictum at vel erat. Integer scelerisque aliquam eros ac euismod. Nunc lobortis sed nibh eu consequat. Nam purus neque, molestie finibus purus et, posuere blandit mi. Curabitur semper ornare quam, elementum lobortis elit consectetur sit amet. Sed eleifend leo dolor, at finibus magna vestibulum ac. Nam eget ex nec enim vehicula elementum.
-  </p>
-  <h2>Выберите тип системы</h2>
-  <div class="calculate-values__select-system">
-    <mat-form-field appearance="outline" class="calculate-values__select-system__field">
-      <mat-label>Тип системы</mat-label>
-      <mat-select [(value)]="selectedValue">
-        <mat-option *ngFor="let system of systems" [value]="system.id">{{system.value}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-raised-button (click)="onContinueClicked()" color="primary">Продолжить</button>
-  </div>
+    <h1>Рассчитать параметры системы</h1>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sit amet velit eget ligula ullamcorper congue vitae non mi. Vivamus faucibus, tellus in sodales auctor, sem tellus interdum
+        metus, eget vulputate lacus arcu ut tortor. Mauris suscipit eleifend viverra. Maecenas interdum dictum quam, a finibus arcu volutpat id. Integer a enim ligula. Duis fermentum dui eu facilisis
+        ultrices. Donec ac blandit erat. Sed lacinia eros nisl, vitae tempus nisi convallis eget.
+    </p>
+    <p>
+        Phasellus ac tellus tellus. Curabitur bibendum risus sit amet dictum dignissim. Vestibulum sed tempor tortor. Integer fermentum ultricies enim, ut cursus neque tempor ut. Nam eget ante sed
+        eros egestas dapibus. Vestibulum scelerisque id neque eu fermentum. Donec in fringilla eros, pulvinar molestie mauris. Etiam dignissim lobortis elit quis sagittis. Integer aliquet, neque a
+        gravida eleifend, arcu nisl tristique sem, non lobortis erat elit ac ipsum. Vestibulum ut felis condimentum, posuere ex quis, suscipit felis. Proin quis facilisis elit. Nunc egestas ex velit,
+        non luctus est vehicula vitae. Pellentesque lacinia erat a enim pretium aliquet. Curabitur facilisis quis tortor eu mattis.
+    </p>
+    <p>
+        Nulla facilisi. Sed sagittis tincidunt justo id vulputate. Aliquam ac aliquet mi. Etiam tincidunt libero sed neque venenatis luctus. Etiam sit amet neque neque. Phasellus dapibus non nulla nec
+        efficitur. Aliquam porttitor nec eros ac gravida. Aenean cursus consequat vestibulum. Cras pulvinar sit amet sapien at consectetur. Vivamus convallis, odio id egestas elementum, odio nulla
+        iaculis odio, a ultricies dolor purus in eros. Donec mi libero, efficitur ac vulputate ac, ornare ut sapien. Nulla facilisi. Aliquam condimentum rutrum libero quis porttitor.
+    </p>
+    <p>
+        Morbi pulvinar nulla blandit lorem vulputate, at auctor arcu sollicitudin. Morbi volutpat lacus id aliquet porttitor. Suspendisse consectetur lobortis sapien, eu lacinia tellus finibus vitae.
+        Nunc elementum mauris in velit auctor molestie. Nullam malesuada malesuada velit nec ultrices. In a lacinia ipsum, non convallis arcu. Pellentesque non nisl quis felis fermentum dictum at vel
+        erat. Integer scelerisque aliquam eros ac euismod. Nunc lobortis sed nibh eu consequat. Nam purus neque, molestie finibus purus et, posuere blandit mi. Curabitur semper ornare quam, elementum
+        lobortis elit consectetur sit amet. Sed eleifend leo dolor, at finibus magna vestibulum ac. Nam eget ex nec enim vehicula elementum.
+    </p>
+    <h2>Выберите тип системы</h2>
+    <div class="calculate-values__select-system">
+        <mat-form-field appearance="outline" class="calculate-values__select-system__field">
+            <mat-label>Тип системы</mat-label>
+            <mat-select [(value)]="selectedValue">
+                <mat-option *ngFor="let system of systems" [value]="system.id">{{ system.value }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-raised-button (click)="onContinueClicked()" color="primary">Продолжить</button>
+    </div>
 </main>

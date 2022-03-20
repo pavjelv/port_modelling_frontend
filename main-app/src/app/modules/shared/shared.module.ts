@@ -9,20 +9,8 @@ import { MatBadgeModule } from "@angular/material/badge";
 import { MatMenuModule } from "@angular/material/menu";
 
 @NgModule({
-  declarations: [
-    CommonHeaderComponent,
-  ],
-  imports: [
-    CommonModule,
-    MatToolbarModule,
-    MatButtonModule,
-    RouterModule,
-    MatIconModule,
-    MatBadgeModule,
-    MatMenuModule,
-  ],
-  exports: [
-    CommonHeaderComponent,
-  ],
+    declarations: [CommonHeaderComponent],
+    imports: [CommonModule, MatToolbarModule, MatButtonModule, RouterModule, MatIconModule, MatBadgeModule, MatMenuModule],
+    exports: [CommonHeaderComponent],
 })
 export class SharedModule {}
