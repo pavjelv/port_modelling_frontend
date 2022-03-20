@@ -39,26 +39,34 @@
       </cdk-virtual-scroll-viewport>
     </div>
     <div class="calculate-values-form-parameters__system mat-elevation-z1" [formGroup]="systemParametersForm">
-      <h3>График характеристики системы</h3>
+      <h3>{{"port-modelling-fe.calculateValues.characteristicsFormTitle" | translate}}</h3>
       <mat-divider class="calculate-values-form__top-divider"></mat-divider>
       <ng-container *ngIf="!isCompareMode" [ngTemplateOutlet]="xAxisForm"></ng-container>
-      <span class="description-span">Параметры системы</span>
+      <span class="description-span">{{"port-modelling-fe.calculateValues.systemParameters" | translate}}</span>
       <div class="calculate-values-form-parameters__system-variables">
         <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.SERVERS_NUM">
-          <mat-label>Количество каналов (n)</mat-label>
+          <mat-label>{{"port-modelling-fe.calculateValues.serversNum" | translate}}</mat-label>
           <input matInput required type="number" min="1" max="10" [formControlName]="parameters.SERVERS_NUM">
+          <mat-hint align="start">{{"port-modelling-fe.calculateValues.serversNumHint" | translate}}</mat-hint>
+          <mat-error *ngIf="getControl(parameters.SERVERS_NUM).invalid">{{ getErrorMessage(parameters.SERVERS_NUM) | translate }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.SERVE_TIME">
-          <mat-label>Время обслуживания (t)</mat-label>
-          <input matInput required type="number" min="0.1" max="4" [formControlName]="parameters.SERVE_TIME">
+          <mat-label>{{"port-modelling-fe.calculateValues.serveTime" | translate}}</mat-label>
+          <input matInput required type="number" min="0.1" max="5" [formControlName]="parameters.SERVE_TIME">
+          <mat-hint align="start">{{"port-modelling-fe.calculateValues.serveTimeHint" | translate}}</mat-hint>
+          <mat-error *ngIf="getControl(parameters.SERVE_TIME).invalid">{{ getErrorMessage(parameters.SERVE_TIME) | translate }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.LAMBDA">
-          <mat-label>Интенсивность потока заявок (&lambda;) </mat-label>
-          <input matInput required type="number" min="0.1" max="4" [formControlName]="parameters.LAMBDA">
+          <mat-label [innerHTML]="'port-modelling-fe.calculateValues.lambda' | translate"></mat-label>
+          <input matInput required type="number" min="0.1" max="5" [formControlName]="parameters.LAMBDA">
+          <mat-hint align="start">{{"port-modelling-fe.calculateValues.lambdaHint" | translate}}</mat-hint>
+          <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.QUEUE_LENGTH">
-          <mat-label>Максимальная длина очереди (m)</mat-label>
+          <mat-label>{{"port-modelling-fe.calculateValues.queueLength" | translate}}</mat-label>
           <input matInput required type="number" min="1" max="10" [formControlName]="parameters.QUEUE_LENGTH">
+          <mat-hint align="start">{{"port-modelling-fe.calculateValues.queueLengthHint" | translate}}</mat-hint>
+          <mat-error *ngIf="getControl(parameters.QUEUE_LENGTH).invalid">{{ getErrorMessage(parameters.QUEUE_LENGTH) | translate }}</mat-error>
         </mat-form-field>
       </div>
       <mat-divider class="calculate-values-form-parameters__divider last"></mat-divider>
@@ -76,7 +84,7 @@
 <ng-template #characteristicControl [formGroup]="systemParametersForm">
   <span class="description-span">Ось Y</span>
   <mat-form-field appearance="outline" class="calculate-values-form-parameters__system-characteristic">
-    <mat-label>Характеристика</mat-label>
+    <mat-label>{{"port-modelling-fe.calculateValues.characteristic" | translate}}</mat-label>
     <mat-select required [formControl]="systemCharacteristicParameterControl" multiple>
       <mat-select-trigger>
         {{systemCharacteristicParameterControl.value?.[0]?.value ?? ''}}
@@ -86,25 +94,39 @@
       </mat-select-trigger>
       <mat-option *ngFor="let characteristic of availableSystemCharacteristics" [value]="characteristic">{{characteristic.value}}</mat-option>
     </mat-select>
+    <mat-error *ngIf="systemCharacteristicParameterControl.invalid">{{"port-modelling-fe.calculateValues.characteristicRequiredError" | translate}}</mat-error>
+    <mat-hint align="start">{{"port-modelling-fe.calculateValues.chooseCharacteristicHint" | translate}}</mat-hint>
   </mat-form-field>
 </ng-template>
 
 <ng-template #xAxisForm [formGroup]="systemParametersForm">
-  <span class="description-span">Ось Х</span>
+  <span class="description-span">{{"port-modelling-fe.calculateValues.xAxis" | translate}}</span>
   <mat-form-field appearance="outline" class="calculate-values-form-parameters__system-axis">
-    <mat-label>Параметр</mat-label>
+    <mat-label>{{"port-modelling-fe.calculateValues.parameter" | translate}}</mat-label>
     <mat-select required [formControlName]="'rangeParameter'">
-      <mat-option *ngFor="let parameter of systemParameters" [innerHTML]="parameter.value" [value]="parameter.id"></mat-option>
+      <mat-option *ngFor="let parameter of systemParameters" [innerHTML]="parameter.value | translate" [value]="parameter.id"></mat-option>
     </mat-select>
+      <mat-hint align="start">{{"port-modelling-fe.calculateValues.parameterHint" | translate}}</mat-hint>
   </mat-form-field>
+  <span class="description-span">{{"port-modelling-fe.calculateValues.xAxisRange" | translate}}</span>
   <div class="calculate-values-form-parameters__system-range">
-    <mat-slider [matTooltipPosition]="'left'" [matTooltip]="'Разброс значений'" discrete [min]="0.1" [max]="3" [step]="0.1" class="range-slider">
-      <input [formControlName]="'rangeFrom'" matSliderStartThumb>
-      <input [formControlName]="'rangeTo'" matSliderEndThumb>
-    </mat-slider>
     <mat-form-field appearance="outline" class="step-field">
-      <mat-label>Шаг</mat-label>
+      <mat-label>{{"port-modelling-fe.calculateValues.from" | translate}}</mat-label>
+      <input matInput required type="number" min="0.1" max="10" [formControlName]="'rangeFrom'">
+      <mat-hint align="start">{{"port-modelling-fe.calculateValues.fromFieldHint" | translate}}</mat-hint>
+      <mat-error *ngIf="getControl('rangeFrom').invalid">{{ getErrorMessage('rangeFrom') | translate }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="step-field">
+      <mat-label>{{"port-modelling-fe.calculateValues.to" | translate}}</mat-label>
+      <input matInput required type="number" min="0.2" max="10" [formControlName]="'rangeTo'">
+      <mat-hint align="start">{{"port-modelling-fe.calculateValues.toFieldHint" | translate}}</mat-hint>
+      <mat-error *ngIf="getControl('rangeTo').invalid">{{ getErrorMessage('rangeTo') | translate }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="step-field">
+      <mat-label>{{"port-modelling-fe.calculateValues.step" | translate}}</mat-label>
       <input matInput required type="number" min="0.1" max="2" [formControlName]="'step'">
+      <mat-hint align="start">{{"port-modelling-fe.calculateValues.stepFieldHint" | translate}}</mat-hint>
+      <mat-error *ngIf="getControl('step').invalid">{{ getErrorMessage('step') | translate }}</mat-error>
     </mat-form-field>
   </div>
   <mat-divider class="calculate-values-form-parameters__divider"></mat-divider>

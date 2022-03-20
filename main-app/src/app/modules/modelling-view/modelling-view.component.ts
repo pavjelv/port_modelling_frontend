@@ -89,7 +89,7 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
         }
         this.snackBar.open(message, "Смоделировать", {
           horizontalPosition: "right",
-          verticalPosition: "top",
+          verticalPosition: "bottom",
         }).onAction().pipe(takeUntil(this.destroy$)).subscribe(() => {
           this.applyValues();
           this.cdr.detectChanges();

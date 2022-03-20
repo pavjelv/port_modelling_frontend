@@ -11,8 +11,8 @@ export const AvailableSystemCharacteristicsDictionary = new Map<string, string>(
 ]);
 
 export const SystemParametersDictionary = new Map<string, string>([
-  [SystemParameters.SERVERS_NUM, "Количество каналов (n)"],
-  [SystemParameters.SERVE_TIME, "Время обслуживания (t)"],
-  [SystemParameters.LAMBDA, "Интенсивность потока заявок (&lambda;)"],
-  [SystemParameters.QUEUE_LENGTH, "Максимальная длина очереди (m)"],
+  [SystemParameters.SERVERS_NUM, "port-modelling-fe.calculateValues.serversNum"],
+  [SystemParameters.SERVE_TIME, "port-modelling-fe.calculateValues.serveTime"],
+  [SystemParameters.LAMBDA, "port-modelling-fe.calculateValues.lambda"],
+  [SystemParameters.QUEUE_LENGTH, "port-modelling-fe.calculateValues.queueLength"],
 ]);
