@@ -15,7 +15,6 @@ export class MathContentRouterGuard implements CanDeactivate<any> {
             )
             .subscribe((v) => {
                 this.renderFinished = v <= 0;
-                console.log(this.renderFinished, v);
             });
     }
     canDeactivate(
