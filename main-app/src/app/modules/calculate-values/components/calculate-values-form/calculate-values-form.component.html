@@ -149,7 +149,12 @@
     <mat-dialog-content class="calculate-values-form__compare-mode-dialog">
         <p>{{ "port-modelling-fe.calculateValues.compareModeDescription" | translate }}</p>
         <h2>{{"port-modelling-fe.common.instruction" | translate}}</h2>
-        <div [innerHTML]="'port-modelling-fe.calculateValues.compareModeInstruction' | translate"></div>
+        <ol>
+            <li>{{"port-modelling-fe.calculateValues.compareModeInstruction1" | translate}}</li>
+            <li>{{"port-modelling-fe.calculateValues.compareModeInstruction2" | translate}}</li>
+            <li>{{"port-modelling-fe.calculateValues.compareModeInstruction3" | translate}}</li>
+            <li>{{"port-modelling-fe.calculateValues.compareModeInstruction4" | translate}}</li>
+        </ol>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>{{ "port-modelling-fe.common.close" | translate }}</button>

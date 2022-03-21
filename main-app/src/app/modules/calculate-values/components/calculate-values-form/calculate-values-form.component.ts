@@ -18,6 +18,7 @@ import { PrefilledSystemParametersListType, PrefilledSystemParametersMap } from 
 import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 import { RxUnsubscribe } from "../../../../utils/rx-unsubscribe";
 import { takeUntil } from "rxjs/operators";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
     selector: "app-calculate-values-form",
@@ -69,6 +70,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         private route: ActivatedRoute,
         private dialog: MatDialog,
         private sanitizer: DomSanitizer,
+        private translateService: TranslateService,
     ) {
         super();
         this.isBrowser = isPlatformBrowser(this.platformId);
@@ -169,7 +171,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
                 : new Map<string, ChartSeriesData>([["series", summary.result.map((value, i) => [summary.parameter_range[i], value[v.id]]) as ChartSeriesData]]);
             this.charts.push({
                 id: v.id,
-                xAxisName: SystemParametersDictionary.get(this.rangeParameterControl.value),
+                xAxisName: this.translateService.instant(SystemParametersDictionary.get(this.rangeParameterControl.value)),
                 title: v.value,
                 data,
             });
