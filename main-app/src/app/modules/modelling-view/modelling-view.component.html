@@ -5,12 +5,18 @@
 </div>
 <mat-stepper class="modelling-view" linear (selectionChange)="onStepSelectChange($event)">
     <mat-step>
-        <div class="modelling-view-form">
-            <div class="modelling-view-form__actions">
+        <ng-template matStepLabel>{{ "port-modelling-fe.common.instruction" | translate }}</ng-template>
+        <div class="modelling-view-instruction">
+            <ul>
+                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction1' | translate"></span></li>
+                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction2' | translate"></span></li>
+                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction3' | translate"></span></li>
+            </ul>
+            <h3>{{ "port-modelling-fe.modellingView.instructionNote" | translate }}</h3>
+            <div class="modelling-view-instruction__actions">
                 <button mat-button mat-stroked-button matStepperNext>{{ "port-modelling-fe.common.next" | translate }}</button>
             </div>
         </div>
-        <ng-template matStepLabel>{{ "port-modelling-fe.common.instruction" | translate }}</ng-template>
     </mat-step>
     <mat-step [stepControl]="systemParametersForm">
         <div class="modelling-view-form" [formGroup]="systemParametersForm">
@@ -91,7 +97,7 @@
         </div>
     </mat-step>
     <mat-step>
-        <ng-template matStepLabel>Построение модели</ng-template>
+        <ng-template matStepLabel>{{ "port-modelling-fe.modellingView.modelCreate" | translate }}</ng-template>
         <app-common-react-wrapper *ngIf="isBrowser" [props]="simulationVariables" class="modelling-view-canvas-wrapper"></app-common-react-wrapper>
     </mat-step>
 </mat-stepper>
