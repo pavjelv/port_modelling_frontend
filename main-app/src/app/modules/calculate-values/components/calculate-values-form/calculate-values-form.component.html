@@ -1,13 +1,13 @@
 <div class="breadcrumbs">
     <a routerLink="/">{{ "port-modelling-fe.common.home" | translate }}</a>
     <span class="calculate-values-form-breadcrumbs__divider">/</span>
-    <a routerLink="/calculate">Выбор системы</a>
+    <a routerLink="/calculate">{{ "port-modelling-fe.calculateValues.systemChoice" | translate }}</a>
     <span class="calculate-values-form-breadcrumbs__divider">/</span>
-    <span>{{ systemName }}</span>
+    <span>{{ systemName | translate }}</span>
 </div>
 <div class="calculate-values-form">
     <h1 class="calculate-values-form-title">
-        {{ systemName }}
+        {{ systemName | translate }}
         <mat-icon class="toggle-icon" (click)="openDialog()">help_outline</mat-icon>
     </h1>
     <div class="calculate-values-form__compare-toggle">
@@ -150,10 +150,10 @@
         <p>{{ "port-modelling-fe.calculateValues.compareModeDescription" | translate }}</p>
         <h2>{{"port-modelling-fe.common.instruction" | translate}}</h2>
         <ol>
-            <li>{{"port-modelling-fe.calculateValues.compareModeInstruction1" | translate}}</li>
-            <li>{{"port-modelling-fe.calculateValues.compareModeInstruction2" | translate}}</li>
-            <li>{{"port-modelling-fe.calculateValues.compareModeInstruction3" | translate}}</li>
-            <li>{{"port-modelling-fe.calculateValues.compareModeInstruction4" | translate}}</li>
+            <li [innerHTML]="'port-modelling-fe.calculateValues.compareModeInstruction1' | translate"></li>
+            <li [innerHTML]="'port-modelling-fe.calculateValues.compareModeInstruction2' | translate"></li>
+            <li [innerHTML]="'port-modelling-fe.calculateValues.compareModeInstruction3' | translate"></li>
+            <li [innerHTML]="'port-modelling-fe.calculateValues.compareModeInstruction4' | translate"></li>
         </ol>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
