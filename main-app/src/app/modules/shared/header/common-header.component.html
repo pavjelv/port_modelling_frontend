@@ -1,10 +1,5 @@
 <mat-toolbar color="primary">
     <div class="header-mat-toolbar-content">
-        <!--    <div>-->
-        <!--      <button mat-icon-button [matMenuTriggerFor]="menu">-->
-        <!--        <mat-icon>menu</mat-icon>-->
-        <!--      </button>-->
-        <!--    </div>-->
         <div>
             <a mat-button class="companyName" routerLink="/">
                 <span class="header-title">{{ "port-modelling-fe.common.home" | translate }}</span>
@@ -14,16 +9,11 @@
             <a mat-button routerLinkActive="active" routerLink="/system-example">Пример системы</a>
         </div>
         <div>
-            <a mat-button routerLinkActive="active" routerLink="/calculate">Рассчитать</a>
+            <a mat-button routerLinkActive="active" routerLink="/calculate">Построить графики</a>
         </div>
         <div>
             <a mat-button routerLinkActive="active" routerLink="/modelling-view">Смоделировать</a>
             <span class="header-spacer"></span>
         </div>
-        <mat-menu #menu="matMenu" class="common-header-menu">
-            <div>
-                <a mat-button routerLinkActive="active" routerLink="/home">Home</a>
-            </div>
-        </mat-menu>
     </div>
 </mat-toolbar>

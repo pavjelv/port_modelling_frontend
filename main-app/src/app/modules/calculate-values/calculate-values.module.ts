@@ -21,6 +21,7 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { TranslateModule } from "@ngx-translate/core";
+import { ComponentsModule } from "../../components/components.module";
 
 const routes: Route[] = [
     {
@@ -55,6 +56,7 @@ const routes: Route[] = [
         MatTooltipModule,
         MatSlideToggleModule,
         TranslateModule.forChild(),
+        ComponentsModule,
     ],
 })
 export class CalculateValuesModule {}

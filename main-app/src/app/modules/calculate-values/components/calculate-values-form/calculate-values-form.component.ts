@@ -28,7 +28,6 @@ import { TheorySummaryModel } from "../../../../model/theory/theory-summary.mode
 import { ActivatedRoute } from "@angular/router";
 import { SystemTypeDictionary } from "../../../../dictionaries/system-type.dictionary";
 import { MatDialog } from "@angular/material/dialog";
-import { MultChannelRejectPopoverComponent } from "../mult-channel-reject-popover/mult-channel-reject-popover.component";
 import {
     AvailableSystemCharacteristicsDictionary,
     SystemParametersDictionary,
@@ -67,6 +66,15 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     @ViewChild("compareModeDescription")
     public compareModeDescriptionDialog: TemplateRef<unknown>;
 
+    @ViewChild("mmcDialogTemplate")
+    public mmcSystemDialog: TemplateRef<unknown>;
+
+    @ViewChild("mmccDialogTemplate")
+    public mmccSystemDialog: TemplateRef<unknown>;
+
+    @ViewChild("mmckDialogTemplate")
+    public mmckSystemDialog: TemplateRef<unknown>;
+
     public systemParametersForm: FormGroup;
     public isBrowser = false;
 
@@ -82,6 +90,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
 
     public systemName = "";
     public hasQueue = false;
+    private systemType: SystemType;
 
     public charts: ChartDataModel[] = [];
 
@@ -110,6 +119,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     ngOnInit(): void {
         const systemType: SystemType = this.route.snapshot.queryParamMap.get("systemType") as SystemType;
         this.hasQueue = systemType === SystemType.WITH_QUEUE;
+        this.systemType = systemType;
         this.availableSystemCharacteristics = Array.from(AvailableSystemCharacteristicsDictionary)
             .filter(([k, v]) => {
                 if (systemType === SystemType.WITH_REJECT) {
@@ -239,11 +249,19 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     }
 
     public openDialog(): void {
-        const dialogRef = this.dialog.open(MultChannelRejectPopoverComponent);
-
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(`Dialog result: ${result}`);
-        });
+        switch (this.systemType) {
+            case SystemType.INFINITE_QUEUE:
+                this.dialog.open(this.mmcSystemDialog);
+                break;
+            case SystemType.WITH_REJECT:
+                this.dialog.open(this.mmccSystemDialog);
+                break;
+            case SystemType.WITH_QUEUE:
+                this.dialog.open(this.mmckSystemDialog);
+                break;
+            default:
+                break;
+        }
     }
 
     public openCompareModeDescriptionDialog(): void {

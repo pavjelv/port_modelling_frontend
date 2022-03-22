@@ -2,7 +2,6 @@ import {
     ReplaySubject,
     Observable,
     Observer,
-    BehaviorSubject,
     Subject,
 } from "rxjs";
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
@@ -12,6 +11,7 @@ import { isPlatformBrowser } from "@angular/common";
 export class MathService {
     private readonly notifier: ReplaySubject<boolean>;
     private readonly _renderNotifier: Subject<number> = new ReplaySubject(50, 10000);
+    private mathContentCache: Map<string, string> = new Map<string, string>();
 
     constructor(@Inject(PLATFORM_ID) private platformId: unknown) {
         this.notifier = new ReplaySubject<boolean>();
@@ -32,17 +32,20 @@ export class MathService {
 
     render(element: HTMLElement, mathContent?: string): void {
         if (mathContent) {
-            if (mathContent) {
-                this._renderNotifier.next(1);
-                element.innerText = mathContent;
-            } else {
-                console.error("Invalid LaTeX string: ", mathContent);
+            if (this.mathContentCache.has(mathContent)) {
+                element.innerHTML = this.mathContentCache.get(mathContent);
+                return;
             }
+            this._renderNotifier.next(1);
+            element.innerText = mathContent;
         } else {
             console.error(this, "Math content undefined: ", mathContent);
         }
 
         MathJax?.Hub.Queue(["Typeset", MathJax.Hub, element]);
-        MathJax?.Hub.Queue(() => this._renderNotifier.next(-1));
+        MathJax?.Hub.Queue(() => {
+            this.mathContentCache.set(mathContent, element.innerHTML);
+            this._renderNotifier.next(-1);
+        });
     }
 }
