@@ -23,7 +23,7 @@ export class MathjaxModule {
             config.text = `
             MathJax.Hub.Config({
                 skipStartupTypeset: true,
-                tex2jax: { inlineMath: [["$", "$"]],displayMath:[["$$", "$$"]] }
+                tex2jax: { inlineMath: [["$", "$"], ["\\[", "\\]"]] }
             });
             MathJax.Hub.Register.StartupHook('End', () => {
                 window.hubReady?.next();

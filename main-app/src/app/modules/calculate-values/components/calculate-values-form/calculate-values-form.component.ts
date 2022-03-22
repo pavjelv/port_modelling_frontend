@@ -1,6 +1,25 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, TemplateRef, ViewChild } from "@angular/core";
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { SystemParameters, SystemType } from "../../../../model/theory/system-type";
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    Inject,
+    OnDestroy,
+    OnInit,
+    PLATFORM_ID,
+    TemplateRef,
+    ViewChild,
+} from "@angular/core";
+import {
+    AbstractControl,
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    Validators,
+} from "@angular/forms";
+import {
+    SystemParameters,
+    SystemType,
+} from "../../../../model/theory/system-type";
 import { LoadingOverlayService } from "../../../../services/loading-overlay.service";
 import { TheoryResultsService } from "../../../../services/theory-results.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -10,11 +29,23 @@ import { ActivatedRoute } from "@angular/router";
 import { SystemTypeDictionary } from "../../../../dictionaries/system-type.dictionary";
 import { MatDialog } from "@angular/material/dialog";
 import { MultChannelRejectPopoverComponent } from "../mult-channel-reject-popover/mult-channel-reject-popover.component";
-import { AvailableSystemCharacteristicsDictionary, SystemParametersDictionary } from "../../../../dictionaries/available-system-characteristics.dictionary";
+import {
+    AvailableSystemCharacteristicsDictionary,
+    SystemParametersDictionary,
+} from "../../../../dictionaries/available-system-characteristics.dictionary";
 import { DomSanitizer } from "@angular/platform-browser";
-import { ChartDataModel, ChartSeriesData } from "../../../../model/chart-data.model";
-import { MatSelectionList, MatSelectionListChange } from "@angular/material/list";
-import { PrefilledSystemParametersListType, PrefilledSystemParametersMap } from "../../../../dictionaries/prefilled-system-parameters-set";
+import {
+    ChartDataModel,
+    ChartSeriesData,
+} from "../../../../model/chart-data.model";
+import {
+    MatSelectionList,
+    MatSelectionListChange,
+} from "@angular/material/list";
+import {
+    PrefilledSystemParametersListType,
+    PrefilledSystemParametersMap,
+} from "../../../../dictionaries/prefilled-system-parameters-set";
 import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 import { RxUnsubscribe } from "../../../../utils/rx-unsubscribe";
 import { takeUntil } from "rxjs/operators";
@@ -80,7 +111,14 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         const systemType: SystemType = this.route.snapshot.queryParamMap.get("systemType") as SystemType;
         this.hasQueue = systemType === SystemType.WITH_QUEUE;
         this.availableSystemCharacteristics = Array.from(AvailableSystemCharacteristicsDictionary)
-            .filter(([k, v]) => (this.hasQueue || k !== "l_queue" && k !== "wait"))
+            .filter(([k, v]) => {
+                if (systemType === SystemType.WITH_REJECT) {
+                    return k !== "l_queue" && k !== "wait";
+                } else if (systemType === SystemType.INFINITE_QUEUE) {
+                    return k !== "l_queue";
+                }
+                return true;
+            })
             .map(([key, value]) => {
                 return {
                     id: key,
@@ -167,8 +205,13 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         }
         (this.systemCharacteristicParameterControl.value as Array<{ id: string; value: string }>).forEach((v) => {
             const data = this.isCompareMode
-                ? Array.from(this.systemVariablesToCalculatedDataMap.entries()).reduce((aggregator, [key, value]) => aggregator.set(key, value.get(v.id)), new Map<string, ChartSeriesData>())
-                : new Map<string, ChartSeriesData>([["series", summary.result.map((value, i) => [summary.parameter_range[i], value[v.id]]) as ChartSeriesData]]);
+                ? Array.from(this.systemVariablesToCalculatedDataMap.entries())
+                    .reduce(
+                        (aggregator, [key, value]) => aggregator.set(key, value.get(v.id)), new Map<string, ChartSeriesData>()
+                    )
+                : new Map<string, ChartSeriesData>([
+                    ["series", summary.result.map((value, i) => [summary.parameter_range[i], value[v.id]]) as ChartSeriesData]
+                ]);
             this.charts.push({
                 id: v.id,
                 xAxisName: this.translateService.instant(SystemParametersDictionary.get(this.rangeParameterControl.value)),

@@ -57,7 +57,11 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
     private lastFormValue: Record<string, unknown> = null;
     private lastAdditionalParametersFormValue: Record<string, unknown> = null;
 
-    constructor(@Inject(PLATFORM_ID) private platformId: unknown, private fb: FormBuilder, private cdr: ChangeDetectorRef, private _matStepperIntl: MatStepperIntl, private snackBar: MatSnackBar) {
+    constructor(@Inject(PLATFORM_ID) private platformId: unknown,
+                private fb: FormBuilder,
+                private cdr: ChangeDetectorRef,
+                private _matStepperIntl: MatStepperIntl,
+                private snackBar: MatSnackBar) {
         super();
         this.isBrowser = isPlatformBrowser(this.platformId);
     }
@@ -104,7 +108,8 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
                 this.snackBar
                     .open(message, "Смоделировать", {
                         horizontalPosition: "right",
-                        verticalPosition: "bottom",
+                        verticalPosition: "top",
+                        panelClass: "system-example-create-model-snackbar"
                     })
                     .onAction()
                     .pipe(takeUntil(this.destroy$))
