@@ -121,14 +121,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         this.hasQueue = systemType === SystemType.WITH_QUEUE;
         this.systemType = systemType;
         this.availableSystemCharacteristics = Array.from(AvailableSystemCharacteristicsDictionary)
-            .filter(([k, v]) => {
-                if (systemType === SystemType.WITH_REJECT) {
-                    return k !== "l_queue" && k !== "wait";
-                } else if (systemType === SystemType.INFINITE_QUEUE) {
-                    return k !== "l_queue";
-                }
-                return true;
-            })
+            .filter(([k, v]) => systemType !== SystemType.WITH_REJECT || (k !== "l_queue" && k !== "wait"))
             .map(([key, value]) => {
                 return {
                     id: key,

@@ -16,7 +16,7 @@ export class MMCSystemComponent implements OnInit {
         "\\end{array} " +
         "\\right. \\]";
 
-    public pnGeqN = "\\[ P\[N\\geq n \] = \\left\\{ " +
+    public pnGeqN = "\\[ P[N\\geq n ] = \\left\\{ " +
         "\\begin{array}{ll} " +
         "P_0 \\left[ \\sum_{k=n}^{c - 1}\\frac{\\rho^k}{k!} + \\frac{\\rho^c}{c!(1-a)} \\right], & \\mbox{if } n<c, \\\\ " +
         "P_0 \\left[ \\frac{a^c a^{n-c}}{c!(1-a)} \\right] = P\[N\\geq c \] a^{n-c}, & \\mbox{if } n\\geq c " +
@@ -24,6 +24,8 @@ export class MMCSystemComponent implements OnInit {
         "\\right. \\]";
 
     public qLen = "\\[ \\bar{Q} = \\bar{\\lambda} * \\bar{W} = \\frac{\\rho P\[N \\geq c\]}{c(1-a)} \\]";
+
+    public pnGeqC = "\\[ P[N\\geq c] = \\frac{\\frac{\\rho^c}{c!}}{(1 - \\frac{\\rho}{c}) \\sum_{n=0}^{c - 1}\\frac{\\rho^n}{n!} + \\frac{\\rho^c}{c!} } \\]";
 
     constructor() { }
 

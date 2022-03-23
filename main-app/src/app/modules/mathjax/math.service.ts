@@ -12,6 +12,7 @@ export class MathService {
     private readonly notifier: ReplaySubject<boolean>;
     private readonly _renderNotifier: Subject<number> = new ReplaySubject(50, 10000);
     private mathContentCache: Map<string, string> = new Map<string, string>();
+    private initCalled = false;
 
     constructor(@Inject(PLATFORM_ID) private platformId: unknown) {
         this.notifier = new ReplaySubject<boolean>();
@@ -19,11 +20,20 @@ export class MathService {
         if (isBrowser) {
             console.log("INIT HUB READY");
             (window as unknown as { hubReady: Observer<any> }).hubReady = this.notifier;
+            this.preloadMathContent();
         }
     }
 
+    private preloadMathContent(): void {
+        const preloadNodes: NodeList = document.querySelectorAll("[data-math-hidden-content]");
+        preloadNodes.forEach((node) => {
+            const element: Element = node as Element;
+            this.mathContentCache.set(element.getAttribute("data-math-hidden-content"), element.innerHTML);
+        });
+    }
+
     ready(): Observable<boolean> {
-        return this.notifier;
+        return this.notifier.asObservable();
     }
 
     get renderNotifier(): Observable<number> {
@@ -31,12 +41,19 @@ export class MathService {
     }
 
     render(element: HTMLElement, mathContent?: string): void {
+        if (!this.initCalled) {
+            element.innerText = mathContent;
+            MathJax?.Hub.Queue(["Typeset", MathJax.Hub, element]);
+            this.initCalled = true;
+            return;
+        }
         if (mathContent) {
             if (this.mathContentCache.has(mathContent)) {
                 element.innerHTML = this.mathContentCache.get(mathContent);
                 return;
             }
             this._renderNotifier.next(1);
+            element.style.visibility = "hidden";
             element.innerText = mathContent;
         } else {
             console.error(this, "Math content undefined: ", mathContent);
@@ -45,6 +62,7 @@ export class MathService {
         MathJax?.Hub.Queue(["Typeset", MathJax.Hub, element]);
         MathJax?.Hub.Queue(() => {
             this.mathContentCache.set(mathContent, element.innerHTML);
+            element.style.visibility = "visible";
             this._renderNotifier.next(-1);
         });
     }

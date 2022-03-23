@@ -12,5 +12,5 @@ export const ELEMENT_DATA: PeriodicElement[] = [
     { position: 9, name: "Русич-11", arrive: "02.04.2019 11:33", leave: "05.04.2019 22:44" },
     { position: 10, name: "Газпромнефть Зюйд", arrive: "02.04.2019 15:00", leave: "03.04.2019 10:37" },
     { position: 11, name: "Василий Шукшин", arrive: "02.04.2019 19:25", leave: "05.04.2019 21:55" },
-    { position: 12, name: "Пола Анатолия", arrive: "02.04.2019 19:50", leave: "21:31" },
+    { position: 12, name: "Пола Анатолия", arrive: "02.04.2019 19:50", leave: "05.04.2019 21:31" },
 ];
