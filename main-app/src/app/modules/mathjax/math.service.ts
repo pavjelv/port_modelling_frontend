@@ -13,11 +13,12 @@ export class MathService {
     private readonly _renderNotifier: Subject<number> = new ReplaySubject(50, 10000);
     private mathContentCache: Map<string, string> = new Map<string, string>();
     private initCalled = false;
+    private isBrowser = false;
 
     constructor(@Inject(PLATFORM_ID) private platformId: unknown) {
         this.notifier = new ReplaySubject<boolean>();
-        const isBrowser = isPlatformBrowser(this.platformId);
-        if (isBrowser) {
+        this.isBrowser = isPlatformBrowser(this.platformId);
+        if (this.isBrowser) {
             console.log("INIT HUB READY");
             (window as unknown as { hubReady: Observer<any> }).hubReady = this.notifier;
             this.preloadMathContent();
@@ -25,11 +26,18 @@ export class MathService {
     }
 
     private preloadMathContent(): void {
-        const preloadNodes: NodeList = document.querySelectorAll("[data-math-hidden-content]");
-        preloadNodes.forEach((node) => {
-            const element: Element = node as Element;
-            this.mathContentCache.set(element.getAttribute("data-math-hidden-content"), element.innerHTML);
-        });
+        const mathContentHolder: HTMLIFrameElement = document.createElement("iframe");
+        mathContentHolder.onload = () => {
+            const preloadNodes: NodeList = mathContentHolder.contentDocument?.querySelectorAll("[data-math-hidden-content]");
+            preloadNodes?.forEach((node) => {
+                const element: Element = node as Element;
+                this.mathContentCache.set(element.getAttribute("data-math-hidden-content"), element.innerHTML);
+            });
+        };
+        mathContentHolder.src = "/assets/math-content-holder.html";
+        mathContentHolder.setAttribute("importance", "low");
+        mathContentHolder.style.display = "none";
+        document.body.appendChild(mathContentHolder);
     }
 
     ready(): Observable<boolean> {
@@ -41,6 +49,9 @@ export class MathService {
     }
 
     render(element: HTMLElement, mathContent?: string): void {
+        if (!this.isBrowser) {
+            return;
+        }
         if (!this.initCalled) {
             element.innerText = mathContent;
             MathJax?.Hub.Queue(["Typeset", MathJax.Hub, element]);
