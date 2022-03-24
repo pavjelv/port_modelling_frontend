@@ -32,7 +32,7 @@ export const APPLICATION_ROUTES: Routes = [
         data: { state: "lazy" },
     },
     {
-        path: "",
+        path: "**",
         redirectTo: "home",
         pathMatch: "full",
     },

@@ -1,13 +1,14 @@
 import { NgModule } from "@angular/core";
-import { PreloadAllModules, RouteReuseStrategy, RouterModule } from "@angular/router";
+import { RouteReuseStrategy, RouterModule } from "@angular/router";
 import { APPLICATION_ROUTES } from "./application-routes.const";
 import { AppRouteReuseStrategy } from "./route-reuse-strategy";
+import { AppPreloadingStrategy } from "./app-preloading.strategy";
 
 @NgModule({
     imports: [
         RouterModule.forRoot(APPLICATION_ROUTES, {
             anchorScrolling: "enabled",
-            preloadingStrategy: PreloadAllModules,
+            preloadingStrategy: AppPreloadingStrategy,
         }),
     ],
     providers: [
@@ -15,6 +16,7 @@ import { AppRouteReuseStrategy } from "./route-reuse-strategy";
             provide: RouteReuseStrategy,
             useValue: new AppRouteReuseStrategy(),
         },
+        AppPreloadingStrategy,
     ],
     exports: [RouterModule],
 })
