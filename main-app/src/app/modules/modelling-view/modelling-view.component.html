@@ -32,31 +32,71 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
                     <mat-label>{{ "port-modelling-fe.modellingView.serversNum" | translate }}</mat-label>
-                    <input matInput required type="number" min="1" max="5" [formControlName]="parameters.SERVERS_NUM" />
+                    <input matInput
+                           required
+                           type="number"
+                           min="1"
+                           max="5"
+                           [formControlName]="parameters.SERVERS_NUM"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.serversNumFieldHint' | translate"
+                    />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.serversNumFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(parameters.SERVERS_NUM).invalid">{{ getErrorMessage(parameters.SERVERS_NUM) | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
                     <mat-label>{{ "port-modelling-fe.modellingView.serveTime" | translate }}</mat-label>
-                    <input matInput required type="number" min="0.1" max="5" [formControlName]="parameters.SERVE_TIME" />
+                    <input matInput
+                           required
+                           type="number"
+                           min="0.1"
+                           max="5"
+                           [formControlName]="parameters.SERVE_TIME"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.serveTimeFieldHint' | translate"
+                    />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(parameters.SERVE_TIME).invalid">{{ getErrorMessage(parameters.SERVE_TIME) | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
                     <mat-label>{{ "port-modelling-fe.modellingView.lambda" | translate }}</mat-label>
-                    <input matInput required type="number" min="0.1" max="4" [formControlName]="parameters.LAMBDA" />
+                    <input matInput
+                           required
+                           type="number"
+                           min="0.1"
+                           max="4"
+                           [formControlName]="parameters.LAMBDA"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.lambdaFieldHint' | translate"
+                    />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.lambdaFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
                     <mat-label>{{ "port-modelling-fe.modellingView.queueLength" | translate }}</mat-label>
-                    <input matInput required type="number" min="0" max="8" [formControlName]="parameters.QUEUE_LENGTH" />
+                    <input matInput
+                           required
+                           type="number"
+                           min="0"
+                           max="8"
+                           [formControlName]="parameters.QUEUE_LENGTH"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.queueLengthFieldHint' | translate"
+                    />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.queueLengthFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(parameters.QUEUE_LENGTH).invalid">{{ getErrorMessage(parameters.QUEUE_LENGTH) | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
                     <mat-label>{{ "port-modelling-fe.modellingView.time" | translate }}</mat-label>
-                    <input matInput required type="number" min="20" max="50" [formControlName]="parameters.TIME" />
+                    <input matInput
+                           required
+                           type="number"
+                           min="20"
+                           max="50"
+                           [formControlName]="parameters.TIME"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.timeFieldHint' | translate"
+                    />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.timeFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(parameters.TIME).invalid">{{ getErrorMessage(parameters.TIME) | translate }}</mat-error>
                 </mat-form-field>
@@ -73,19 +113,43 @@
             <div class="modelling-view-form__parameters">
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
                     <mat-label>{{ "port-modelling-fe.modellingView.cargoAppearance" | translate }}</mat-label>
-                    <input matInput required type="number" min="0" max="1" [formControlName]="additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY" />
+                    <input matInput
+                           required
+                           type="number"
+                           min="0"
+                           max="1"
+                           [formControlName]="additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.cargoAppearanceFieldHint' | translate"
+                    />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoAppearanceFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY).invalid">{{ getErrorMessage(additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY) | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
                     <mat-label>{{ "port-modelling-fe.modellingView.serveTimeCargo" | translate }}</mat-label>
-                    <input matInput required type="number" min="0.1" max="7" [formControlName]="additionalShipTypeParameters.SERVE_TIME_CARGO" />
+                    <input matInput
+                           required
+                           type="number"
+                           min="0.1"
+                           max="7"
+                           [formControlName]="additionalShipTypeParameters.SERVE_TIME_CARGO"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.serveTimeCargoFieldHint' | translate"
+                    />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeCargoFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(additionalShipTypeParameters.SERVE_TIME_CARGO).invalid">{{ getErrorMessage(additionalShipTypeParameters.SERVE_TIME_CARGO) | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
                     <mat-label>{{ "port-modelling-fe.modellingView.cargoServersNum" | translate }}</mat-label>
-                    <input matInput required type="number" min="1" max="3" [formControlName]="additionalShipTypeParameters.CARGO_SERVERS_NUM" />
+                    <input matInput
+                           required
+                           type="number"
+                           min="1"
+                           max="3"
+                           [formControlName]="additionalShipTypeParameters.CARGO_SERVERS_NUM"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.cargoServersNumFieldHint' | translate"
+                    />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoServersNumFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(additionalShipTypeParameters.CARGO_SERVERS_NUM).invalid">{{ getErrorMessage(additionalShipTypeParameters.CARGO_SERVERS_NUM) | translate }}</mat-error>
                 </mat-form-field>

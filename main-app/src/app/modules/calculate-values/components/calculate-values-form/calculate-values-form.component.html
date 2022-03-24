@@ -46,25 +46,57 @@
             <div class="calculate-values-form-parameters__system-variables">
                 <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.SERVERS_NUM">
                     <mat-label>{{ "port-modelling-fe.calculateValues.serversNum" | translate }}</mat-label>
-                    <input matInput required type="number" min="1" max="10" [formControlName]="parameters.SERVERS_NUM" />
+                    <input matInput
+                           required
+                           type="number"
+                           min="1"
+                           max="10"
+                           [formControlName]="parameters.SERVERS_NUM"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.calculateValues.serversNumHint' | translate"
+                    />
                     <mat-hint align="start">{{ "port-modelling-fe.calculateValues.serversNumHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(parameters.SERVERS_NUM).invalid">{{ getErrorMessage(parameters.SERVERS_NUM) | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.SERVE_TIME">
                     <mat-label>{{ "port-modelling-fe.calculateValues.serveTime" | translate }}</mat-label>
-                    <input matInput required type="number" min="0.1" max="5" [formControlName]="parameters.SERVE_TIME" />
+                    <input matInput
+                           required
+                           type="number"
+                           min="0.1"
+                           max="5"
+                           [formControlName]="parameters.SERVE_TIME"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.calculateValues.serveTimeHint' | translate"
+                    />
                     <mat-hint align="start">{{ "port-modelling-fe.calculateValues.serveTimeHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(parameters.SERVE_TIME).invalid">{{ getErrorMessage(parameters.SERVE_TIME) | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.LAMBDA">
                     <mat-label [innerHTML]="'port-modelling-fe.calculateValues.lambda' | translate"></mat-label>
-                    <input matInput required type="number" min="0.1" max="5" [formControlName]="parameters.LAMBDA" />
+                    <input matInput
+                           required
+                           type="number"
+                           min="0.1"
+                           max="5"
+                           [formControlName]="parameters.LAMBDA"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.calculateValues.lambdaHint' | translate"
+                    />
                     <mat-hint align="start">{{ "port-modelling-fe.calculateValues.lambdaHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.QUEUE_LENGTH && hasQueue">
                     <mat-label>{{ "port-modelling-fe.calculateValues.queueLength" | translate }}</mat-label>
-                    <input matInput required type="number" min="1" max="10" [formControlName]="parameters.QUEUE_LENGTH" />
+                    <input matInput
+                           required
+                           type="number"
+                           min="1"
+                           max="10"
+                           [formControlName]="parameters.QUEUE_LENGTH"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.calculateValues.queueLengthHint' | translate"
+                    />
                     <mat-hint align="start">{{ "port-modelling-fe.calculateValues.queueLengthHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(parameters.QUEUE_LENGTH).invalid">{{ getErrorMessage(parameters.QUEUE_LENGTH) | translate }}</mat-error>
                 </mat-form-field>
@@ -112,19 +144,44 @@
     <div class="calculate-values-form-parameters__system-range">
         <mat-form-field appearance="outline" class="step-field">
             <mat-label>{{ "port-modelling-fe.calculateValues.from" | translate }}</mat-label>
-            <input matInput required type="number" min="0.1" max="10" [formControlName]="'rangeFrom'" />
+            <input matInput
+                   required
+                   type="number"
+                   min="0.1"
+                   max="10"
+                   [formControlName]="'rangeFrom'"
+                   [matTooltipPosition]="'above'"
+                   [matTooltip]="'port-modelling-fe.calculateValues.fromFieldHint' | translate"
+            />
             <mat-hint align="start">{{ "port-modelling-fe.calculateValues.fromFieldHint" | translate }}</mat-hint>
             <mat-error *ngIf="getControl('rangeFrom').invalid">{{ getErrorMessage("rangeFrom") | translate }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" class="step-field">
             <mat-label>{{ "port-modelling-fe.calculateValues.to" | translate }}</mat-label>
-            <input matInput required type="number" min="0.2" max="10" [formControlName]="'rangeTo'" />
+            <input matInput
+                   required
+                   type="number"
+                   min="0.2"
+                   max="10"
+                   [formControlName]="'rangeTo'"
+                   [matTooltipPosition]="'above'"
+                   [matTooltip]="'port-modelling-fe.calculateValues.toFieldHint' | translate"
+            />
             <mat-hint align="start">{{ "port-modelling-fe.calculateValues.toFieldHint" | translate }}</mat-hint>
             <mat-error *ngIf="getControl('rangeTo').invalid">{{ getErrorMessage("rangeTo") | translate }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline" class="step-field">
             <mat-label>{{ "port-modelling-fe.calculateValues.step" | translate }}</mat-label>
-            <input matInput required type="number" min="0.1" max="2" [formControlName]="'step'" />
+            <input
+                matInput
+                required
+                type="number"
+                min="0.1"
+                max="2"
+                [formControlName]="'step'"
+                [matTooltipPosition]="'above'"
+                [matTooltip]="'port-modelling-fe.calculateValues.stepFieldHint' | translate"
+            />
             <mat-hint align="start">{{ "port-modelling-fe.calculateValues.stepFieldHint" | translate }}</mat-hint>
             <mat-error *ngIf="getControl('step').invalid">{{ getErrorMessage("step") | translate }}</mat-error>
         </mat-form-field>

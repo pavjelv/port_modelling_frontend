@@ -12,6 +12,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatStepperModule } from "@angular/material/stepper";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { TranslateModule } from "@ngx-translate/core";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 const routes: Routes = [
     {
@@ -35,6 +36,7 @@ const routes: Routes = [
         MatSnackBarModule,
         MatStepperModule,
         TranslateModule.forChild(),
+        MatTooltipModule,
     ],
     exports: [RouterModule, ModellingViewComponent],
 })
