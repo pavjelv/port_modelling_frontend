@@ -1,23 +1,23 @@
 {
-  "/api/common": {
-    "target": "http://localhost:5000",
-    "secure": false,
-    "pathRewrite": {
-      "^/api/common": ""
+    "/api/common": {
+        "target": "http://localhost:5000",
+        "secure": false,
+        "pathRewrite": {
+            "^/api/common": ""
+        },
+        "logLevel": "debug"
     },
-    "logLevel": "debug"
-  },
-  "/api/calculate": {
-    "target": "http://localhost:8000",
-    "secure": false,
-    "pathRewrite": {
-      "^/api/calculate": ""
+    "/api/calculate": {
+        "target": "http://localhost:8000",
+        "secure": false,
+        "pathRewrite": {
+            "^/api/calculate": ""
+        },
+        "logLevel": "debug"
     },
-    "logLevel": "debug"
-  },
-  "/files/images": {
-    "target": "http://localhost:5000",
-    "secure": false,
-    "logLevel": "debug"
-  }
+    "/files/images": {
+        "target": "http://localhost:5000",
+        "secure": false,
+        "logLevel": "debug"
+    }
 }

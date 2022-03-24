@@ -1,9 +1,8 @@
 import { Component } from "@angular/core";
 
 @Component({
-  template: "<div></div>"
+    template: "<div></div>",
 })
 export class EmptyViewComponent {
-
-  constructor() { }
+    constructor() {}
 }

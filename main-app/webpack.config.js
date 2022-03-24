@@ -65,8 +65,8 @@ module.exports = {
           eager: true
         },
         '@angular/cdk/a11y': {
-          version: dependencies['@angular/cdk/a11y'],
-          requiredVersion: dependencies['@angular/cdk/a11y'],
+          version: dependencies['@angular/cdk'],
+          requiredVersion: dependencies['@angular/cdk'],
           singleton: false,
           eager: false
         },

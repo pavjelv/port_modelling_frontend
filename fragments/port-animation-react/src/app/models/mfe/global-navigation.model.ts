@@ -1,4 +1,3 @@
 export type GlobalNavigationService = {
-  navigate(routeAlias: unknown): void;
+    navigate(routeAlias: unknown): void;
 };
-

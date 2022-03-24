@@ -1,132 +1,167 @@
-<mat-drawer-container [hasBackdrop]="true" autosize class="modelling-view">
-  <mat-drawer #drawer [opened]="true">
-    <mat-icon class="toggle-icon" (click)="drawer.toggle()">chevron_left</mat-icon>
-    <div class="modelling-view-form" [formGroup]="systemParametersForm">
-      <div class="modelling-view-form__parameters">
-        <div class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Тип потока заявок</mat-label>
-            <mat-select [formControlName]="parameters.ARRIVAL_DISTRIBUTION">
-              <mat-option *ngFor="let distribution of distributions" [value]="distribution.id">{{distribution.value}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Количество причалов</mat-label>
-            <input matInput type="number" min="1" max="4" [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.SERVERS_NUM).value" [formControlName]="parameters.SERVERS_NUM" [min]="1" [max]="4" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">1</label>
-              <label class="modelling-view-form__parameter-slider-values-right">4</label>
+<div class="breadcrumbs">
+    <a routerLink="/">{{ "port-modelling-fe.common.home" | translate }}</a>
+    <span class="divider">/</span>
+    <span>Моделирование системы</span>
+</div>
+<mat-stepper class="modelling-view" linear (selectionChange)="onStepSelectChange($event)">
+    <mat-step>
+        <ng-template matStepLabel>{{ "port-modelling-fe.common.instruction" | translate }}</ng-template>
+        <div class="modelling-view-instruction">
+            <ul>
+                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction1' | translate"></span></li>
+                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction2' | translate"></span></li>
+                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction3' | translate"></span></li>
+            </ul>
+            <h3>{{ "port-modelling-fe.modellingView.instructionNote" | translate }}</h3>
+            <div class="modelling-view-instruction__actions">
+                <button mat-button mat-stroked-button matStepperNext>{{ "port-modelling-fe.common.next" | translate }}</button>
             </div>
-          </div>
         </div>
-        <div class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Время обслуживания</mat-label>
-            <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.SERVE_TIME).value" [formControlName]="parameters.SERVE_TIME" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">0</label>
-              <label class="modelling-view-form__parameter-slider-values-right">4</label>
+    </mat-step>
+    <mat-step [stepControl]="systemParametersForm">
+        <div class="modelling-view-form" [formGroup]="systemParametersForm">
+            <ng-template matStepLabel>{{ "port-modelling-fe.modellingView.systemParameters" | translate }}</ng-template>
+            <div class="modelling-view-form__parameters">
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter wide">
+                    <mat-label>{{ "port-modelling-fe.modellingView.arrivalDistribution" | translate }}</mat-label>
+                    <mat-select required [formControlName]="parameters.ARRIVAL_DISTRIBUTION">
+                        <mat-option *ngFor="let distribution of distributions" [value]="distribution.id">{{ distribution.value }}</mat-option>
+                    </mat-select>
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.arrivalDistributionFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(parameters.ARRIVAL_DISTRIBUTION).invalid">{{ getErrorMessage(parameters.ARRIVAL_DISTRIBUTION) | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "port-modelling-fe.modellingView.serversNum" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           min="1"
+                           max="5"
+                           [formControlName]="parameters.SERVERS_NUM"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.serversNumFieldHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.serversNumFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(parameters.SERVERS_NUM).invalid">{{ getErrorMessage(parameters.SERVERS_NUM) | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "port-modelling-fe.modellingView.serveTime" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           min="0.1"
+                           max="5"
+                           [formControlName]="parameters.SERVE_TIME"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.serveTimeFieldHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(parameters.SERVE_TIME).invalid">{{ getErrorMessage(parameters.SERVE_TIME) | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "port-modelling-fe.modellingView.lambda" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           min="0.1"
+                           max="4"
+                           [formControlName]="parameters.LAMBDA"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.lambdaFieldHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.lambdaFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "port-modelling-fe.modellingView.queueLength" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           min="0"
+                           max="8"
+                           [formControlName]="parameters.QUEUE_LENGTH"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.queueLengthFieldHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.queueLengthFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(parameters.QUEUE_LENGTH).invalid">{{ getErrorMessage(parameters.QUEUE_LENGTH) | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "port-modelling-fe.modellingView.time" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           min="20"
+                           max="50"
+                           [formControlName]="parameters.TIME"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.timeFieldHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.timeFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(parameters.TIME).invalid">{{ getErrorMessage(parameters.TIME) | translate }}</mat-error>
+                </mat-form-field>
             </div>
-          </div>
-        </div>
-        <div class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Интенсивность потока судов</mat-label>
-            <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.LAMBDA).value" [formControlName]="parameters.LAMBDA" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">0</label>
-              <label class="modelling-view-form__parameter-slider-values-right">4</label>
+            <div class="modelling-view-form__actions">
+                <button mat-button matStepperPrevious>{{ "port-modelling-fe.common.back" | translate }}</button>
+                <button mat-button mat-stroked-button matStepperNext>{{ "port-modelling-fe.common.next" | translate }}</button>
             </div>
-          </div>
         </div>
-        <div class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Максимальная длина очереди</mat-label>
-            <input matInput type="number" min="0" max="10" [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.QUEUE_LENGTH).value" [formControlName]="parameters.QUEUE_LENGTH" [min]="1" [max]="10" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">1</label>
-              <label class="modelling-view-form__parameter-slider-values-right">10</label>
+    </mat-step>
+    <mat-step [optional]="true" [stepControl]="additionalShipTypeForm">
+        <div class="modelling-view-form" [formGroup]="additionalShipTypeForm">
+            <ng-template matStepLabel>{{ "port-modelling-fe.modellingView.additionalType" | translate }}</ng-template>
+            <div class="modelling-view-form__parameters">
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "port-modelling-fe.modellingView.cargoAppearance" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           min="0"
+                           max="1"
+                           [formControlName]="additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.cargoAppearanceFieldHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoAppearanceFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY).invalid">{{ getErrorMessage(additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY) | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "port-modelling-fe.modellingView.serveTimeCargo" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           min="0.1"
+                           max="7"
+                           [formControlName]="additionalShipTypeParameters.SERVE_TIME_CARGO"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.serveTimeCargoFieldHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeCargoFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(additionalShipTypeParameters.SERVE_TIME_CARGO).invalid">{{ getErrorMessage(additionalShipTypeParameters.SERVE_TIME_CARGO) | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "port-modelling-fe.modellingView.cargoServersNum" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           min="1"
+                           max="3"
+                           [formControlName]="additionalShipTypeParameters.CARGO_SERVERS_NUM"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.modellingView.cargoServersNumFieldHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoServersNumFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(additionalShipTypeParameters.CARGO_SERVERS_NUM).invalid">{{ getErrorMessage(additionalShipTypeParameters.CARGO_SERVERS_NUM) | translate }}</mat-error>
+                </mat-form-field>
             </div>
-          </div>
-        </div>
-        <div class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Время моделирования</mat-label>
-            <input matInput type="number" min="20" max="40" [value]="controlToParameterMap.get(parameters.TIME).value" [formControlName]="parameters.TIME">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.TIME).value" [formControlName]="parameters.TIME" [min]="20" [max]="40" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">20</label>
-              <label class="modelling-view-form__parameter-slider-values-right">40</label>
+            <div class="modelling-view-form__actions">
+                <button mat-button matStepperPrevious>{{ "port-modelling-fe.common.back" | translate }}</button>
+                <button mat-button mat-stroked-button matStepperNext>{{ "port-modelling-fe.common.next" | translate }}</button>
             </div>
-          </div>
         </div>
-        <div class="modelling-view-form__parameter">
-          <mat-slide-toggle (change)="toggleChange($event)" [formControlName]="parameters.NEED_SECOND_TYPE">Добавить новый тип судна</mat-slide-toggle>
-        </div>
-        <div *ngIf="showDifferentShips" class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Вероятность появления сухогруза</mat-label>
-            <input matInput type="number" min="0" max="1" [value]="controlToParameterMap.get(parameters.CONTAINER_APPEARANCE_PROBABILITY).value" [formControlName]="parameters.CONTAINER_APPEARANCE_PROBABILITY">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.CONTAINER_APPEARANCE_PROBABILITY).value" [formControlName]="parameters.CONTAINER_APPEARANCE_PROBABILITY" [min]="0" [max]="1" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">0</label>
-              <label class="modelling-view-form__parameter-slider-values-right">1</label>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="showDifferentShips" class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Время обслуживания сухогруза</mat-label>
-            <input matInput type="number" min="0.1" max="4" [value]="controlToParameterMap.get(parameters.SERVE_TIME_CONTAINER).value" [formControlName]="parameters.SERVE_TIME_CONTAINER">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.SERVE_TIME_CONTAINER).value" [formControlName]="parameters.SERVE_TIME_CONTAINER" [min]="0.1" [max]="4" [step]="0.1" [tickInterval]="0.1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">0</label>
-              <label class="modelling-view-form__parameter-slider-values-right">4</label>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="showDifferentShips" class="modelling-view-form__parameter">
-          <mat-form-field appearance="outline">
-            <mat-label>Количество причалов для сухогрузов</mat-label>
-            <input matInput type="number" min="1" max="3" [value]="controlToParameterMap.get(parameters.CONTAINER_SERVERS_NUM).value" [formControlName]="parameters.CONTAINER_SERVERS_NUM">
-          </mat-form-field>
-          <div class="modelling-view-form__parameter-slider">
-            <mat-slider [value]="controlToParameterMap.get(parameters.CONTAINER_SERVERS_NUM).value" [formControlName]="parameters.CONTAINER_SERVERS_NUM" [min]="1" [max]="3" [step]="1" [tickInterval]="1" [thumbLabel]="true"></mat-slider>
-            <div class="modelling-view-form__parameter-slider-values">
-              <label class="modelling-view-form__parameter-slider-values-left">1</label>
-              <label class="modelling-view-form__parameter-slider-values-right">3</label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modelling-view-form__actions">
-        <mat-divider></mat-divider>
-        <button class="modelling-view-form__actions__button" mat-raised-button color="primary" (click)="applyValues()">Применить</button>
-      </div>
-    </div>
-  </mat-drawer>
-  <mat-drawer-content>
-    <mat-icon class="toggle-icon" (click)="drawer.toggle()">chevron_right</mat-icon>
-    <app-common-react-wrapper [props]="simulationVariables" class="modelling-view-canvas-wrapper"></app-common-react-wrapper>
-  </mat-drawer-content>
-</mat-drawer-container>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>{{ "port-modelling-fe.modellingView.modelCreate" | translate }}</ng-template>
+        <app-common-react-wrapper *ngIf="isBrowser" [props]="simulationVariables" class="modelling-view-canvas-wrapper"></app-common-react-wrapper>
+    </mat-step>
+</mat-stepper>

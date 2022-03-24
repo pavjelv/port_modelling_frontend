@@ -1,12 +1,14 @@
 export enum ShipType {
-  SHIP = "ship",
-  CARGO_SHIP = "container",
+    CARGO_SHIP = "ship",
+    CONTAINER_SHIP = "container",
 }
 
 export interface CustomerDataModel {
-  name: string;
-  arrive: number;
-  leave: number;
-  serve: number;
-  type: ShipType;
+    name: string;
+    arrive: number;
+    leave: number;
+    serve: number;
+    type: ShipType;
+    server_num: number;
+    color: string;
 }

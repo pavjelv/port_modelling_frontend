@@ -7,22 +7,11 @@ import { RouterModule } from "@angular/router";
 import { MatIconModule } from "@angular/material/icon";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatMenuModule } from "@angular/material/menu";
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
-  declarations: [
-    CommonHeaderComponent,
-  ],
-  imports: [
-    CommonModule,
-    MatToolbarModule,
-    MatButtonModule,
-    RouterModule,
-    MatIconModule,
-    MatBadgeModule,
-    MatMenuModule,
-  ],
-  exports: [
-    CommonHeaderComponent,
-  ],
+    declarations: [CommonHeaderComponent],
+    imports: [CommonModule, MatToolbarModule, MatButtonModule, RouterModule, MatIconModule, MatBadgeModule, MatMenuModule, TranslateModule.forChild()],
+    exports: [CommonHeaderComponent],
 })
 export class SharedModule {}

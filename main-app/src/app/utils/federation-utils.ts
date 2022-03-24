@@ -1,4 +1,4 @@
-import {LoadRemoteModuleOptions} from "@angular-architects/module-federation";
+import { LoadRemoteModuleOptions } from "@angular-architects/module-federation";
 
 type Scope = unknown;
 type Factory = () => any;
@@ -9,7 +9,7 @@ type Container = {
 };
 
 declare const __webpack_init_sharing__: (shareScope: string) => Promise<void>;
-declare const __webpack_share_scopes__: { default: Scope, plugin: Scope };
+declare const __webpack_share_scopes__: { default: Scope; plugin: Scope };
 
 const moduleMap = {};
 
@@ -34,32 +34,24 @@ export function loadRemoteEntry(remoteEntry: string): Promise<boolean> {
     });
 }
 
-async function lookupExposedRemote<T>(
-    remoteName: string,
-    exposedModule: string
-): Promise<T> {
-  // Initializes the share scope. This fills it with known provided modules from this build and all remotes
-  await __webpack_init_sharing__("default");
-  const container = window[remoteName] as Container;
+async function lookupExposedRemote<T>(remoteName: string, exposedModule: string): Promise<T> {
+    // Initializes the share scope. This fills it with known provided modules from this build and all remotes
+    await __webpack_init_sharing__("default");
+    const container = window[remoteName] as Container;
 
-  await container.init(__webpack_share_scopes__.default);
-  const factory = await container.get(exposedModule);
-  const Module = factory();
-  return Module as T;
+    await container.init(__webpack_share_scopes__.default);
+    const factory = await container.get(exposedModule);
+    const Module = factory();
+    return Module as T;
 }
 
-export async function loadRemoteModule(
-    options: LoadRemoteModuleOptions
-): Promise<any> {
+export async function loadRemoteModule(options: LoadRemoteModuleOptions): Promise<any> {
     await loadRemoteEntry(options.remoteEntry);
-    return await lookupExposedRemote<any>(
-        options.remoteName,
-        options.exposedModule
-    );
+    return await lookupExposedRemote<any>(options.remoteName, options.exposedModule);
 }
 
 export function InjectMfService<T>(module, service): (target: any) => void {
-  return function decorator(target): void {
-    target.noteService = {get: () => 1};
-  };
+    return function decorator(target): void {
+        target.noteService = { get: () => 1 };
+    };
 }

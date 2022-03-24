@@ -1,43 +1,78 @@
-<main class="homepage-component-wrapper">
-  <h1>Оптимальная конфигурация морского порта</h1>
-  <img class="port-icon-image" src="/assets/pictures/port-icon.png">
-  <p class="lead">
-    Существует большой класс транспортных систем, работу которых сложно изучить аналитическими способами, но которые легко поддаются изучению с помощью использования методов
-    статистического моделирования. К таким системам можно отнести морской порт, представив его
-    в виде системы массового обслуживания (СМО).
-  </p>
-  <p>
-    В транспортной системе порты занимают одно из важных мест как сложные технологически многозвенные подсистемы, предназначенные для смены вида транспорта в кратчайшие сроки
-    и по конкурентным ценам. В таких транспортных подсистемах, как правило, всегда имеют место
-    непроизводительные простои судов и груза.
-  </p>
-  <p>
-    Для работы портов характерным является поток входных заявок от судов, поступающих
-    в порт на производство погрузочно-разгрузочных работ (ПРР). В соответствии с этими заявками
-    суда могут ставиться для производства ПРР на один из нескольких причалов порта, образующих
-    причальный фронт. Эксплуатационная деятельность порта, связанная с обработкой судов, может
-    условно (схематично) рассматриваться как функционирование локальной СМО, предназначенной
-    для обслуживания транспортных судов по случайно возникающим запросам.
-  </p>
-  В случае моделирования работы морского порта в качестве основных рассматриваются следующие характеристики:
-    <ul>
-      <li>
-        – количество судозаходов в день;
-      </li>
-      <li>
-        – среднее время облуживания суда;
-      </li>
-      <li>
-        – среднее время ожидания обслуживания;
-      </li>
-      <li>
-        – необходимое количество мест для ожидания;
-      </li>
-      <li>
-        – необходимое количество мест для обслуживания.
-      </li>
-    </ul>
-    Актуальной задачей является поиск оптимальных вариантов использования ресурсов транспортных систем, таких как порт.
-  <br/>
-  <a mat-raised-button color="primary" [routerLink]="['/system-example']">Посмотреть пример системы</a>
-</main>
+<div class="homepage-component">
+    <div class="homepage-component-description">
+        <div class="headline">
+            <h1>{{ "port-modelling-fe.homepage.title" | translate }}</h1>
+            <div class="headline__hint">
+                <span (click)="openQueueingSystemTheoryDialog()">{{ "port-modelling-fe.homepage.whatIsIt" | translate }}</span>
+            </div>
+        </div>
+        <div class="homepage-component__system-functions">
+            <mat-card class="homepage-component__card" [routerLink]="'/calculate'">
+                <mat-card-header>
+                    <mat-card-title>{{ "port-modelling-fe.homepage.buildCharts" | translate }}</mat-card-title>
+                </mat-card-header>
+                <img mat-card-image src="/assets/images/line-chart.png" alt="Image of a line chart" />
+                <mat-card-content>
+                    <p>{{ "port-modelling-fe.homepage.buildChartsDescription" | translate }}</p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="homepage-component__card" [routerLink]="'/system-example'">
+                <mat-card-header>
+                    <mat-card-title>{{ "port-modelling-fe.homepage.viewModelExample" | translate }}</mat-card-title>
+                </mat-card-header>
+                <img mat-card-image src="/assets/images/analytics.png" alt="Image of a chart" />
+                <mat-card-content>
+                    <p>{{ "port-modelling-fe.homepage.viewModelExampleDescription" | translate }}</p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="homepage-component__card" [routerLink]="'/modelling-view'">
+                <mat-card-header>
+                    <mat-card-title>{{ "port-modelling-fe.homepage.buildModel" | translate }}</mat-card-title>
+                </mat-card-header>
+                <img mat-card-image src="/assets/images/port.png" alt="Image of a port" />
+                <mat-card-content>
+                    <p>{{ "port-modelling-fe.homepage.buildModelDescription" | translate }}</p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <div class="after"></div>
+</div>
+
+<ng-template #queueingSystemTheoryDialog>
+    <h2 mat-dialog-title>{{ "port-modelling-fe.queueingSystem.name" | translate }}</h2>
+    <mat-dialog-content>
+        <p
+            ><b>{{ "port-modelling-fe.queueingSystem.name" | translate }}</b
+            >{{ "port-modelling-fe.queueingSystem.description" | translate }}</p
+        >
+        <ul>
+            <li>{{ "port-modelling-fe.queueingSystem.withReject" | translate }}</li>
+            <li>{{ "port-modelling-fe.queueingSystem.withInfQueue" | translate }}</li>
+            <li>{{ "port-modelling-fe.queueingSystem.withQueue" | translate }}</li>
+        </ul>
+        <p>{{ "port-modelling-fe.queueingSystem.queueDescription" | translate }}</p>
+        <h3>{{ "port-modelling-fe.queueingSystem.definitions.title" | translate }}</h3>
+        <ul>
+            <li
+                ><b>{{ "port-modelling-fe.common.request" | translate }}</b
+                >{{ "port-modelling-fe.queueingSystem.definitions.request" | translate }}</li
+            >
+            <li
+                ><b>{{ "port-modelling-fe.common.arrivals" | translate }}</b
+                >{{ "port-modelling-fe.queueingSystem.definitions.arrivals" | translate }}</li
+            >
+            <li
+                ><b>{{ "port-modelling-fe.common.serveTime" | translate }}</b
+                >{{ "port-modelling-fe.queueingSystem.definitions.serveTime" | translate }}</li
+            >
+            <li
+                ><b>{{ "port-modelling-fe.common.model" | translate }}</b
+                >{{ "port-modelling-fe.queueingSystem.definitions.model" | translate }}</li
+            >
+        </ul>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>{{ "port-modelling-fe.common.close" | translate }}</button>
+    </mat-dialog-actions>
+</ng-template>

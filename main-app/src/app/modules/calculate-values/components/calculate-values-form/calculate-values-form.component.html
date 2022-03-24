@@ -1,0 +1,220 @@
+<div class="breadcrumbs">
+    <a routerLink="/">{{ "port-modelling-fe.common.home" | translate }}</a>
+    <span class="calculate-values-form-breadcrumbs__divider">/</span>
+    <a routerLink="/calculate">{{ "port-modelling-fe.calculateValues.systemChoice" | translate }}</a>
+    <span class="calculate-values-form-breadcrumbs__divider">/</span>
+    <span>{{ systemName | translate }}</span>
+</div>
+<div class="calculate-values-form">
+    <h1 class="calculate-values-form-title">
+        {{ systemName | translate }}
+        <mat-icon class="toggle-icon" (click)="openDialog()">help_outline</mat-icon>
+    </h1>
+    <div class="calculate-values-form__compare-toggle">
+        <mat-slide-toggle [(ngModel)]="compareModeSwitch" (change)="onCompareModeChange($event)">{{ "port-modelling-fe.calculateValues.compareMode" | translate }}</mat-slide-toggle>
+        <mat-icon class="toggle-icon" (click)="openCompareModeDescriptionDialog()">help_outline</mat-icon>
+    </div>
+    <div class="calculate-values-form-parameters">
+        <div *ngIf="!isCompareMode" class="calculate-values-form-parameters__examples mat-elevation-z1">
+            <h3>Примеры</h3>
+            <mat-divider class="calculate-values-form__top-divider"></mat-divider>
+            <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="list">
+                <mat-selection-list [multiple]="false" (selectionChange)="onPrefilledParameterSelect($event)">
+                    <mat-list-option *cdkVirtualFor="let type of prefilledSystemTypes" [value]="type.value">{{ type.text }}</mat-list-option>
+                </mat-selection-list>
+            </cdk-virtual-scroll-viewport>
+        </div>
+        <div class="calculate-values-form-parameters__examples mat-elevation-z1" *ngIf="isCompareMode">
+            <h3>Добавленные характеристики</h3>
+            <mat-divider class="calculate-values-form__top-divider"></mat-divider>
+            <cdk-virtual-scroll-viewport appendOnly itemSize="5" class="list">
+                <mat-selection-list [multiple]="false">
+                    <mat-list-option *ngFor="let savedVariable of savedSystemVariables">
+                        <div class="calculate-values-form__saved-variable">
+                            <mat-icon (click)="removeSeries(savedVariable)">remove_circle_outline</mat-icon>
+                            <span [innerHTML]="savedVariable"></span>
+                        </div>
+                    </mat-list-option>
+                </mat-selection-list>
+            </cdk-virtual-scroll-viewport>
+        </div>
+        <div class="calculate-values-form-parameters__system mat-elevation-z1" [formGroup]="systemParametersForm">
+            <h3>{{ "port-modelling-fe.calculateValues.characteristicsFormTitle" | translate }}</h3>
+            <mat-divider class="calculate-values-form__top-divider"></mat-divider>
+            <ng-container *ngIf="!isCompareMode" [ngTemplateOutlet]="xAxisForm"></ng-container>
+            <span class="description-span">{{ "port-modelling-fe.calculateValues.systemParameters" | translate }}</span>
+            <div class="calculate-values-form-parameters__system-variables">
+                <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.SERVERS_NUM">
+                    <mat-label>{{ "port-modelling-fe.calculateValues.serversNum" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           min="1"
+                           max="10"
+                           [formControlName]="parameters.SERVERS_NUM"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.calculateValues.serversNumHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.calculateValues.serversNumHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(parameters.SERVERS_NUM).invalid">{{ getErrorMessage(parameters.SERVERS_NUM) | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.SERVE_TIME">
+                    <mat-label>{{ "port-modelling-fe.calculateValues.serveTime" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           min="0.1"
+                           max="5"
+                           [formControlName]="parameters.SERVE_TIME"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.calculateValues.serveTimeHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.calculateValues.serveTimeHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(parameters.SERVE_TIME).invalid">{{ getErrorMessage(parameters.SERVE_TIME) | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.LAMBDA">
+                    <mat-label [innerHTML]="'port-modelling-fe.calculateValues.lambda' | translate"></mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           min="0.1"
+                           max="5"
+                           [formControlName]="parameters.LAMBDA"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.calculateValues.lambdaHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.calculateValues.lambdaHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" *ngIf="rangeParameterControl.value !== parameters.QUEUE_LENGTH && hasQueue">
+                    <mat-label>{{ "port-modelling-fe.calculateValues.queueLength" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           min="1"
+                           max="10"
+                           [formControlName]="parameters.QUEUE_LENGTH"
+                           [matTooltipPosition]="'above'"
+                           [matTooltip]="'port-modelling-fe.calculateValues.queueLengthHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.calculateValues.queueLengthHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(parameters.QUEUE_LENGTH).invalid">{{ getErrorMessage(parameters.QUEUE_LENGTH) | translate }}</mat-error>
+                </mat-form-field>
+            </div>
+            <mat-divider class="calculate-values-form-parameters__divider last"></mat-divider>
+            <ng-container *ngIf="!isCompareMode" [ngTemplateOutlet]="characteristicControl"></ng-container>
+            <div class="calculate-values-form-parameters__submit">
+                <button color="primary" mat-raised-button (click)="_onSubmit()">{{ (isCompareMode ? "port-modelling-fe.common.compare" : "port-modelling-fe.common.calculate") | translate }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="calculate-values-form__charts-wrapper" *ngIf="charts?.length">
+    <app-highchart-wrapper class="mat-elevation-z2" *ngFor="let data of charts; let i = index" [dataModel]="data" [needScroll]="!isCompareMode && i === 0"></app-highchart-wrapper>
+</div>
+
+<ng-template #characteristicControl [formGroup]="systemParametersForm">
+    <span class="description-span">Ось Y</span>
+    <mat-form-field appearance="outline" class="calculate-values-form-parameters__system-characteristic">
+        <mat-label>{{ "port-modelling-fe.calculateValues.characteristic" | translate }}</mat-label>
+        <mat-select required [formControl]="systemCharacteristicParameterControl" multiple>
+            <mat-select-trigger>
+                {{systemCharacteristicParameterControl.value?.[0]?.value ?? ''}}
+                <span *ngIf="systemCharacteristicParameterControl.value?.length > 1" class="example-additional-selection">
+                    (+{{ systemCharacteristicParameterControl.value.length - 1 }} {{ systemCharacteristicParameterControl.value?.length === 2 ? "характеристика" : "характеристики" }})
+                </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let characteristic of availableSystemCharacteristics" [value]="characteristic">{{ characteristic.value }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="systemCharacteristicParameterControl.invalid">{{ "port-modelling-fe.calculateValues.characteristicRequiredError" | translate }}</mat-error>
+        <mat-hint align="start">{{ "port-modelling-fe.calculateValues.chooseCharacteristicHint" | translate }}</mat-hint>
+    </mat-form-field>
+</ng-template>
+
+<ng-template #xAxisForm [formGroup]="systemParametersForm">
+    <span class="description-span">{{ "port-modelling-fe.calculateValues.xAxis" | translate }}</span>
+    <mat-form-field appearance="outline" class="calculate-values-form-parameters__system-axis">
+        <mat-label>{{ "port-modelling-fe.calculateValues.parameter" | translate }}</mat-label>
+        <mat-select required [formControlName]="'rangeParameter'">
+            <mat-option *ngFor="let parameter of systemParameters" [innerHTML]="parameter.value | translate" [value]="parameter.id"></mat-option>
+        </mat-select>
+        <mat-hint align="start">{{ "port-modelling-fe.calculateValues.parameterHint" | translate }}</mat-hint>
+    </mat-form-field>
+    <span class="description-span">{{ "port-modelling-fe.calculateValues.xAxisRange" | translate }}</span>
+    <div class="calculate-values-form-parameters__system-range">
+        <mat-form-field appearance="outline" class="step-field">
+            <mat-label>{{ "port-modelling-fe.calculateValues.from" | translate }}</mat-label>
+            <input matInput
+                   required
+                   type="number"
+                   min="0.1"
+                   max="10"
+                   [formControlName]="'rangeFrom'"
+                   [matTooltipPosition]="'above'"
+                   [matTooltip]="'port-modelling-fe.calculateValues.fromFieldHint' | translate"
+            />
+            <mat-hint align="start">{{ "port-modelling-fe.calculateValues.fromFieldHint" | translate }}</mat-hint>
+            <mat-error *ngIf="getControl('rangeFrom').invalid">{{ getErrorMessage("rangeFrom") | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="step-field">
+            <mat-label>{{ "port-modelling-fe.calculateValues.to" | translate }}</mat-label>
+            <input matInput
+                   required
+                   type="number"
+                   min="0.2"
+                   max="10"
+                   [formControlName]="'rangeTo'"
+                   [matTooltipPosition]="'above'"
+                   [matTooltip]="'port-modelling-fe.calculateValues.toFieldHint' | translate"
+            />
+            <mat-hint align="start">{{ "port-modelling-fe.calculateValues.toFieldHint" | translate }}</mat-hint>
+            <mat-error *ngIf="getControl('rangeTo').invalid">{{ getErrorMessage("rangeTo") | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="step-field">
+            <mat-label>{{ "port-modelling-fe.calculateValues.step" | translate }}</mat-label>
+            <input
+                matInput
+                required
+                type="number"
+                min="0.1"
+                max="2"
+                [formControlName]="'step'"
+                [matTooltipPosition]="'above'"
+                [matTooltip]="'port-modelling-fe.calculateValues.stepFieldHint' | translate"
+            />
+            <mat-hint align="start">{{ "port-modelling-fe.calculateValues.stepFieldHint" | translate }}</mat-hint>
+            <mat-error *ngIf="getControl('step').invalid">{{ getErrorMessage("step") | translate }}</mat-error>
+        </mat-form-field>
+    </div>
+    <mat-divider class="calculate-values-form-parameters__divider"></mat-divider>
+</ng-template>
+
+<ng-template #compareModeDialog>
+    <h2 mat-dialog-title>Укажите параметры графика</h2>
+    <mat-dialog-content class="calculate-values-form__compare-mode-dialog">
+        <ng-container [ngTemplateOutlet]="xAxisForm"></ng-container>
+        <ng-container [ngTemplateOutlet]="characteristicControl"></ng-container>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close (click)="onCompareDialogCancel()">{{ "port-modelling-fe.common.cancel" | translate }}</button>
+        <button color="primary" mat-raised-button (click)="onCompareParametersApply()">{{ "port-modelling-fe.common.apply" | translate }}</button>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #compareModeDescription>
+    <h2>{{ "port-modelling-fe.calculateValues.compareMode" | translate }}</h2>
+    <mat-dialog-content class="calculate-values-form__compare-mode-dialog">
+        <p>{{ "port-modelling-fe.calculateValues.compareModeDescription" | translate }}</p>
+        <h2>{{"port-modelling-fe.common.instruction" | translate}}</h2>
+        <ol>
+            <li [innerHTML]="'port-modelling-fe.calculateValues.compareModeInstruction1' | translate"></li>
+            <li [innerHTML]="'port-modelling-fe.calculateValues.compareModeInstruction2' | translate"></li>
+            <li [innerHTML]="'port-modelling-fe.calculateValues.compareModeInstruction3' | translate"></li>
+            <li [innerHTML]="'port-modelling-fe.calculateValues.compareModeInstruction4' | translate"></li>
+        </ol>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>{{ "port-modelling-fe.common.close" | translate }}</button>
+    </mat-dialog-actions>
+</ng-template>
+
