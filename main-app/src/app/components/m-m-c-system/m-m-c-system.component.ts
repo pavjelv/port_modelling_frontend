@@ -1,4 +1,12 @@
 import { Component, OnInit } from "@angular/core";
+import {
+    p0,
+    pn,
+    pnGeqC,
+    pnGeqN,
+    qLen,
+    wTime,
+} from "src/app/model/theory/formulas/m-m-c.system";
 
 @Component({
   selector: "app-m-m-c-system",
@@ -7,25 +15,17 @@ import { Component, OnInit } from "@angular/core";
 })
 export class MMCSystemComponent implements OnInit {
 
-    public p0 = "\\[ P_0 = \\left[ \\sum_{n=0}^{c - 1}\\frac{\\rho^n}{n!} + \\frac{\\rho^c}{c!(1-a)} \\right]^{-1} \\]";
+    public p0 = p0;
 
-    public pn = "\\[ P_n = \\left\\{ " +
-        "\\begin{array}{ll} " +
-        "\\frac{\\rho^n}{n!}P_0, & \\mbox{if } n\\leq c \\\\ " +
-        "\\frac{\\rho^n}{c!c^{n-c}}P_0, & \\mbox{if }  n \\geq c. " +
-        "\\end{array} " +
-        "\\right. \\]";
+    public pn = pn;
 
-    public pnGeqN = "\\[ P[N\\geq n ] = \\left\\{ " +
-        "\\begin{array}{ll} " +
-        "P_0 \\left[ \\sum_{k=n}^{c - 1}\\frac{\\rho^k}{k!} + \\frac{\\rho^c}{c!(1-a)} \\right], & \\mbox{if } n<c, \\\\ " +
-        "P_0 \\left[ \\frac{a^c a^{n-c}}{c!(1-a)} \\right] = P\[N\\geq c \] a^{n-c}, & \\mbox{if } n\\geq c " +
-        "\\end{array} " +
-        "\\right. \\]";
+    public pnGeqN = pnGeqN;
 
-    public qLen = "\\[ \\bar{Q} = \\bar{\\lambda} * \\bar{W} = \\frac{\\rho P\[N \\geq c\]}{c(1-a)} \\]";
+    public qLen = qLen;
 
-    public pnGeqC = "\\[ P[N\\geq c] = \\frac{\\frac{\\rho^c}{c!}}{(1 - \\frac{\\rho}{c}) \\sum_{n=0}^{c - 1}\\frac{\\rho^n}{n!} + \\frac{\\rho^c}{c!} } \\]";
+    public pnGeqC = pnGeqC;
+
+    public waitTime = wTime;
 
     constructor() { }
 

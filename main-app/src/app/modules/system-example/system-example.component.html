@@ -64,6 +64,7 @@
                         </table>
                     </div>
                     <div class="system-example-calculations__description">
+                        <h3>{{"port-modelling-fe.systemExample.calculations.header" | translate }}</h3>
                         <div [innerHTML]="'port-modelling-fe.systemExample.calculations.description' | translate "></div>
                         <ul>
                             <li [mathContent]="'$S = 2.16 \\quad суток$'"></li>
@@ -74,9 +75,19 @@
                         <h3>Рассмотрим случай многоканальной системы массового обслуживания с бесконечной очередью</h3>
                         <p>Поскольку  <span [mathContent]="'$\\rho > 1$'"></span>, система не может прийти в стационарное состояние, очередь заявок будет бесконечно расти</p>
                         <p>Выберем число каналов такое, чтобы <span [mathContent]="'$ a = \\frac{\\rho}{c} < 1$'"></span> </p>
-                        <p>Пусть <span [mathContent]="'$c = 30$'"></span></p>
-                        <p>Вычислим вероятность того, что все каналы свободны, для этого воспользуемся формулой</p>
-                        <span [mathContent]="'\\[ P_0 = \\left[ \\sum_{n=0}^{c - 1}\\frac{\\rho^n}{n!} + \\frac{\\rho^c}{c!(1-a)} \\right]^{-1} \\]'"></span>
+                        <p>Пусть <span [mathContent]="'$c = 27$'"></span></p>
+                        <p>Вычислим вероятность того, что все каналы свободны, для этого воспользуемся формулой:</p>
+                        <span [mathContent]="mmcp0"></span>
+                        <p><span [mathContent]="'$P_0 = 2.2779 * 10^{-12}$'"></span> имеется очень маленькая вероятность того, что канал обслуживания будет свободен</p>
+                        <p>Рассчитаем вероятность появления очереди (вероятность того, что система будет содержать заявок больше, чем каналов обслуживания):</p>
+                        <span [mathContent]="mmcpnGeqC"></span>
+                        <p><span [mathContent]="'$P[N\\geq c] = 0.770277$'"></span></p>
+                        <p>Важной характеристикой системы является средняя длина очереди</p>
+                        <span [mathContent]="mmcQlen"></span>
+                        <p><span [mathContent]="'$\\bar{Q} = 18.48666$'"></span></p>
+                        <p>А также среднее время пребывания заявки в очереди</p>
+                        <span [mathContent]="mmcWTime"></span>
+                        <p><span [mathContent]="'$\\bar{W} = 1.54056 \\quad суток$'"></span></p>
                     </div>
                 </div>
             </ng-template>
