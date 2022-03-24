@@ -1,9 +1,19 @@
-import { AfterViewInit, Component, HostBinding, Input, OnInit } from "@angular/core";
+import {
+    AfterViewInit,
+    Component,
+    HostBinding,
+    Inject,
+    Input,
+    OnInit,
+    PLATFORM_ID,
+} from "@angular/core";
 import * as Highcharts from "highcharts";
 import { ChartDataModel } from "../../../../model/chart-data.model";
-import { ViewportScroller } from "@angular/common";
-import theme from "highcharts/themes/grid-light";
-theme(Highcharts);
+import {
+    isPlatformBrowser,
+    ViewportScroller,
+} from "@angular/common";
+
 
 @Component({
     selector: "app-highchart-wrapper",
@@ -51,7 +61,13 @@ export class HighchartWrapperComponent implements OnInit, AfterViewInit {
         },
         series: [],
     };
-    constructor(private scroller: ViewportScroller) {}
+    constructor(private scroller: ViewportScroller, @Inject(PLATFORM_ID) private platformId: unknown) {
+        const isBrowser = isPlatformBrowser(this.platformId);
+        if (isBrowser) {
+            const theme = require("highcharts/themes/grid-light");
+            theme(Highcharts);
+        }
+    }
 
     ngOnInit(): void {
         const isMultipleSeries = this.dataModel?.data?.size > 1;

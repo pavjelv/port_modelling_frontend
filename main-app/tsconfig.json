@@ -14,8 +14,11 @@
     "target": "es2015",
     "module": "es2020",
     "lib": ["es2018", "dom"],
-    "types": ["mathjax"],
+    "types": ["mathjax", "node"],
     "jsx": "react",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "paths": {
       "@env/*": [
         "src/environments/*"
