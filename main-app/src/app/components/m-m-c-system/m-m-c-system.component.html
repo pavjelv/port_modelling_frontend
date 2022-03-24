@@ -1,11 +1,16 @@
-<h2>Многоканальная система массового обслуживания с бесконечной очередью</h2>
-<p>Обозначается как <span [mathContent]="'$M/M/c$'"></span> в символике Кендалла</p>
-<h3>Для вычисления характеристик системы используются следующие формулы:</h3>
-<span [mathContent]="'\\[ \\rho = \\lambda \\bar{S} \\]'"></span>
-<span [mathContent]="'\\[ a = \\frac{\\rho}{c} \\]'"></span>
-<span [mathContent]="p0"></span>
-<span [mathContent]="pn"></span>
-<span [mathContent]="pnGeqN"></span>
-<span [mathContent]="qLen"></span>
-<span [mathContent]="pnGeqC"></span>
-<span [mathContent]="waitTime"></span>
+<h2 mat-dialog-title>Многоканальная система массового обслуживания с бесконечной очередью</h2>
+<mat-dialog-content>
+    <p>Обозначается как <span [mathContent]="'$M/M/c$'"></span> в символике Кендалла</p>
+    <h3>Для вычисления характеристик системы используются следующие формулы:</h3>
+    <span [mathContent]="'\\[ \\rho = \\lambda \\bar{S} \\]'"></span>
+    <span [mathContent]="'\\[ a = \\frac{\\rho}{c} \\]'"></span>
+    <span [mathContent]="p0"></span>
+    <span [mathContent]="pn"></span>
+    <span [mathContent]="pnGeqN"></span>
+    <span [mathContent]="qLen"></span>
+    <span [mathContent]="pnGeqC"></span>
+    <span [mathContent]="waitTime"></span>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>{{ "port-modelling-fe.common.close" | translate }}</button>
+</mat-dialog-actions>

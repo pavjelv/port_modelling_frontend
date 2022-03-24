@@ -49,6 +49,9 @@ import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 import { RxUnsubscribe } from "../../../../utils/rx-unsubscribe";
 import { takeUntil } from "rxjs/operators";
 import { TranslateService } from "@ngx-translate/core";
+import { MMCSystemComponent } from "../../../../components/m-m-c-system/m-m-c-system.component";
+import { MMCCSystemComponent } from "../../../../components/m-m-c-c-system/m-m-c-c-system.component";
+import { MMCKSystemComponent } from "../../../../components/m-m-c-k-system/m-m-c-k-system.component";
 
 @Component({
     selector: "app-calculate-values-form",
@@ -65,15 +68,6 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
 
     @ViewChild("compareModeDescription")
     public compareModeDescriptionDialog: TemplateRef<unknown>;
-
-    @ViewChild("mmcDialogTemplate")
-    public mmcSystemDialog: TemplateRef<unknown>;
-
-    @ViewChild("mmccDialogTemplate")
-    public mmccSystemDialog: TemplateRef<unknown>;
-
-    @ViewChild("mmckDialogTemplate")
-    public mmckSystemDialog: TemplateRef<unknown>;
 
     public systemParametersForm: FormGroup;
     public isBrowser = false;
@@ -244,13 +238,13 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     public openDialog(): void {
         switch (this.systemType) {
             case SystemType.INFINITE_QUEUE:
-                this.dialog.open(this.mmcSystemDialog);
+                this.dialog.open(MMCSystemComponent);
                 break;
             case SystemType.WITH_REJECT:
-                this.dialog.open(this.mmccSystemDialog);
+                this.dialog.open(MMCCSystemComponent);
                 break;
             case SystemType.WITH_QUEUE:
-                this.dialog.open(this.mmckSystemDialog);
+                this.dialog.open(MMCKSystemComponent);
                 break;
             default:
                 break;

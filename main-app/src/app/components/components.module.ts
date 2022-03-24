@@ -15,6 +15,8 @@ import { MathjaxModule } from "../modules/mathjax/mathjax.module";
 import { MMCCSystemComponent } from "./m-m-c-c-system/m-m-c-c-system.component";
 import { MMCKSystemComponent } from "./m-m-c-k-system/m-m-c-k-system.component";
 import { SymbolsDescriptionComponent } from "./symbols-description/symbols-description.component";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
     declarations: [
@@ -44,7 +46,9 @@ import { SymbolsDescriptionComponent } from "./symbols-description/symbols-descr
         MatListModule,
         MatExpansionModule,
         MatTableModule,
-        MathjaxModule
+        MathjaxModule,
+        MatDialogModule,
+        MatButtonModule,
     ],
 })
 export class ComponentsModule {}

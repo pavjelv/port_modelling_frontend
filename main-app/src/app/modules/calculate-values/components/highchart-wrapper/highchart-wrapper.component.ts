@@ -44,7 +44,6 @@ export class HighchartWrapperComponent implements OnInit, AfterViewInit {
                 dataLabels: {
                     enabled: true,
                 },
-                enableMouseTracking: false,
             },
         },
         credits: {
