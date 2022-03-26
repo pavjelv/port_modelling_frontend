@@ -100,18 +100,7 @@
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.timeFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(parameters.TIME).invalid">{{ getErrorMessage(parameters.TIME) | translate }}</mat-error>
                 </mat-form-field>
-            </div>
-            <div class="modelling-view-form__actions">
-                <button mat-button matStepperPrevious>{{ "port-modelling-fe.common.back" | translate }}</button>
-                <button mat-button mat-stroked-button matStepperNext>{{ "port-modelling-fe.common.next" | translate }}</button>
-            </div>
-        </div>
-    </mat-step>
-    <mat-step [optional]="true" [stepControl]="additionalShipTypeForm">
-        <div class="modelling-view-form" [formGroup]="additionalShipTypeForm">
-            <ng-template matStepLabel>{{ "port-modelling-fe.modellingView.additionalType" | translate }}</ng-template>
-            <div class="modelling-view-form__parameters">
-                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter" [formGroup]="additionalShipTypeForm">
                     <mat-label>{{ "port-modelling-fe.modellingView.cargoAppearance" | translate }}</mat-label>
                     <input matInput
                            required
@@ -125,12 +114,12 @@
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoAppearanceFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY).invalid">{{ getErrorMessage(additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY) | translate }}</mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter" [formGroup]="additionalShipTypeForm">
                     <mat-label>{{ "port-modelling-fe.modellingView.serveTimeCargo" | translate }}</mat-label>
                     <input matInput
                            required
                            type="number"
-                           min="0.1"
+                           min="0"
                            max="7"
                            [formControlName]="additionalShipTypeParameters.SERVE_TIME_CARGO"
                            [matTooltipPosition]="'above'"
@@ -139,12 +128,12 @@
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeCargoFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(additionalShipTypeParameters.SERVE_TIME_CARGO).invalid">{{ getErrorMessage(additionalShipTypeParameters.SERVE_TIME_CARGO) | translate }}</mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter" [formGroup]="additionalShipTypeForm">
                     <mat-label>{{ "port-modelling-fe.modellingView.cargoServersNum" | translate }}</mat-label>
                     <input matInput
                            required
                            type="number"
-                           min="1"
+                           min="0"
                            max="3"
                            [formControlName]="additionalShipTypeParameters.CARGO_SERVERS_NUM"
                            [matTooltipPosition]="'above'"

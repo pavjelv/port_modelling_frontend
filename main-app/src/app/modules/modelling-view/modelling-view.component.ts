@@ -76,9 +76,9 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
             time: [35, [Validators.required, Validators.min(20), Validators.max(50), Validators.pattern("^[0-9]*$")]],
         });
         this.additionalShipTypeForm = this.fb.group({
-            serveTimeCargo: [null, [Validators.required, Validators.min(0.1), Validators.max(7)]],
-            cargoAppearanceProbability: [null, [Validators.required, Validators.min(0), Validators.max(1)]],
-            cargoServersNum: [null, [Validators.required, Validators.min(1), Validators.max(3), Validators.pattern("^[0-9]*$")]],
+            serveTimeCargo: [0, [Validators.min(0), Validators.max(7)]],
+            cargoAppearanceProbability: [0, [Validators.min(0), Validators.max(1)]],
+            cargoServersNum: [0, [Validators.min(0), Validators.max(3), Validators.pattern("^[0-9]*$")]],
         });
     }
 
