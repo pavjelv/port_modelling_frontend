@@ -21,6 +21,11 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { TranslateModule } from "@ngx-translate/core";
 import { ComponentsModule } from "../../components/components.module";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatTableModule } from "@angular/material/table";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { SatPopoverModule } from "@ncstate/sat-popover";
+import { MatCardModule } from "@angular/material/card";
 
 const routes: Route[] = [
     {
@@ -56,6 +61,11 @@ const routes: Route[] = [
         MatSlideToggleModule,
         TranslateModule.forChild(),
         ComponentsModule,
+        MatStepperModule,
+        MatTableModule,
+        MatCheckboxModule,
+        SatPopoverModule,
+        MatCardModule,
     ],
 })
 export class CalculateValuesModule {}

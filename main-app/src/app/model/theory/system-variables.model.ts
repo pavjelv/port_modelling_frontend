@@ -7,4 +7,7 @@ export interface SystemVariablesModel {
     serversNum: number;
     rangeParameter: SystemParameters;
     systemType: SystemType;
+    rangeFrom: number;
+    rangeTo: number;
+    step: number;
 }
