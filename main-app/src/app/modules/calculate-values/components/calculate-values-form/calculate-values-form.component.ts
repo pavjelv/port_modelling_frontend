@@ -36,14 +36,6 @@ import {
     ChartDataModel,
     ChartSeriesData,
 } from "../../../../model/chart-data.model";
-import {
-    MatSelectionList,
-    MatSelectionListChange,
-} from "@angular/material/list";
-import {
-    PrefilledSystemParametersListType,
-    PrefilledSystemParametersMap,
-} from "../../../../dictionaries/prefilled-system-parameters-set";
 import { RxUnsubscribe } from "../../../../utils/rx-unsubscribe";
 import { takeUntil } from "rxjs/operators";
 import { TranslateService } from "@ngx-translate/core";
@@ -55,7 +47,10 @@ import {
 } from "@ncstate/sat-popover";
 import { MatCheckboxChange } from "@angular/material/checkbox";
 import { SystemVariablesModel } from "../../../../model/theory/system-variables.model";
-import { SystemCharacteristicTableModel } from "../../../../model/theory/system-characteristic-table.model";
+import {
+    RangeParameterData,
+    SystemCharacteristicTableModel,
+} from "../../../../model/theory/system-characteristic-table.model";
 
 @Component({
     selector: "app-calculate-values-form",
@@ -81,13 +76,13 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
 
     public availableSystemCharacteristics: Array<SystemCharacteristicTableModel>;
 
-    public displayedColumns: string[] = ["characteristic", "lambda", "s", "c", "k"];
+    public displayedColumns: string[] = ["yDescription", "characteristic", "space", "lambda", "s", "c", "k"];
 
     constructor(
         private fb: FormBuilder,
         @Inject(PLATFORM_ID) private platformId: unknown,
         private loadingService: LoadingOverlayService,
-        private optimalSizeService: TheoryResultsService,
+        private theoryResultsService: TheoryResultsService,
         private cdr: ChangeDetectorRef,
         private snackBar: MatSnackBar,
         private route: ActivatedRoute,
@@ -133,19 +128,27 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         });
     }
 
-    private processTheorySummary(summary: TheorySummaryModel): void {
+    private processTheorySummary(summary: TheorySummaryModel[]): void {
         this.charts = [];
-        const selectedValues = this.availableSystemCharacteristics.filter((v) => !!v.lambda);
-        (selectedValues as Array<{ id: string; value: string }>).forEach((v) => {
-            const data = new Map<string, ChartSeriesData>([
-                ["series", summary.result.map((value, i) => [summary.parameter_range[i], value[v.id]]) as ChartSeriesData]
-            ]);
-            this.charts.push({
-                id: v.id,
-                xAxisName: "LAMBDA",
-                title: AvailableSystemCharacteristicsDictionary.get(v.id),
-                data,
-            });
+        Object.values(this.parameters).forEach((parameter) => {
+            this.availableSystemCharacteristics
+                .map((v) => ({ id: v.id, p: v[parameter] }))
+                .filter((v) => !!v.p)
+                .forEach((v) => {
+                    const p = v.p;
+                    const calculated = summary.find((s) => {
+                        return parameter === s.range_name && p.rangeFrom === s.range_from && p.rangeTo === s.range_to && p.step === s.step;
+                    });
+                    const data = new Map<string, ChartSeriesData>([
+                            ["series", calculated.result.map((value, i) => [calculated.parameter_range[i], value[v.id]]) as ChartSeriesData]
+                    ]);
+                    this.charts.push({
+                        id: v.id + parameter,
+                        xAxisName: this.translateService.instant(SystemParametersDictionary.get(parameter)),
+                        title: AvailableSystemCharacteristicsDictionary.get(v.id),
+                        data,
+                    });
+                });
         });
         this.cdr.markForCheck();
     }
@@ -208,35 +211,47 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     }
 
     private composeRequest(): Array<SystemVariablesModel> {
-        const selectedValues = this.availableSystemCharacteristics.map((v) => v.lambda)
-            .filter((v) => !!v);
-        return selectedValues.map((value) => ({ ...value, ...this.systemParametersForm.getRawValue() }));
+        let result = [];
+        Object.values(this.parameters).forEach((parameter) => {
+            const selectedValues = this.availableSystemCharacteristics
+                .map((v) => v[parameter] as RangeParameterData)
+                .filter((v) => !!v)
+                .reduce((aggregator, current) => {
+                    const existingValue = aggregator.find((v) => {
+                        return v.rangeFrom === current.rangeFrom && v.rangeTo === current.rangeTo && v.step === current.step;
+                    });
+                    if (!existingValue) {
+                        aggregator.push(current);
+                    }
+                    return aggregator;
+                }, []);
+            result = [...result, ...selectedValues.map((value) => ({ ...value, ...this.systemParametersForm.getRawValue() }))];
+        });
+        return result;
     }
 
     public _onSubmit(): void {
         this.systemParametersForm.markAllAsTouched();
         if (this.systemParametersForm.valid) {
             this.loadingService.showLoading();
-            this.composeRequest().forEach((v) => {
-                this.optimalSizeService
-                    .calculateWithQueue(v)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe(
-                        (summary) => {
-                            this.loadingService.hideLoading();
-                            this.processTheorySummary(summary);
-                        },
-                        (error: Error) => {
-                            this.loadingService.hideLoading();
-                            console.error(error);
-                            this.snackBar.open(error.message, null, {
-                                duration: 5000,
-                                horizontalPosition: "right",
-                                verticalPosition: "top",
-                            });
-                        },
-                    );
-            });
+            this.theoryResultsService
+                .calculateBulk(this.composeRequest())
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(
+                    (summary) => {
+                        this.loadingService.hideLoading();
+                        this.processTheorySummary(summary);
+                    },
+                    (error: Error) => {
+                        this.loadingService.hideLoading();
+                        console.error(error);
+                        this.snackBar.open(error.message, null, {
+                            duration: 5000,
+                            horizontalPosition: "right",
+                            verticalPosition: "top",
+                        });
+                    },
+                );
         }
     }
 }

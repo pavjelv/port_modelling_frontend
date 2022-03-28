@@ -17,11 +17,43 @@
         padding: 10px 0;
     }
 
-    .mat-table {
+    &-table {
         width: 100%;
 
-        .mat-header-cell + .mat-header-cell {
+        &__x-axis-column {
             width: 15%;
+        }
+
+        &__filler-column {
+            border-right: 1px solid rgba(0,0,0,.12);
+        }
+
+        &__space-column {
+           width: 3rem;
+        }
+
+        &__characteristic-column {
+            padding-left: 1rem;
+            border-right: 1px solid rgba(0,0,0,.12);
+        }
+
+        &__title-column {
+            text-align: center;
+        }
+
+        .description-cell {
+            padding-left: 0;
+            writing-mode: vertical-lr;
+            text-orientation: upright;
+            text-align: center;
+            color: rgba(0,0,0,.54);
+            border-right: 1px solid rgba(0,0,0,.12);
+        }
+
+        .mat-row:not(:first-child) {
+            .description-cell {
+                display: none;
+            }
         }
     }
 

@@ -10,9 +10,15 @@ import { TheorySummaryModel } from "../model/theory/theory-summary.model";
 export class TheoryResultsService {
     constructor(private httpClient: HttpClient) {}
 
-    public calculateWithQueue(values: SystemVariablesModel): Observable<TheorySummaryModel> {
+    public calculate(values: SystemVariablesModel): Observable<TheorySummaryModel> {
         return this.httpClient.get<TheorySummaryModel>(`/api/calculate/theory/summary/`, {
             params: values as any,
+        });
+    }
+
+    public calculateBulk(values: SystemVariablesModel[]): Observable<TheorySummaryModel[]> {
+        return this.httpClient.post<TheorySummaryModel[]>(`/api/calculate/theory/bulk/`, {
+            data: values,
         });
     }
     // ((sum (12 * 2.16)^i/i!,i=1 to 61) + 1)^(-1)
