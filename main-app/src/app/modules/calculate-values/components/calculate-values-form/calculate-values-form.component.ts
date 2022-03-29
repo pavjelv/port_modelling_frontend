@@ -42,9 +42,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { MMCSystemComponent } from "../../../../components/m-m-c-system/m-m-c-system.component";
 import { MMCCSystemComponent } from "../../../../components/m-m-c-c-system/m-m-c-c-system.component";
 import { MMCKSystemComponent } from "../../../../components/m-m-c-k-system/m-m-c-k-system.component";
-import {
-    SatPopover,
-} from "@ncstate/sat-popover";
+import { SatPopover } from "@ncstate/sat-popover";
 import { MatCheckboxChange } from "@angular/material/checkbox";
 import { SystemVariablesModel } from "../../../../model/theory/system-variables.model";
 import {
@@ -106,6 +104,9 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
                     value,
                 };
             });
+        if (systemType === SystemType.WITH_REJECT) {
+            this.displayedColumns.pop();
+        }
 
         this.systemName = SystemTypeDictionary.get(systemType);
         this.createForm(systemType);

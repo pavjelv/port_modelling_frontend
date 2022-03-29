@@ -6,13 +6,21 @@
 
 <main class="calculate-values__main">
     <h1>{{ "port-modelling-fe.calculateValues.main.calculateParameters" | translate }}</h1>
-    <h3>{{ "port-modelling-fe.calculateValues.main.description1" | translate }}</h3>
+    <h3>{{ "port-modelling-fe.calculateValues.main.description" | translate }}</h3>
     <ol>
         <li [innerHTML]="'port-modelling-fe.calculateValues.main.description2' | translate"></li>
         <li [innerHTML]="'port-modelling-fe.calculateValues.main.description3' | translate"></li>
         <li [innerHTML]="'port-modelling-fe.calculateValues.main.description4' | translate"></li>
+        <li [innerHTML]="'port-modelling-fe.calculateValues.main.description5' | translate"></li>
     </ol>
-    <h4 [innerHTML]="'port-modelling-fe.calculateValues.main.description5' | translate"></h4>
+    <h4>{{  "port-modelling-fe.calculateValues.main.summary" | translate }}</h4>
+    <h4>{{  "port-modelling-fe.calculateValues.main.summary2" | translate }}</h4>
+    <ul>
+        <li [innerHTML]="'port-modelling-fe.calculateValues.main.lambda' | translate"></li>
+        <li>{{  "port-modelling-fe.calculateValues.main.s" | translate }}</li>
+        <li>{{  "port-modelling-fe.calculateValues.main.c" | translate }}</li>
+        <li>{{  "port-modelling-fe.calculateValues.main.k" | translate }}</li>
+    </ul>
     <h2 class="calculate-values__system-type-header">{{ "port-modelling-fe.calculateValues.main.chooseSystemType" | translate }}</h2>
     <div class="calculate-values__select-system">
         <mat-form-field appearance="outline" class="calculate-values__select-system__field">
