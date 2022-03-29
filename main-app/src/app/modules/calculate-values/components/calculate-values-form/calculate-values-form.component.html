@@ -76,7 +76,7 @@
             <button mat-button mat-stroked-button matStepperNext>{{ "port-modelling-fe.common.next" | translate }}</button>
         </mat-step>
         <mat-step [formGroup]="systemParametersForm">
-            <ng-template matStepLabel>Выберите графики характеристик</ng-template>
+            <ng-template matStepLabel>Выберите графики для построения</ng-template>
             <div class="calculate-values-form-parameters__wrapper">
                 <h2>Таблица доступных графиков</h2>
                 <h4>Выделите одну или несколько ячеек таблицы.</h4>
@@ -130,14 +130,20 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
                 </table>
                 <div class="calculate-values-form-parameters__submit">
-                    <button color="primary" mat-raised-button (click)="_onSubmit()">{{"port-modelling-fe.common.calculate" | translate }}</button>
+                    <button color="primary" mat-raised-button matStepperNext (click)="_onSubmit()">{{"port-modelling-fe.common.calculate" | translate }}</button>
+                </div>
+            </div>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Построенные графики</ng-template>
+            <div #chartsStepElement class="calculate-values-form__charts-step">
+                <img *ngIf="!charts?.length" src="/assets/images/no-pictures.png" alt="No charts available" />
+                <div class="calculate-values-form__charts-wrapper" *ngIf="charts?.length">
+                    <app-highchart-wrapper class="mat-elevation-z2" *ngFor="let data of charts; let i = index" [dataModel]="data" [needScroll]="i === 0" [width]="chartWidth"></app-highchart-wrapper>
                 </div>
             </div>
         </mat-step>
     </mat-stepper>
-</div>
-<div class="calculate-values-form__charts-wrapper" *ngIf="charts?.length">
-    <app-highchart-wrapper class="mat-elevation-z2" *ngFor="let data of charts; let i = index" [dataModel]="data" [needScroll]="i === 0"></app-highchart-wrapper>
 </div>
 
 <sat-popover #popover verticalAlign="below" [hasBackdrop]="true" [interactiveClose]="false" [backdropClass]="'port-modelling-backdrop'">

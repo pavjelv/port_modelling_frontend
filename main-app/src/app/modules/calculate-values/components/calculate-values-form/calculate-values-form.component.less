@@ -37,14 +37,22 @@
         }
     }
 
-    &__charts-wrapper {
-        padding: 1rem 4rem;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
+    &__charts {
+        &-step {
+            width: 100%;
+            text-align: center;
+        }
 
-        .highchart-wrapper {
-            padding-top: 16px;
+        &-wrapper {
+            padding: 1rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            row-gap: 1rem;
+
+            .highchart-wrapper {
+                padding-top: 16px;
+            }
         }
     }
 

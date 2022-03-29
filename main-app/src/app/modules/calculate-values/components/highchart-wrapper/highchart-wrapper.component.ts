@@ -1,5 +1,6 @@
 import {
     AfterViewInit,
+    ChangeDetectionStrategy,
     Component,
     HostBinding,
     Inject,
@@ -19,12 +20,16 @@ import {
     selector: "app-highchart-wrapper",
     templateUrl: "./highchart-wrapper.component.html",
     styleUrls: ["./highchart-wrapper.component.less"],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HighchartWrapperComponent implements OnInit, AfterViewInit {
     @HostBinding("class.highchart-wrapper") hostClass = true;
 
     @Input()
     public dataModel: ChartDataModel;
+
+    @Input()
+    public width: number;
 
     @Input()
     public needScroll = false;
@@ -81,6 +86,7 @@ export class HighchartWrapperComponent implements OnInit, AfterViewInit {
                 },
             };
         }
+        this.chartOptions.chart.width = this.width;
         this.chartOptions.title.text = this.dataModel?.title;
         (this.chartOptions.xAxis as Highcharts.XAxisOptions).title.text = this.dataModel?.xAxisName;
         this.dataModel?.data.forEach((dm, name) => {

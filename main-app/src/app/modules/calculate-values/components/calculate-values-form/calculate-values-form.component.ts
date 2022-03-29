@@ -2,6 +2,7 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    ElementRef,
     Inject,
     OnDestroy,
     OnInit,
@@ -49,6 +50,7 @@ import {
     RangeParameterData,
     SystemCharacteristicTableModel,
 } from "../../../../model/theory/system-characteristic-table.model";
+import { Element } from "@angular/compiler";
 
 @Component({
     selector: "app-calculate-values-form",
@@ -59,6 +61,9 @@ import {
 export class CalculateValuesFormComponent extends RxUnsubscribe implements OnInit, OnDestroy {
     @ViewChild(SatPopover)
     public popover: SatPopover;
+
+    @ViewChild("chartsStepElement")
+    public chartsStepElement: ElementRef<HTMLDivElement>;
 
     public systemParametersForm: FormGroup;
     public rangeParameterForm: FormGroup;
@@ -71,6 +76,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     private systemType: SystemType;
 
     public charts: ChartDataModel[] = [];
+    public chartWidth = 700;
 
     public availableSystemCharacteristics: Array<SystemCharacteristicTableModel>;
 
@@ -130,6 +136,8 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     }
 
     private processTheorySummary(summary: TheorySummaryModel[]): void {
+        const width = window.getComputedStyle(this.chartsStepElement?.nativeElement).width;
+        this.chartWidth = parseInt(width.replace("px", ""), 10) / 2 - 10;
         this.charts = [];
         Object.values(this.parameters).forEach((parameter) => {
             this.availableSystemCharacteristics
