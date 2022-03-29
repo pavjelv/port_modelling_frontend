@@ -76,7 +76,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
 
     public availableSystemCharacteristics: Array<SystemCharacteristicTableModel>;
 
-    public displayedColumns: string[] = ["yDescription", "characteristic", "space", "lambda", "s", "c", "k"];
+    public displayedColumns: string[] = ["characteristic", "lambda", "s", "c", "k"];
 
     constructor(
         private fb: FormBuilder,
