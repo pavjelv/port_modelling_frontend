@@ -5,14 +5,16 @@
 </div>
 <mat-stepper class="modelling-view" linear (selectionChange)="onStepSelectChange($event)">
     <mat-step>
-        <ng-template matStepLabel>{{ "port-modelling-fe.common.instruction" | translate }}</ng-template>
+        <ng-template matStepLabel>{{ "port-modelling-fe.common.description" | translate }}</ng-template>
         <div class="modelling-view-instruction">
+            <h2>{{ "port-modelling-fe.modellingView.instruction" | translate }}</h2>
             <ul>
                 <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction1' | translate"></span></li>
                 <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction2' | translate"></span></li>
                 <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction3' | translate"></span></li>
+                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction4' | translate"></span></li>
+                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction5' | translate"></span></li>
             </ul>
-            <h3>{{ "port-modelling-fe.modellingView.instructionNote" | translate }}</h3>
             <div class="modelling-view-instruction__actions">
                 <button mat-button mat-stroked-button matStepperNext>{{ "port-modelling-fe.common.next" | translate }}</button>
             </div>
