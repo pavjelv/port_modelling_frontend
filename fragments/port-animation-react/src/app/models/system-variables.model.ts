@@ -8,4 +8,5 @@ export interface SystemVariablesModel {
     cargoAppearanceProbability: number;
     serveTimeCargo: number;
     cargoServersNum: number;
+    requiredCharacteristics: { key: string, value: string }[];
 }
