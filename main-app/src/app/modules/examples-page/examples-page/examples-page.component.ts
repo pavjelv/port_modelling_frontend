@@ -1,4 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import {
+    ChangeDetectionStrategy,
+    Component,
+    OnInit,
+} from "@angular/core";
 import { FlatTreeControl } from "@angular/cdk/tree";
 import {
     MatTreeFlatDataSource,
@@ -23,9 +27,8 @@ const TREE_DATA: SystemNode[] = [
     {
         name: "СМО с ограниченной очередью",
         children: [
-            {name: "Apple", routerLink: "1"},
-            {name: "Banana", routerLink: "2"},
-            {name: "Fruit loops"}
+            {name: "1", routerLink: "1"},
+            {name: "2", routerLink: "2"},
         ],
     },
     {
@@ -33,16 +36,18 @@ const TREE_DATA: SystemNode[] = [
         children: [
             {
                 name: "Green",
-                children: [{name: "Broccoli"}, {name: "Brussels sprouts"}],
             },
             {
                 name: "Orange",
-                children: [{name: "Pumpkins"}, {name: "Carrots"}],
             },
         ],
     },
     {
-        name: "СМО с бесконечной очередью"
+        name: "СМО с бесконечной очередью",
+        children: [
+            {name: "1", routerLink: "1"},
+            {name: "2", routerLink: "2"},
+        ],
     }
 ];
 
@@ -56,9 +61,10 @@ const _transformer = (node: SystemNode, level: number): FlatNode => {
 };
 
 @Component({
-  selector: "app-examples-page",
-  templateUrl: "./examples-page.component.html",
-  styleUrls: ["./examples-page.component.less"]
+    selector: "app-examples-page",
+    templateUrl: "./examples-page.component.html",
+    styleUrls: ["./examples-page.component.less"],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExamplesPageComponent implements OnInit {
     public treeControl = new FlatTreeControl<FlatNode>(

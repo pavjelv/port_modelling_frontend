@@ -12,7 +12,6 @@ import {
 import {
     AbstractControl,
     FormBuilder,
-    FormControl,
     FormGroup,
     Validators,
 } from "@angular/forms";
@@ -50,7 +49,6 @@ import {
     RangeParameterData,
     SystemCharacteristicTableModel,
 } from "../../../../model/theory/system-characteristic-table.model";
-import { Element } from "@angular/compiler";
 
 @Component({
     selector: "app-calculate-values-form",
@@ -103,7 +101,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         this.hasQueue = systemType === SystemType.WITH_QUEUE;
         this.systemType = systemType;
         this.availableSystemCharacteristics = Array.from(AvailableSystemCharacteristicsDictionary)
-            .filter(([k, v]) => systemType !== SystemType.WITH_REJECT || (k !== "l_queue" && k !== "wait"))
+            .filter(([k, _]) => systemType !== SystemType.WITH_REJECT || (k !== "l_queue" && k !== "wait"))
             .map(([key, value]) => {
                 return {
                     id: key,
@@ -136,8 +134,6 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     }
 
     private processTheorySummary(summary: TheorySummaryModel[]): void {
-        const width = window.getComputedStyle(this.chartsStepElement?.nativeElement).width;
-        this.chartWidth = parseInt(width.replace("px", ""), 10) / 2 - 10;
         this.charts = [];
         Object.values(this.parameters).forEach((parameter) => {
             this.availableSystemCharacteristics
@@ -188,7 +184,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     }
 
     public getErrorMessage(controlName: string): string {
-        const formControl = this.systemParametersForm.get(controlName) as FormControl;
+        const formControl = this.getControl(controlName);
         if (formControl.hasError("required")) {
             return "port-modelling-fe.validations.required";
         } else if (formControl.hasError("min")) {
@@ -249,6 +245,8 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
                 .subscribe(
                     (summary) => {
                         this.loadingService.hideLoading();
+                        const width = window.getComputedStyle(this.chartsStepElement?.nativeElement).width;
+                        this.chartWidth = parseInt(width.replace("px", ""), 10) / 2 - 10;
                         this.processTheorySummary(summary);
                     },
                     (error: Error) => {

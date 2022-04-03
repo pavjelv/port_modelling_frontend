@@ -11,12 +11,17 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { HighchartViewComponent } from "./highchart-view/highchart-view.component";
 import { ComponentsModule } from "../../components/components.module";
+import { ChooseExampleViewComponent } from "./choose-example-view/choose-example-view.component";
 
 const routes: Routes = [
     {
         path: "",
         component: ExamplesPageComponent,
         children: [
+            {
+                path: "",
+                component: ChooseExampleViewComponent,
+            },
             {
                 path: "**",
                 component: HighchartViewComponent,
@@ -28,7 +33,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
       ExamplesPageComponent,
-      HighchartViewComponent
+      HighchartViewComponent,
+      ChooseExampleViewComponent
   ],
     imports: [
         CommonModule,
