@@ -18,4 +18,5 @@ const WithQueueParamsToNameMap: PrefilledSystemParametersListType = [
     },
 ];
 
-export const PrefilledSystemParametersMap = new Map<SystemType, PrefilledSystemParametersListType>([[SystemType.WITH_QUEUE, WithQueueParamsToNameMap]]);
+export const PrefilledSystemParametersMap =
+    new Map<SystemType, PrefilledSystemParametersListType>([[SystemType.WITH_QUEUE, WithQueueParamsToNameMap]]);

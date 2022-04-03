@@ -25,7 +25,18 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [SystemExampleComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), MatTableModule, MatTabsModule, MatStepperModule, TranslateModule.forChild(), ComponentsModule, MathjaxModule, MatSnackBarModule, MatButtonModule],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatTableModule,
+        MatTabsModule,
+        MatStepperModule,
+        TranslateModule.forChild(),
+        ComponentsModule,
+        MathjaxModule,
+        MatSnackBarModule,
+        MatButtonModule
+    ],
     providers: [MathContentRouterGuard],
     exports: [RouterModule, SystemExampleComponent],
 })

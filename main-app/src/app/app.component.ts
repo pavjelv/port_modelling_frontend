@@ -16,7 +16,10 @@ export class AppComponent implements OnInit {
     title = "port-modelling-fe";
     private isBrowser = false;
 
-    constructor(private federationPluginService: FederationPluginService, @Inject(PLATFORM_ID) private platformId: unknown, private translate: TranslateService) {
+    constructor(private federationPluginService: FederationPluginService,
+                @Inject(PLATFORM_ID) private platformId: unknown,
+                private translate: TranslateService
+    ) {
         this.isBrowser = isPlatformBrowser(this.platformId);
         translate.setDefaultLang("ru-RU");
         translate.use("ru-RU");
