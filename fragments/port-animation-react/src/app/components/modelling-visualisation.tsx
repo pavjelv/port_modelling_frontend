@@ -1,7 +1,7 @@
 import { SystemVariablesModel } from "app/models/system-variables.model";
 import React from "react";
 import { SimulationResultModel, SystemSummary } from "app/models/simulation-result.model";
-import { Col, Descriptions, Row, Skeleton, Slider, Space } from "antd";
+import { Descriptions, notification, Row, Skeleton, Slider, Space } from "antd";
 import PortAnimation from "app/components/port-animation";
 import { Collapse } from "antd";
 
@@ -14,6 +14,14 @@ import "antd/lib/descriptions/style";
 import "antd/lib/skeleton/style";
 import "antd/lib/collapse/style";
 import "antd/lib/space/style";
+import "antd/lib/notification/style"
+
+const errorNotification = () => {
+    notification["error"]({
+        message: "Something went wrong!",
+    });
+};
+
 
 const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }) => {
     const [loading, setLoading] = React.useState(true);
@@ -39,35 +47,58 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                         setLoading(false);
                         setTime(0);
                         setResponse(result);
-                    },
-                    (err: unknown) => {
-                        console.error(err);
-                    },
-                );
+                    }
+                )
+                .catch((e) => {
+                    console.error(e);
+                    errorNotification();
+                });
         }
     }, [props]);
     return (
-        <Row>
-            <Col span={15}>
-                <PortAnimation simulationResult={response} time={time} systemParams={props.systemVariables} />
-                <Slider style={{ width: 795 }} disabled={loading} tipFormatter={null} value={time} min={0} max={props.systemVariables?.time ?? 10} marks={marks} onChange={(v) => setTime(v)} />
-            </Col>
-            <Col span={9}>
+        <Space direction={"vertical"}>
+            <Row>
+                <h2>Параметры системы</h2>
+            </Row>
+            <Row>
                 <Skeleton loading={loading} active={true}>
-                    <Collapse defaultActiveKey={["0"]} style={{ overflow: "auto", maxHeight: "500px" }}>
+                    <Descriptions bordered layout="vertical">
+                        <Descriptions.Item key={1} label={"Количество причалов"}>{props?.systemVariables?.serversNum}</Descriptions.Item>
+                        <Descriptions.Item key={2} label={"Время обслуживания (сут.)"}>{props.systemVariables?.serveTime}</Descriptions.Item>
+                        <Descriptions.Item key={3} label={"Интенсивность потока судов"}>{props.systemVariables?.lambda}</Descriptions.Item>
+                        <Descriptions.Item key={4} label={"Максимальная длина очереди"}>{props.systemVariables?.queueLength}</Descriptions.Item>
+                        <Descriptions.Item key={5} label={"Количество причалов для сухогруза"}>{props?.systemVariables?.cargoServersNum ?? 0}</Descriptions.Item>
+                        <Descriptions.Item key={6} label={"Вероятность появления сухогруза"}>{props?.systemVariables?.cargoAppearanceProbability ?? 0}</Descriptions.Item>
+                        <Descriptions.Item key={7} label={"Время обслуживания сухогруза (сут.)"}>{props?.systemVariables?.serveTimeCargo ?? 0}</Descriptions.Item>
+                    </Descriptions>
+                </Skeleton>
+            </Row>
+            <Row>
+                <h2>Вычисленные характеристики</h2>
+            </Row>
+            <Row>
+                <Skeleton loading={loading} active={true}>
+                    <Collapse defaultActiveKey={["0"]} style={{ overflow: "auto", maxHeight: "500px", width: "50%" }}>
                         {response?.models_summary.map((model: SystemSummary, index) => (
                             <Panel key={index} header={model.name}>
                                 <Descriptions key={index} bordered column={1}>
-                                    { props?.systemVariables?.requiredCharacteristics?.map(({key, value}) =>(
-                                        <Descriptions.Item label={value}>{model[key] && Number.parseFloat(model[key]).toFixed(3)}</Descriptions.Item>
-                                     ))}
+                                    {props?.systemVariables?.requiredCharacteristics?.map(({ key, value }) => (
+                                        <Descriptions.Item key={index} label={value}>{model[key] && Number.parseFloat(model[key]).toFixed(3)}</Descriptions.Item>
+                                    ))}
                                 </Descriptions>
                             </Panel>
                         ))}
                     </Collapse>
                 </Skeleton>
-            </Col>
-        </Row>
+            </Row>
+            <Row>
+                <h2>Работа системы</h2>
+            </Row>
+            <Row>
+                <PortAnimation simulationResult={response} time={time} systemParams={props.systemVariables} />
+                <Slider style={{ width: 795 }} disabled={loading} tipFormatter={null} value={time} min={0} max={props.systemVariables?.time ?? 10} marks={marks} onChange={(v) => setTime(v)} />
+            </Row>
+        </Space>
     );
 };
 
