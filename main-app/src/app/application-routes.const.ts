@@ -3,11 +3,6 @@ import { environment } from "@env/environment";
 
 export const APPLICATION_ROUTES: Routes = [
     {
-        path: "home",
-        loadChildren: () => import("./modules/homepage/homepage.module").then((m) => m.HomepageModule),
-        data: { state: "lazy" },
-    },
-    {
         path: "system-example",
         loadChildren: () => import("./modules/system-example/system-example.module").then((m) => m.SystemExampleModule),
         data: { state: "lazy" },
@@ -32,8 +27,18 @@ export const APPLICATION_ROUTES: Routes = [
         data: { state: "lazy" },
     },
     {
+        path: "examples",
+        loadChildren: () => import("./modules/examples-page/examples-page.module").then((m) => m.ExamplesPageModule),
+        data: { state: "lazy" },
+    },
+    {
+        path: "",
+        loadChildren: () => import("./modules/homepage/homepage.module").then((m) => m.HomepageModule),
+        data: { state: "lazy" },
+    },
+    {
         path: "**",
-        redirectTo: "home",
+        redirectTo: "",
         pathMatch: "full",
     },
 ];

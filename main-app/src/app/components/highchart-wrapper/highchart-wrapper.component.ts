@@ -9,7 +9,7 @@ import {
     PLATFORM_ID,
 } from "@angular/core";
 import * as Highcharts from "highcharts";
-import { ChartDataModel } from "../../../../model/chart-data.model";
+import { ChartDataModel } from "../../model/chart-data.model";
 import {
     isPlatformBrowser,
     ViewportScroller,

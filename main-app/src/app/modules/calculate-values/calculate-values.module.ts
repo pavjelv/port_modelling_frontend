@@ -9,7 +9,6 @@ import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { HighchartsChartModule } from "highcharts-angular";
-import { HighchartWrapperComponent } from "./components/highchart-wrapper/highchart-wrapper.component";
 import { CalculateValuesFormComponent } from "./components/calculate-values-form/calculate-values-form.component";
 import { MathjaxModule } from "../mathjax/mathjax.module";
 import { MatDialogModule } from "@angular/material/dialog";
@@ -37,7 +36,7 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-    declarations: [CalculateValuesComponent, HighchartWrapperComponent, CalculateValuesFormComponent],
+    declarations: [CalculateValuesComponent, CalculateValuesFormComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
