@@ -8,11 +8,13 @@ import {
     OnInit,
     PLATFORM_ID,
     ViewChild,
+    ViewChildren,
     ViewEncapsulation,
 } from "@angular/core";
 import {
     AbstractControl,
     FormBuilder,
+    FormControl,
     FormGroup,
     Validators,
 } from "@angular/forms";
@@ -29,6 +31,8 @@ import { RxUnsubscribe } from "../../utils/rx-unsubscribe";
 import { takeUntil } from "rxjs/operators";
 import { TranslateService } from "@ngx-translate/core";
 import { ModellingSystemCharacteristicsDictionary } from "../../dictionaries/modelling-system-characteristics.dictionary";
+import { MatInput } from "@angular/material/input";
+import { MatSelect } from "@angular/material/select";
 
 @Injectable()
 export class StepperIntl extends MatStepperIntl {
@@ -59,6 +63,12 @@ export class StepperIntl extends MatStepperIntl {
 export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnDestroy {
     @ViewChild(MatStepper)
     private stepper: MatStepper;
+
+    @ViewChildren(MatInput)
+    private inputs: MatInput[];
+
+    @ViewChildren(MatSelect)
+    private dropdowns: MatSelect[];
 
     public systemParametersForm: FormGroup;
     public additionalShipTypeForm: FormGroup;
@@ -181,6 +191,26 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
             this.additionalShipTypeForm.get("cargoServersNum").value === 0);
     }
 
+    private findInvalidControls(): FormControl[] {
+        const invalid: FormControl[] = [];
+        const controls = {...this.modelParametersForm.controls, ...this.systemParametersForm.controls};
+        for (const name in controls) {
+            if (controls[name].invalid) {
+                invalid.push(controls[name] as FormControl);
+            }
+        }
+        return invalid;
+    }
+
+    private navigateToFirstInvalid(): void {
+        const controls = this.findInvalidControls();
+        if (controls.length) {
+            const firstInvalid = controls[0];
+            this.inputs?.find((input) => input.ngControl.control === firstInvalid)?.focus();
+            this.dropdowns?.find((input) => input.ngControl.control === firstInvalid)?.focus();
+        }
+    }
+
     public applyValues(): void {
         this.systemParametersForm.markAllAsTouched();
         this.additionalShipTypeForm.markAllAsTouched();
@@ -200,6 +230,8 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
             }
             this.simulationVariables = variables;
             this.stepper.next();
+        } else {
+            this.navigateToFirstInvalid();
         }
     }
 }

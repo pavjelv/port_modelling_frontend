@@ -10,7 +10,7 @@
         {{ systemName | translate }}
         <mat-icon class="toggle-icon" (click)="openDialog()">help_outline</mat-icon>
     </h1>
-    <mat-stepper orientation="vertical">
+    <mat-stepper linear orientation="vertical">
         <mat-step [stepControl]="systemParametersForm">
             <ng-template matStepLabel>Заполните параметры системы</ng-template>
             <div class="calculate-values-form-parameters" [formGroup]="systemParametersForm">
@@ -75,7 +75,7 @@
             </div>
             <button mat-button mat-stroked-button matStepperNext>{{ "port-modelling-fe.common.next" | translate }}</button>
         </mat-step>
-        <mat-step [formGroup]="systemParametersForm">
+        <mat-step [formGroup]="rangeParameterForm">
             <ng-template matStepLabel>Выберите графики для построения</ng-template>
             <div class="calculate-values-form-parameters__wrapper">
                 <h2>Таблица доступных графиков</h2>

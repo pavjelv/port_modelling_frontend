@@ -10,6 +10,7 @@ import { ComponentsModule } from "../../components/components.module";
 import { MathjaxModule } from "../mathjax/mathjax.module";
 import { MathContentRouterGuard } from "../../math-content.router-guard";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatButtonModule } from "@angular/material/button";
 
 const routes: Routes = [
     {
@@ -24,7 +25,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [SystemExampleComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), MatTableModule, MatTabsModule, MatStepperModule, TranslateModule.forChild(), ComponentsModule, MathjaxModule, MatSnackBarModule],
+    imports: [CommonModule, RouterModule.forChild(routes), MatTableModule, MatTabsModule, MatStepperModule, TranslateModule.forChild(), ComponentsModule, MathjaxModule, MatSnackBarModule, MatButtonModule],
     providers: [MathContentRouterGuard],
     exports: [RouterModule, SystemExampleComponent],
 })

@@ -12,6 +12,9 @@
               <app-symbols-description></app-symbols-description>
             </div>
             <app-kendall-notation-component></app-kendall-notation-component>
+            <div class="system-example__actions">
+                <button mat-button mat-stroked-button matStepperNext>{{ "port-modelling-fe.common.next" | translate }}</button>
+            </div>
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>{{ "port-modelling-fe.systemExample.titles.model" | translate }}</ng-template>
@@ -33,6 +36,10 @@
                     <li>{{ "port-modelling-fe.systemExample.modelDescription.arrivals.noRemember" | translate }}</li>
                     <li>{{ "port-modelling-fe.systemExample.modelDescription.arrivals.stationary" | translate }}</li>
                 </ul>
+                <div class="system-example__actions">
+                    <button mat-button matStepperPrevious>{{ "port-modelling-fe.common.back" | translate }}</button>
+                    <button mat-button mat-stroked-button matStepperNext>{{ "port-modelling-fe.common.next" | translate }}</button>
+                </div>
             </ng-template>
         </mat-step>
         <mat-step>
@@ -89,6 +96,9 @@
                         <span [mathContent]="mmcWTime"></span>
                         <p><span [mathContent]="'$\\bar{W} = 1.54056 \\quad суток$'"></span></p>
                     </div>
+                </div>
+                <div class="system-example__actions">
+                    <button mat-button matStepperPrevious>{{ "port-modelling-fe.common.back" | translate }}</button>
                 </div>
             </ng-template>
         </mat-step>
