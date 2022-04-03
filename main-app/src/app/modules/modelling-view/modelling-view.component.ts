@@ -20,8 +20,15 @@ import {
 } from "@angular/forms";
 import { isPlatformBrowser } from "@angular/common";
 import { SimulationVariablesModel } from "../../model/simulation/simulation-variables.model";
-import { AdditionalShipTypeParameters, SimulationParameters } from "../../model/simulation/simulation-parameters";
-import { STEPPER_GLOBAL_OPTIONS, StepperSelectionEvent } from "@angular/cdk/stepper";
+import {
+    AdditionalShipTypeParameters,
+    DistributionsType,
+    SimulationParameters,
+} from "../../model/simulation/simulation-parameters";
+import {
+    STEPPER_GLOBAL_OPTIONS,
+    StepperSelectionEvent,
+} from "@angular/cdk/stepper";
 import {
     MatStepper,
     MatStepperIntl,
@@ -75,6 +82,7 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
     public modelParametersForm: FormGroup;
     public commonParametersForm: FormGroup;
     public isBrowser = false;
+    public selectedDistribution: DistributionsType = DistributionsType.POISSON;
 
     public parameters = SimulationParameters;
     public additionalShipTypeParameters = AdditionalShipTypeParameters;
@@ -83,7 +91,10 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
 
     public readonly modellingSystemCharacteristics = ModellingSystemCharacteristicsDictionary;
 
-    public distributions = [{ value: "Пуассоновский", id: "poisson" }];
+    public distributions = [
+        { value: "Пуассоновский", id: DistributionsType.POISSON },
+        { value: "Равномерный", id: DistributionsType.UNIFORM },
+    ];
 
     private lastFormValue: Record<string, unknown> = null;
     private lastAdditionalParametersFormValue: Record<string, unknown> = null;
@@ -99,7 +110,7 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
 
     public ngOnInit(): void {
         this.modelParametersForm = this.fb.group({
-            arrivalDistribution: [null, [Validators.required]],
+            arrivalDistribution: [this.distributions[0].id, [Validators.required]],
             requiredCharacteristics: [null, [Validators.required]],
             time: [35, [Validators.required, Validators.min(20), Validators.max(50), Validators.pattern("^[0-9]*$")]],
         });
@@ -108,17 +119,28 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
             serveTime: [0.5, [Validators.required, Validators.min(0.1), Validators.max(5)]],
             lambda: [0.5, [Validators.required, Validators.min(0.1), Validators.max(4)]],
             queueLength: [3, [Validators.required, Validators.min(0), Validators.max(8), Validators.pattern("^[0-9]*$")]],
+            a1: [0.5, Validators.required],
+            b1: [1, Validators.required],
         });
         this.additionalShipTypeForm = this.fb.group({
             serveTimeCargo: [0, [Validators.min(0), Validators.max(7)]],
             cargoAppearanceProbability: [0, [Validators.min(0), Validators.max(1)]],
             cargoServersNum: [0, [Validators.min(0), Validators.max(3), Validators.pattern("^[0-9]*$")]],
+            a2: [0.5, Validators.required],
+            b2: [1, Validators.required],
         });
 
         this.commonParametersForm = this.fb.group({
             1: this.systemParametersForm,
             2: this.modelParametersForm,
         });
+
+        this.modelParametersForm
+            .get(SimulationParameters.ARRIVAL_DISTRIBUTION).valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                this.selectedDistribution = value;
+            });
     }
 
     public getControl(controlName: string): AbstractControl {
