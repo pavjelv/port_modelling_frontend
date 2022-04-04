@@ -121,25 +121,27 @@
                     <mat-error *ngIf="getControl(parameters.QUEUE_LENGTH).invalid">{{ getErrorMessage(parameters.QUEUE_LENGTH) | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" *ngIf="selectedDistribution === 'uniform'" class="modelling-view-form__parameter">
-                    <mat-label>{{ "a1" | translate }}</mat-label>
+                    <mat-label>{{ "port-modelling-fe.modellingView.a1" | translate }}</mat-label>
                     <input matInput
                            required
                            type="number"
+                           min="0.1"
+                           max="5"
                            [formControlName]="'a1'"
                     />
-                    <mat-hint align="start">{{ "a1" | translate }}</mat-hint>
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl('a1').invalid">{{ getErrorMessage('a1') | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" *ngIf="selectedDistribution === 'uniform'" class="modelling-view-form__parameter">
-                    <mat-label>{{ "b1" | translate }}</mat-label>
+                    <mat-label>{{ "port-modelling-fe.modellingView.b1" | translate }}</mat-label>
                     <input matInput
                            required
                            type="number"
-                           min="0"
-                           max="8"
+                           min="0.1"
+                           max="5"
                            [formControlName]="'b1'"
                     />
-                    <mat-hint align="start">{{ "b1" | translate }}</mat-hint>
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl('b1').invalid">{{ getErrorMessage('b1') | translate }}</mat-error>
                 </mat-form-field>
             </div>
@@ -188,25 +190,27 @@
                     <mat-error *ngIf="getControl(additionalShipTypeParameters.CARGO_SERVERS_NUM).invalid">{{ getErrorMessage(additionalShipTypeParameters.CARGO_SERVERS_NUM) | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" *ngIf="selectedDistribution === 'uniform'" class="modelling-view-form__parameter">
-                    <mat-label>{{ "a2" | translate }}</mat-label>
+                    <mat-label>{{ "port-modelling-fe.modellingView.a2" | translate }}</mat-label>
                     <input matInput
                            required
                            type="number"
+                           min="0.1"
+                           max="5"
                            [formControlName]="'a2'"
                     />
-                    <mat-hint align="start">{{ "a2" | translate }}</mat-hint>
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl('a2').invalid">{{ getErrorMessage('a2') | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" *ngIf="selectedDistribution === 'uniform'" class="modelling-view-form__parameter">
-                    <mat-label>{{ "b2" | translate }}</mat-label>
+                    <mat-label>{{ "port-modelling-fe.modellingView.b2" | translate }}</mat-label>
                     <input matInput
                            required
                            type="number"
-                           min="0"
-                           max="8"
+                           min="0.1"
+                           max="5"
                            [formControlName]="'b2'"
                     />
-                    <mat-hint align="start">{{ "b2" | translate }}</mat-hint>
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl('b2').invalid">{{ getErrorMessage('b2') | translate }}</mat-error>
                 </mat-form-field>
             </div>

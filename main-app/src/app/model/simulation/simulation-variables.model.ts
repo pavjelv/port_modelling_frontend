@@ -7,5 +7,5 @@ export interface SimulationVariablesModel extends Omit<SystemVariablesModel, "ra
     a2: number;
     b1: number;
     b2: number;
-    distribution: string;
+    arrivalDistribution: "poisson" | "uniform";
 }

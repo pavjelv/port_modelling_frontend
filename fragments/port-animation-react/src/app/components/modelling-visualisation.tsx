@@ -7,14 +7,13 @@ import { Collapse } from "antd";
 
 const { Panel } = Collapse;
 
-import "antd/lib/slider/style";
-import "antd/lib/col/style";
-import "antd/lib/row/style";
-import "antd/lib/descriptions/style";
-import "antd/lib/skeleton/style";
-import "antd/lib/collapse/style";
-import "antd/lib/space/style";
-import "antd/lib/notification/style"
+import "antd/lib/slider/style/index.css";
+import "antd/lib/grid/style/index.css";
+import "antd/lib/descriptions/style/index.css";
+import "antd/lib/skeleton/style/index.css";
+import "antd/lib/collapse/style/index.css";
+import "antd/lib/space/style/index.css";
+import "antd/lib/notification/style/index.css"
 
 const errorNotification = () => {
     notification["error"]({
@@ -64,12 +63,29 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                 <Skeleton loading={loading} active={true}>
                     <Descriptions bordered layout="vertical">
                         <Descriptions.Item key={1} label={"Количество причалов"}>{props?.systemVariables?.serversNum}</Descriptions.Item>
-                        <Descriptions.Item key={2} label={"Время обслуживания (сут.)"}>{props.systemVariables?.serveTime}</Descriptions.Item>
-                        <Descriptions.Item key={3} label={"Интенсивность потока судов"}>{props.systemVariables?.lambda}</Descriptions.Item>
+                        <Descriptions.Item key={2} label={"Интенсивность потока судов"}>{props.systemVariables?.lambda}</Descriptions.Item>
+                        <Descriptions.Item key={3} label={"Распределение"}>{props.systemVariables?.arrivalDistribution}</Descriptions.Item>
+                        { props.systemVariables?.arrivalDistribution === "poisson" &&
+                            <Descriptions.Item key={2} label={"Время обслуживания (сут.)"}>{props.systemVariables?.serveTime}</Descriptions.Item>
+                        }
+                        { props.systemVariables?.arrivalDistribution === "uniform" &&
+                            <>
+                                <Descriptions.Item key={2} label={"Время обслуживания от (сут.)"}>{props.systemVariables?.a1}</Descriptions.Item>
+                                <Descriptions.Item key={2} label={"Время обслуживания до (сут.)"}>{props.systemVariables?.b1}</Descriptions.Item>
+                            </>
+                        }
                         <Descriptions.Item key={4} label={"Максимальная длина очереди"}>{props.systemVariables?.queueLength}</Descriptions.Item>
                         <Descriptions.Item key={5} label={"Количество причалов для сухогруза"}>{props?.systemVariables?.cargoServersNum ?? 0}</Descriptions.Item>
                         <Descriptions.Item key={6} label={"Вероятность появления сухогруза"}>{props?.systemVariables?.cargoAppearanceProbability ?? 0}</Descriptions.Item>
-                        <Descriptions.Item key={7} label={"Время обслуживания сухогруза (сут.)"}>{props?.systemVariables?.serveTimeCargo ?? 0}</Descriptions.Item>
+                        { props.systemVariables?.arrivalDistribution === "poisson" &&
+                            <Descriptions.Item key={7} label={"Время обслуживания сухогруза (сут.)"}>{props?.systemVariables?.serveTimeCargo ?? 0}</Descriptions.Item>
+                        }
+                        { props.systemVariables?.arrivalDistribution === "uniform" &&
+                        <>
+                            <Descriptions.Item key={2} label={"Время обслуживания сухогруза от (сут.)"}>{props.systemVariables?.a2}</Descriptions.Item>
+                            <Descriptions.Item key={2} label={"Время обслуживания сухогруза до (сут.)"}>{props.systemVariables?.b2}</Descriptions.Item>
+                        </>
+                        }
                     </Descriptions>
                 </Skeleton>
             </Row>
