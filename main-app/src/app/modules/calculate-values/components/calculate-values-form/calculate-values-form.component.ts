@@ -163,6 +163,13 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     }
 
     onParameterSelect(event: MatCheckboxChange, parameter: SystemParameters, element: SystemCharacteristicTableModel): void {
+        if (parameter === null) {
+            this.selectAllParameters(element, event.checked);
+            return;
+        } else if (element === null) {
+            this.selectAllCharacteristics(parameter, event.checked);
+            return;
+        }
         if (!event.checked) {
             const selectedRow = this.availableSystemCharacteristics
                 .find((v) => v.id === element.id);
@@ -173,6 +180,34 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         this.rangeParameterForm.get("systemCharacteristic").setValue(element.id);
         this.popover.anchor = event.source._elementRef;
         this.popover.toggle();
+    }
+
+    private selectAllCharacteristics(parameter: SystemParameters, isChecked: boolean): void {
+        this.availableSystemCharacteristics.forEach((characteristicModel) => {
+            if (isChecked) {
+                this.rangeParameterForm.get("rangeParameter").setValue(parameter);
+                this.rangeParameterForm.get("systemCharacteristic").setValue(characteristicModel.id);
+                this.onRangeSelect();
+            } else {
+                delete characteristicModel[parameter];
+                return;
+            }
+        });
+    }
+
+    private selectAllParameters(element: SystemCharacteristicTableModel, isChecked: boolean): void {
+        const selectedRow = this.availableSystemCharacteristics
+            .find((v) => v.id === element.id);
+        Object.values(SystemParameters).forEach((parameter) => {
+            if (isChecked) {
+                this.rangeParameterForm.get("rangeParameter").setValue(parameter);
+                this.rangeParameterForm.get("systemCharacteristic").setValue(element.id);
+                this.onRangeSelect();
+            } else {
+                delete selectedRow[parameter];
+                return;
+            }
+        });
     }
 
     onRangeSelect(): void {

@@ -24,12 +24,13 @@
             }
         }
 
-        td {
+        td:not(:first-child) {
             text-align: center;
         }
 
-        &__x-axis-column {
-
+        &__header {
+            display: flex;
+            flex-direction: column;
         }
 
         &__characteristic-column {
