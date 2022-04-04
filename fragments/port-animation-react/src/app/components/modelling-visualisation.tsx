@@ -1,9 +1,9 @@
 import { SystemVariablesModel } from "app/models/system-variables.model";
 import React from "react";
 import { SimulationResultModel, SystemSummary } from "app/models/simulation-result.model";
-import { Descriptions, notification, Row, Skeleton, Slider, Space } from "antd";
+import { BackTop, Descriptions, notification, Row, Skeleton, Slider, Space, Collapse } from "antd";
 import PortAnimation from "app/components/port-animation";
-import { Collapse } from "antd";
+import CharacteristicCompareChart from "app/components/characteristic-compare-chart";
 
 const { Panel } = Collapse;
 
@@ -14,6 +14,7 @@ import "antd/lib/skeleton/style/index.css";
 import "antd/lib/collapse/style/index.css";
 import "antd/lib/space/style/index.css";
 import "antd/lib/notification/style/index.css"
+import "antd/lib/back-top/style/index.css"
 
 const errorNotification = () => {
     notification["error"]({
@@ -55,6 +56,8 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
         }
     }, [props]);
     return (
+        <>
+        <BackTop/>
         <Space direction={"vertical"}>
             <Row>
                 <h2>Параметры системы</h2>
@@ -108,6 +111,9 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                 </Skeleton>
             </Row>
             <Row>
+                <CharacteristicCompareChart systemVariables={props.systemVariables} />
+            </Row>
+            <Row>
                 <h2>Работа системы</h2>
             </Row>
             <Row>
@@ -115,6 +121,7 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                 <Slider style={{ width: 795 }} disabled={loading} tipFormatter={null} value={time} min={0} max={props.systemVariables?.time ?? 10} marks={marks} onChange={(v) => setTime(v)} />
             </Row>
         </Space>
+        </>
     );
 };
 
