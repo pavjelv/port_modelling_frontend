@@ -1,4 +1,5 @@
 import { TheorySummaryModel } from "../../../model/theory/theory-summary.model";
+import { SystemParameters } from "../../../model/theory/system-type";
 
 export const dataModel1: TheorySummaryModel[] = [
     {
@@ -79,6 +80,6 @@ export const dataModel1: TheorySummaryModel[] = [
         range_from: 1.0,
         range_to: 10.0,
         step: 1.0,
-        range_name: "serversNum"
+        range_name: SystemParameters.SERVERS_NUM,
     }
 ];

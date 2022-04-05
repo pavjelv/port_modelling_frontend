@@ -23,6 +23,7 @@ import {
     dataModelMapper,
     ExamplesData,
 } from "../data/data-model.mapper";
+import { SystemParameters } from "../../../model/theory/system-type";
 
 @Component({
   selector: "app-highchart-view",
@@ -75,7 +76,7 @@ export class HighchartViewComponent extends RxUnsubscribe implements AfterViewIn
             });
         });
         this.parameters = new Map();
-        Object.entries(data.parameters).forEach(([key, value]) => {
+        Object.entries(data.parameters).forEach(([key, value]: [SystemParameters, string]) => {
             this.parameters.set(this.translateService.instant(SystemParametersDictionary.get(key)), value);
         });
         this.cdr.markForCheck();
