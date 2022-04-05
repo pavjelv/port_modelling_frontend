@@ -1,8 +1,11 @@
-export interface SystemVariablesModel {
-    serveTime: number;
+export interface RequiredSystemVariables {
     lambda: number;
     queueLength: number;
     serversNum: number;
+}
+
+export interface SystemVariablesModel extends RequiredSystemVariables{
+    serveTime: number;
     time: number;
     needSecondType: boolean;
     cargoAppearanceProbability: number;

@@ -1,4 +1,6 @@
-export const ModellingSystemCharacteristicsDictionary = new Map<string, string>([
+import { SystemSummary } from "app/models/simulation-result.model";
+
+export const ModellingSystemCharacteristicsDictionary = new Map<Omit<keyof SystemSummary, "name">, string>([
     ["wait_system_time", "Среднее время пребывания в системе"],
     ["average_queue_len", "Среднее число заявок в очереди"],
     ["idle_probability", "Вероятность простоя"],
