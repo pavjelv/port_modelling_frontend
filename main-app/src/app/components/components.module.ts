@@ -17,6 +17,8 @@ import { MMCKSystemComponent } from "./m-m-c-k-system/m-m-c-k-system.component";
 import { SymbolsDescriptionComponent } from "./symbols-description/symbols-description.component";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatButtonModule } from "@angular/material/button";
+import { HighchartWrapperComponent } from "./highchart-wrapper/highchart-wrapper.component";
+import { HighchartsChartModule } from "highcharts-angular";
 
 @NgModule({
     declarations: [
@@ -28,6 +30,7 @@ import { MatButtonModule } from "@angular/material/button";
         MMCCSystemComponent,
         MMCKSystemComponent,
         SymbolsDescriptionComponent,
+        HighchartWrapperComponent,
     ],
     exports: [
         SystemAnimationComponent,
@@ -36,7 +39,8 @@ import { MatButtonModule } from "@angular/material/button";
         MMCSystemComponent,
         MMCCSystemComponent,
         MMCKSystemComponent,
-        SymbolsDescriptionComponent
+        SymbolsDescriptionComponent,
+        HighchartWrapperComponent,
     ],
     imports: [
         CommonModule,
@@ -49,6 +53,7 @@ import { MatButtonModule } from "@angular/material/button";
         MathjaxModule,
         MatDialogModule,
         MatButtonModule,
+        HighchartsChartModule,
     ],
 })
 export class ComponentsModule {}

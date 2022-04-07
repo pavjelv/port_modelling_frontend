@@ -1,0 +1,10 @@
+<div class="highcharts-view__width-flag" #chartsStepElement></div>
+<div class="highcharts-view">
+    <h2>Параметры системы</h2>
+    <ul>
+        <li *ngFor="let item of parameters | keyvalue" [innerHTML]="item.key + ': ' + item.value"></li>
+    </ul>
+    <div class="highcharts-view__wrapper">
+        <app-highchart-wrapper class="mat-elevation-z2" *ngFor="let data of charts; let i = index" [dataModel]="data" [needScroll]="false" [width]="chartWidth"></app-highchart-wrapper>
+    </div>
+</div>

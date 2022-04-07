@@ -12,3 +12,8 @@ export enum AdditionalShipTypeParameters {
     CARGO_APPEARANCE_PROBABILITY = "cargoAppearanceProbability",
     CARGO_SERVERS_NUM = "cargoServersNum",
 }
+
+export enum DistributionsType {
+    POISSON = "poisson",
+    UNIFORM = "uniform",
+}

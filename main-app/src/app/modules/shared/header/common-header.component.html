@@ -1,19 +1,12 @@
-<mat-toolbar color="primary">
-    <div class="header-mat-toolbar-content">
-        <div>
-            <a mat-button class="companyName" routerLink="/">
-                <span class="header-title">{{ "port-modelling-fe.common.home" | translate }}</span>
-            </a>
-        </div>
-        <div>
-            <a mat-button routerLinkActive="active" routerLink="/system-example">Пример системы</a>
-        </div>
-        <div>
-            <a mat-button routerLinkActive="active" routerLink="/calculate">Построить графики</a>
-        </div>
-        <div>
-            <a mat-button routerLinkActive="active" routerLink="/modelling-view">Смоделировать</a>
-            <span class="header-spacer"></span>
-        </div>
+<mat-toolbar color="primary" class="common-header">
+    <div class="common-header-mat-toolbar-content">
+        <a mat-button class="companyName" routerLink="/">
+            <mat-icon>home</mat-icon>
+        </a>
+        <a mat-button routerLinkActive="active" routerLink="/system-example">Пример системы</a>
+        <a mat-button routerLinkActive="active" routerLink="/calculate">Построить графики</a>
+        <a mat-button routerLinkActive="active" routerLink="/examples">Примеры</a>
+        <a mat-button routerLinkActive="active" routerLink="/modelling-view">Смоделировать</a>
+        <span class="header-spacer"></span>
     </div>
 </mat-toolbar>

@@ -1,4 +1,4 @@
-export interface PeriodicElement {
+export interface ShipArrival {
     name: string;
     position: number;
     arrive: string;

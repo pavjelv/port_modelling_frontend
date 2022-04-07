@@ -1,10 +1,11 @@
 import { SystemParameters, SystemType } from "./system-type";
 
-export interface SystemVariablesModel {
-    serveTime: number;
-    lambda: number;
-    queueLength: number;
-    serversNum: number;
+export type RequiredSystemParameters = { [key in SystemParameters]: string };
+
+export interface SystemVariablesModel extends RequiredSystemParameters {
     rangeParameter: SystemParameters;
     systemType: SystemType;
+    rangeFrom: number;
+    rangeTo: number;
+    step: number;
 }

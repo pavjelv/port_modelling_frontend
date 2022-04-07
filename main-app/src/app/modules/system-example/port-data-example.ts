@@ -1,6 +1,6 @@
-import { PeriodicElement } from "../../model/periodic-element.model";
+import { ShipArrival } from "../../model/ship-arriaval.model";
 
-export const ELEMENT_DATA: PeriodicElement[] = [
+export const ELEMENT_DATA: ShipArrival[] = [
     { position: 1, name: "Меркс Джафна", arrive: "02.04.2019 04:22", leave: "04.04.2019 11:19" },
     { position: 2, name: "Энни", arrive: "02.04.2019 04:30", leave: "03.04.2019 23:44" },
     { position: 3, name: "Сормовский-53", arrive: "02.04.2019 04:50", leave: "03.04.2019 11:31" },

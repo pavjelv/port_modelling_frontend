@@ -2,17 +2,16 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    ElementRef,
     Inject,
     OnDestroy,
     OnInit,
     PLATFORM_ID,
-    TemplateRef,
     ViewChild,
 } from "@angular/core";
 import {
     AbstractControl,
     FormBuilder,
-    FormControl,
     FormGroup,
     Validators,
 } from "@angular/forms";
@@ -37,21 +36,20 @@ import {
     ChartDataModel,
     ChartSeriesData,
 } from "../../../../model/chart-data.model";
-import {
-    MatSelectionList,
-    MatSelectionListChange,
-} from "@angular/material/list";
-import {
-    PrefilledSystemParametersListType,
-    PrefilledSystemParametersMap,
-} from "../../../../dictionaries/prefilled-system-parameters-set";
-import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 import { RxUnsubscribe } from "../../../../utils/rx-unsubscribe";
 import { takeUntil } from "rxjs/operators";
 import { TranslateService } from "@ngx-translate/core";
 import { MMCSystemComponent } from "../../../../components/m-m-c-system/m-m-c-system.component";
 import { MMCCSystemComponent } from "../../../../components/m-m-c-c-system/m-m-c-c-system.component";
 import { MMCKSystemComponent } from "../../../../components/m-m-c-k-system/m-m-c-k-system.component";
+import { SatPopover } from "@ncstate/sat-popover";
+import { MatCheckboxChange } from "@angular/material/checkbox";
+import { SystemVariablesModel } from "../../../../model/theory/system-variables.model";
+import {
+    RangeParameterData,
+    SystemCharacteristicTableModel,
+} from "../../../../model/theory/system-characteristic-table.model";
+import { AvailableSystemCharacteristics } from "../../../../model/theory/theory-result.model";
 
 @Component({
     selector: "app-calculate-values-form",
@@ -60,45 +58,34 @@ import { MMCKSystemComponent } from "../../../../components/m-m-c-k-system/m-m-c
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalculateValuesFormComponent extends RxUnsubscribe implements OnInit, OnDestroy {
-    @ViewChild(MatSelectionList)
-    private prefilledSystemList: MatSelectionList;
+    @ViewChild(SatPopover)
+    public popover: SatPopover;
 
-    @ViewChild("compareModeDialog")
-    public compareModeDialog: TemplateRef<unknown>;
-
-    @ViewChild("compareModeDescription")
-    public compareModeDescriptionDialog: TemplateRef<unknown>;
+    @ViewChild("chartsStepElement")
+    public chartsStepElement: ElementRef<HTMLDivElement>;
 
     public systemParametersForm: FormGroup;
+    public rangeParameterForm: FormGroup;
     public isBrowser = false;
 
     public parameters = SystemParameters;
-    public rangeParameterControl: FormControl;
-    public systemCharacteristicParameterControl: FormControl;
-
-    public isCompareMode = false;
-    public compareModeSwitch = false;
-    public compareModeDialogVisible = false;
-    public savedSystemVariables: Array<string> = new Array<string>();
-    public systemVariablesToCalculatedDataMap: Map<string, Map<string, ChartSeriesData>> = new Map<string, Map<string, ChartSeriesData>>();
 
     public systemName = "";
     public hasQueue = false;
     private systemType: SystemType;
 
     public charts: ChartDataModel[] = [];
+    public chartWidth = 700;
 
-    public prefilledSystemTypes: PrefilledSystemParametersListType;
+    public availableSystemCharacteristics: Array<SystemCharacteristicTableModel>;
 
-    public systemParameters: Array<{id: string; value: string}>;
-
-    public availableSystemCharacteristics: Array<{id: string; value: string}>;
+    public displayedColumns: string[] = ["characteristic", "lambda", "s", "c", "k"];
 
     constructor(
         private fb: FormBuilder,
         @Inject(PLATFORM_ID) private platformId: unknown,
         private loadingService: LoadingOverlayService,
-        private optimalSizeService: TheoryResultsService,
+        private theoryResultsService: TheoryResultsService,
         private cdr: ChangeDetectorRef,
         private snackBar: MatSnackBar,
         private route: ActivatedRoute,
@@ -115,116 +102,149 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         this.hasQueue = systemType === SystemType.WITH_QUEUE;
         this.systemType = systemType;
         this.availableSystemCharacteristics = Array.from(AvailableSystemCharacteristicsDictionary)
-            .filter(([k, v]) => systemType !== SystemType.WITH_REJECT || (k !== "l_queue" && k !== "wait"))
+            .filter(([k, _]) => systemType !== SystemType.WITH_REJECT || (k !== "l_queue" && k !== "wait"))
             .map(([key, value]) => {
                 return {
                     id: key,
                     value,
                 };
             });
-        this.systemParameters = Array.from(SystemParametersDictionary)
-            .filter(([k, v]) => (this.hasQueue || k !== SystemParameters.QUEUE_LENGTH))
-            .map(([key, value]) => {
-                return {
-                    id: key,
-                    value,
-                };
-            });
+        if (systemType === SystemType.WITH_REJECT) {
+            this.displayedColumns.pop();
+        }
 
         this.systemName = SystemTypeDictionary.get(systemType);
-        this.prefilledSystemTypes = PrefilledSystemParametersMap.get(systemType);
-        this.systemCharacteristicParameterControl = new FormControl([], Validators.required);
         this.createForm(systemType);
-
-        this.systemParametersForm.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
-            this.prefilledSystemList.deselectAll();
-        });
-
-        this.rangeParameterControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((v) => {
-            this.systemParametersForm.get(v)?.patchValue(1);
-        });
     }
 
     private createForm(systemType: string): void {
         this.systemParametersForm = this.fb.group({
             systemType: [systemType, Validators.required],
-            step: [1, [Validators.required, Validators.min(0.1), Validators.max(2)]],
-            rangeFrom: [1.0, [Validators.required, Validators.min(0.1), Validators.max(10)]],
-            rangeTo: [2.0, [Validators.required, Validators.min(0.2), Validators.max(10)]],
             serversNum: [2, [Validators.required, Validators.min(1), Validators.max(10), Validators.pattern("^[0-9]*$")]],
             queueLength: [2, [Validators.required, Validators.min(1), Validators.max(10), Validators.pattern("^[0-9]*$")]],
             serveTime: [0.5, [Validators.required, Validators.min(0.1), Validators.max(5)]],
             lambda: [0.5, [Validators.required, Validators.min(0.1), Validators.max(5)]],
         });
-        this.rangeParameterControl = new FormControl(SystemParameters.LAMBDA);
-        this.systemParametersForm.registerControl("rangeParameter", this.rangeParameterControl);
+        this.rangeParameterForm = this.fb.group({
+            systemCharacteristic: [],
+            rangeParameter: [],
+            step: [0.1, [Validators.required, Validators.min(0.1), Validators.max(2)]],
+            rangeFrom: [1.0, [Validators.required, Validators.min(0.1), Validators.max(10)]],
+            rangeTo: [5.0, [Validators.required, Validators.min(0.2), Validators.max(10)]],
+        });
     }
 
-    private createSeriesName({ lambda, serveTime, serversNum, queueLength }: any): string {
-        return `&lambda;: ${lambda}, t: ${serveTime}, n: ${serversNum}, m: ${queueLength}`;
-    }
-
-    public removeSeries(key: string): void {
-        const index = this.savedSystemVariables.indexOf(key);
-        if (index !== -1) {
-            this.savedSystemVariables.splice(index, 1);
-            this.systemVariablesToCalculatedDataMap.delete(key);
-            this.charts = [];
-            (this.systemCharacteristicParameterControl.value as Array<{ id: string; value: string }>).forEach((v) => {
-                const data = Array.from(this.systemVariablesToCalculatedDataMap.entries())
-                    .reduce((aggregator, [k, value]) => aggregator.set(k, value.get(v.id)), new Map<string, ChartSeriesData>());
-                this.charts.push({
-                    id: v.id,
-                    xAxisName: SystemParametersDictionary.get(this.rangeParameterControl.value),
-                    title: v.value,
-                    data,
-                });
-            });
-            this.cdr.markForCheck();
-        }
-    }
-
-    private processTheorySummary(summary: TheorySummaryModel): void {
+    private processTheorySummary(summary: TheorySummaryModel[]): void {
         this.charts = [];
-        if (this.isCompareMode) {
-            const key = this.createSeriesName(this.systemParametersForm.getRawValue());
-            if (!this.systemVariablesToCalculatedDataMap.has(key)) {
-                const chartsData = new Map<string, ChartSeriesData>();
-                (this.systemCharacteristicParameterControl.value as Array<{ id: string; value: string }>).forEach((v) => {
-                    chartsData.set(
-                        v.id,
-                        summary.result.map((value, i) => [summary.parameter_range[i], value[v.id]]),
-                    );
+        Object.values(this.parameters).forEach((parameter) => {
+            this.availableSystemCharacteristics
+                .map((v) => ({ id: v.id, p: v[parameter] }))
+                .filter((v) => !!v.p)
+                .forEach((v) => {
+                    const p = v.p;
+                    const calculated = summary.find((s) => {
+                        return parameter === s.range_name && p.rangeFrom === s.range_from && p.rangeTo === s.range_to && p.step === s.step;
+                    });
+                    const data = new Map<string, ChartSeriesData>([
+                            ["series", calculated.result.map((value, i) => [calculated.parameter_range[i], value[v.id]]) as ChartSeriesData]
+                    ]);
+                    this.charts.push({
+                        id: v.id + parameter,
+                        xAxisName: this.translateService.instant(SystemParametersDictionary.get(parameter)),
+                        title: AvailableSystemCharacteristicsDictionary.get(v.id),
+                        data,
+                    });
                 });
-                this.savedSystemVariables.push(key);
-                this.systemVariablesToCalculatedDataMap.set(key, chartsData);
-            }
-        }
-        (this.systemCharacteristicParameterControl.value as Array<{ id: string; value: string }>).forEach((v) => {
-            const data = this.isCompareMode
-                ? Array.from(this.systemVariablesToCalculatedDataMap.entries())
-                    .reduce(
-                        (aggregator, [key, value]) => aggregator.set(key, value.get(v.id)), new Map<string, ChartSeriesData>()
-                    )
-                : new Map<string, ChartSeriesData>([
-                    ["series", summary.result.map((value, i) => [summary.parameter_range[i], value[v.id]]) as ChartSeriesData]
-                ]);
-            this.charts.push({
-                id: v.id,
-                xAxisName: this.translateService.instant(SystemParametersDictionary.get(this.rangeParameterControl.value)),
-                title: v.value,
-                data,
-            });
         });
         this.cdr.markForCheck();
     }
 
     public getControl(controlName: string): AbstractControl {
-        return this.systemParametersForm.get(controlName);
+        return this.systemParametersForm.get(controlName) ?? this.rangeParameterForm.get(controlName);
+    }
+
+    onParameterSelect(event: MatCheckboxChange, parameter: SystemParameters, element: SystemCharacteristicTableModel): void {
+        if (parameter === null) {
+            this.selectAllParameters(element, event.checked);
+            return;
+        } else if (element === null) {
+            this.selectAllCharacteristics(parameter, event.checked);
+            return;
+        }
+        if (!event.checked) {
+            const selectedRow = this.availableSystemCharacteristics
+                .find((v) => v.id === element.id);
+            delete selectedRow[parameter];
+            return;
+        }
+        this.prepareRangeParameterForm(parameter, element.id);
+        this.popover.anchor = event.source._elementRef;
+        this.popover.toggle();
+    }
+
+    private selectAllCharacteristics(parameter: SystemParameters, isChecked: boolean): void {
+        this.availableSystemCharacteristics.forEach((element) => {
+            if (isChecked) {
+                this.prepareRangeParameterForm(parameter, element.id);
+                this.onRangeSelect();
+            } else {
+                delete element[parameter];
+                return;
+            }
+        });
+    }
+
+    private selectAllParameters(element: SystemCharacteristicTableModel, isChecked: boolean): void {
+        const selectedRow = this.availableSystemCharacteristics
+            .find((v) => v.id === element.id);
+        Object.values(SystemParameters).forEach((parameter) => {
+            if (isChecked) {
+                this.prepareRangeParameterForm(parameter, element.id);
+                this.onRangeSelect();
+            } else {
+                delete selectedRow[parameter];
+                return;
+            }
+        });
+    }
+
+    private prepareRangeParameterForm(parameter: SystemParameters, characteristicId: AvailableSystemCharacteristics): void {
+        this.rangeParameterForm.get("rangeParameter").setValue(parameter);
+        this.rangeParameterForm.get("systemCharacteristic").setValue(characteristicId);
+        if (parameter === SystemParameters.SERVERS_NUM || parameter === SystemParameters.QUEUE_LENGTH) {
+            this.rangeParameterForm.get("rangeFrom").setValue(1);
+            this.rangeParameterForm.get("rangeTo").setValue(5);
+            this.rangeParameterForm.get("step").setValue(1);
+            this.rangeParameterForm.get("rangeFrom").addValidators([Validators.pattern("^[0-9]*$")]);
+            this.rangeParameterForm.get("rangeTo").addValidators([Validators.pattern("^[0-9]*$")]);
+            this.rangeParameterForm.get("step").addValidators([Validators.pattern("^[0-9]*$")]);
+        } else {
+            this.rangeParameterForm.get("rangeFrom").setValue(0.1);
+            this.rangeParameterForm.get("rangeTo").setValue(4);
+            this.rangeParameterForm.get("step").setValue(0.5);
+            this.rangeParameterForm.get("rangeFrom").removeValidators([Validators.pattern("^[0-9]*$")]);
+            this.rangeParameterForm.get("rangeTo").removeValidators([Validators.pattern("^[0-9]*$")]);
+            this.rangeParameterForm.get("step").removeValidators([Validators.pattern("^[0-9]*$")]);
+        }
+    }
+
+    onRangeSelect(): void {
+        if (this.rangeParameterForm.valid) {
+            const selectedRow = this.availableSystemCharacteristics
+                .find((v) => v.id === this.rangeParameterForm.get("systemCharacteristic").value);
+            selectedRow[this.rangeParameterForm.get("rangeParameter").value] = this.rangeParameterForm.getRawValue();
+            this.popover.close();
+            this.cdr.markForCheck();
+        }
+    }
+
+    onCancel(): void {
+        this.popover.close();
+        this.cdr.markForCheck();
     }
 
     public getErrorMessage(controlName: string): string {
-        const formControl = this.systemParametersForm.get(controlName) as FormControl;
+        const formControl = this.getControl(controlName);
         if (formControl.hasError("required")) {
             return "port-modelling-fe.validations.required";
         } else if (formControl.hasError("min")) {
@@ -251,59 +271,42 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         }
     }
 
-    public openCompareModeDescriptionDialog(): void {
-        this.dialog.open(this.compareModeDescriptionDialog);
-    }
-
-    public onPrefilledParameterSelect(event: MatSelectionListChange): void {
-        this.systemParametersForm.patchValue(event.options[0].value);
-    }
-
-    public onCompareModeChange(event: MatSlideToggleChange): void {
-        if (event.checked) {
-            this.dialog.open(this.compareModeDialog, { disableClose: true });
-        } else {
-            this.isCompareMode = false;
-            this.systemVariablesToCalculatedDataMap = new Map<string, Map<string, ChartSeriesData>>();
-            this.savedSystemVariables = [];
-            this.charts = [];
-        }
-        this.cdr.markForCheck();
-    }
-
-    public onCompareParametersApply(): void {
-        this.systemParametersForm.markAllAsTouched();
-        this.systemCharacteristicParameterControl.markAllAsTouched();
-        if (this.systemParametersForm.valid && this.systemCharacteristicParameterControl.valid) {
-            this.isCompareMode = true;
-            this.savedSystemVariables = [];
-            this.charts = [];
-            this.dialog.closeAll();
-        }
-        this.cdr.markForCheck();
-    }
-
-    public onCompareDialogCancel(): void {
-        this.compareModeSwitch = false;
-        this.isCompareMode = false;
-        this.cdr.markForCheck();
-    }
-
     public ngOnDestroy(): void {
         super.ngOnDestroy();
     }
 
+    private composeRequest(): Array<SystemVariablesModel> {
+        let result = [];
+        Object.values(this.parameters).forEach((parameter) => {
+            const selectedValues = this.availableSystemCharacteristics
+                .map((v) => v[parameter] as RangeParameterData)
+                .filter((v) => !!v)
+                .reduce((aggregator, current) => {
+                    const existingValue = aggregator.find((v) => {
+                        return v.rangeFrom === current.rangeFrom && v.rangeTo === current.rangeTo && v.step === current.step;
+                    });
+                    if (!existingValue) {
+                        aggregator.push(current);
+                    }
+                    return aggregator;
+                }, []);
+            result = [...result, ...selectedValues.map((value) => ({ ...value, ...this.systemParametersForm.getRawValue() }))];
+        });
+        return result;
+    }
+
     public _onSubmit(): void {
         this.systemParametersForm.markAllAsTouched();
-        this.systemCharacteristicParameterControl.markAllAsTouched();
-        if (this.systemParametersForm.valid && this.systemCharacteristicParameterControl.valid) {
+        if (this.systemParametersForm.valid) {
             this.loadingService.showLoading();
-            this.optimalSizeService
-                .calculateWithQueue(this.systemParametersForm.getRawValue())
+            this.theoryResultsService
+                .calculateBulk(this.composeRequest())
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(
                     (summary) => {
                         this.loadingService.hideLoading();
+                        const width = window.getComputedStyle(this.chartsStepElement?.nativeElement).width;
+                        this.chartWidth = parseInt(width.replace("px", ""), 10) / 2 - 10;
                         this.processTheorySummary(summary);
                     },
                     (error: Error) => {

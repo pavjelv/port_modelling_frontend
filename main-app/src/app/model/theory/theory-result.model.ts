@@ -14,3 +14,5 @@ export interface TheoryResultModel {
     l_sys: number;
     t_sys: number;
 }
+
+export type AvailableSystemCharacteristics = keyof TheoryResultModel;
