@@ -138,7 +138,7 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                     </Col>
                 </Row>
                 <Row>
-                    <CharacteristicCompareChart systemVariables={props.systemVariables} />
+                    <CharacteristicCompareChart loading={loading} systemVariables={props.systemVariables} />
                 </Row>
                 <Row>
                     <Col span={16}>

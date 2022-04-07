@@ -1,6 +1,6 @@
 import React from "react";
 import { SystemVariablesModel } from "app/models/system-variables.model";
-import { Button, Col, Collapse, Drawer, Form, FormInstance, Input, notification, Row, Select, Space } from "antd";
+import { Button, Col, Collapse, Drawer, Form, FormInstance, Input, notification, Row, Select, Skeleton, Space } from "antd";
 import HighchartsWrapper from "app/components/highcharts-wrapper";
 import { ModellingSystemCharacteristicsDictionary } from "app/dictionaries/modelling-system-characteristics.dictionary";
 import { SystemParametersDictionary } from "app/dictionaries/required-system-variables.distionary";
@@ -20,6 +20,7 @@ import "antd/lib/form/style/index.css";
 import "antd/lib/input/style/index.css";
 import "antd/lib/notification/style/index.css";
 import "antd/lib/collapse/style/index.css";
+import "antd/lib/skeleton/style/index.css";
 
 const errorNotification = () => {
     notification["error"]({
@@ -27,7 +28,7 @@ const errorNotification = () => {
     });
 };
 
-const CharacteristicCompareChart = (props: { systemVariables: SystemVariablesModel }) => {
+const CharacteristicCompareChart = (props: { systemVariables: SystemVariablesModel, loading: boolean }) => {
     const [drawerVisible, setDrawerVisible] = React.useState(false);
     const [chartsResult, setChartsResult] = React.useState(null as ChartsResultModel);
     const [requiredCharacteristics, setRequiredCharacteristics] = React.useState([]);
@@ -74,16 +75,18 @@ const CharacteristicCompareChart = (props: { systemVariables: SystemVariablesMod
     return (
         <>
             <Col span={22}>
-                <Button onClick={showDrawer} type={"primary"}>
-                    Построить графики сравнения?
-                </Button>
-                {!!chartsResult && (
-                    <Collapse defaultActiveKey={["0"]}>
-                        <Panel key={0} header={"Графики"}>
-                            <HighchartsWrapper chartsResult={chartsResult} requiredCharacteristics={requiredCharacteristics} />
-                        </Panel>
-                    </Collapse>
-                )}
+                <Skeleton active={true} loading={props.loading}>
+                    <Button onClick={showDrawer} type={"primary"}>
+                        Построить графики сравнения?
+                    </Button>
+                    {!!chartsResult && (
+                        <Collapse defaultActiveKey={["0"]}>
+                            <Panel key={0} header={"Графики"}>
+                                <HighchartsWrapper chartsResult={chartsResult} requiredCharacteristics={requiredCharacteristics} />
+                            </Panel>
+                        </Collapse>
+                    )}
+                </Skeleton>
             </Col>
             <Drawer
                 title={"Выберите характеристики и параметр"}

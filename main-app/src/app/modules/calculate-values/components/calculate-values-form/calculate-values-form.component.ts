@@ -49,6 +49,7 @@ import {
     RangeParameterData,
     SystemCharacteristicTableModel,
 } from "../../../../model/theory/system-characteristic-table.model";
+import { AvailableSystemCharacteristics } from "../../../../model/theory/theory-result.model";
 
 @Component({
     selector: "app-calculate-values-form",
@@ -176,20 +177,18 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
             delete selectedRow[parameter];
             return;
         }
-        this.rangeParameterForm.get("rangeParameter").setValue(parameter);
-        this.rangeParameterForm.get("systemCharacteristic").setValue(element.id);
+        this.prepareRangeParameterForm(parameter, element.id);
         this.popover.anchor = event.source._elementRef;
         this.popover.toggle();
     }
 
     private selectAllCharacteristics(parameter: SystemParameters, isChecked: boolean): void {
-        this.availableSystemCharacteristics.forEach((characteristicModel) => {
+        this.availableSystemCharacteristics.forEach((element) => {
             if (isChecked) {
-                this.rangeParameterForm.get("rangeParameter").setValue(parameter);
-                this.rangeParameterForm.get("systemCharacteristic").setValue(characteristicModel.id);
+                this.prepareRangeParameterForm(parameter, element.id);
                 this.onRangeSelect();
             } else {
-                delete characteristicModel[parameter];
+                delete element[parameter];
                 return;
             }
         });
@@ -200,8 +199,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
             .find((v) => v.id === element.id);
         Object.values(SystemParameters).forEach((parameter) => {
             if (isChecked) {
-                this.rangeParameterForm.get("rangeParameter").setValue(parameter);
-                this.rangeParameterForm.get("systemCharacteristic").setValue(element.id);
+                this.prepareRangeParameterForm(parameter, element.id);
                 this.onRangeSelect();
             } else {
                 delete selectedRow[parameter];
@@ -210,10 +208,37 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         });
     }
 
+    private prepareRangeParameterForm(parameter: SystemParameters, characteristicId: AvailableSystemCharacteristics): void {
+        this.rangeParameterForm.get("rangeParameter").setValue(parameter);
+        this.rangeParameterForm.get("systemCharacteristic").setValue(characteristicId);
+        if (parameter === SystemParameters.SERVERS_NUM || parameter === SystemParameters.QUEUE_LENGTH) {
+            this.rangeParameterForm.get("rangeFrom").setValue(1);
+            this.rangeParameterForm.get("rangeTo").setValue(5);
+            this.rangeParameterForm.get("step").setValue(1);
+            this.rangeParameterForm.get("rangeFrom").addValidators([Validators.pattern("^[0-9]*$")]);
+            this.rangeParameterForm.get("rangeTo").addValidators([Validators.pattern("^[0-9]*$")]);
+            this.rangeParameterForm.get("step").addValidators([Validators.pattern("^[0-9]*$")]);
+        } else {
+            this.rangeParameterForm.get("rangeFrom").setValue(0.1);
+            this.rangeParameterForm.get("rangeTo").setValue(4);
+            this.rangeParameterForm.get("step").setValue(0.5);
+            this.rangeParameterForm.get("rangeFrom").removeValidators([Validators.pattern("^[0-9]*$")]);
+            this.rangeParameterForm.get("rangeTo").removeValidators([Validators.pattern("^[0-9]*$")]);
+            this.rangeParameterForm.get("step").removeValidators([Validators.pattern("^[0-9]*$")]);
+        }
+    }
+
     onRangeSelect(): void {
-        const selectedRow = this.availableSystemCharacteristics
-            .find((v) => v.id === this.rangeParameterForm.get("systemCharacteristic").value);
-        selectedRow[this.rangeParameterForm.get("rangeParameter").value] = this.rangeParameterForm.getRawValue();
+        if (this.rangeParameterForm.valid) {
+            const selectedRow = this.availableSystemCharacteristics
+                .find((v) => v.id === this.rangeParameterForm.get("systemCharacteristic").value);
+            selectedRow[this.rangeParameterForm.get("rangeParameter").value] = this.rangeParameterForm.getRawValue();
+            this.popover.close();
+            this.cdr.markForCheck();
+        }
+    }
+
+    onCancel(): void {
         this.popover.close();
         this.cdr.markForCheck();
     }
