@@ -6,4 +6,5 @@ export const ModellingSystemCharacteristicsDictionary = new Map<string, string>(
     ["reject_probability", "Вероятность отказа"],
     ["left_customers_number", "Количество судов, покинувших систему"],
     ["served_customers_number", "Количество обслуженных судов"],
+    ["all_busy_probability", "Вероятность того, что все каналы заняты"],
 ]);
