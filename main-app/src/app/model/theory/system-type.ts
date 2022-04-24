@@ -6,7 +6,7 @@ export enum SystemType {
 
 export enum SystemParameters {
     SERVERS_NUM = "serversNum",
-    SERVE_TIME = "serveTime",
+    MU = "mu",
     LAMBDA = "lambda",
     QUEUE_LENGTH = "queueLength",
 }

@@ -27,15 +27,15 @@
                         <mat-error *ngIf="getControl(parameters.SERVERS_NUM).invalid">{{ getErrorMessage(parameters.SERVERS_NUM) | translate }}</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
-                        <mat-label>{{ "port-modelling-fe.calculateValues.serveTime" | translate }}</mat-label>
+                        <mat-label [innerHTML]="'port-modelling-fe.calculateValues.mu' | translate"></mat-label>
                         <input matInput
                                required
                                type="number"
-                               [formControlName]="parameters.SERVE_TIME"
+                               [formControlName]="parameters.MU"
                                [matTooltipPosition]="'above'"
-                               [matTooltip]="'port-modelling-fe.calculateValues.serveTimeHint' | translate"
+                               [matTooltip]="'port-modelling-fe.calculateValues.muHint' | translate"
                         />
-                        <mat-error *ngIf="getControl(parameters.SERVE_TIME).invalid">{{ getErrorMessage(parameters.SERVE_TIME) | translate }}</mat-error>
+                        <mat-error *ngIf="getControl(parameters.MU).invalid">{{ getErrorMessage(parameters.MU) | translate }}</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label [innerHTML]="'port-modelling-fe.calculateValues.lambda' | translate"></mat-label>
@@ -48,7 +48,7 @@
                         />
                         <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline">
+                    <mat-form-field appearance="outline" *ngIf="systemType !== 'reject'">
                         <mat-label [innerHTML]="'Коэффициент загруженности системы' | translate"></mat-label>
                         <input matInput
                                [readonly]="true"
@@ -106,21 +106,21 @@
                             ></mat-checkbox>
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="s">
+                    <ng-container matColumnDef="mu">
                         <th mat-header-cell *matHeaderCellDef class="calculate-values-form-table__x-axis-column">
                             <div class="calculate-values-form-table__header">
-                                <span>{{ "port-modelling-fe.calculateValues.serveTime" | translate }}</span>
+                                <span [innerHTML]="'port-modelling-fe.calculateValues.mu' | translate"></span>
                                 <mat-checkbox
-                                    (change)="onParameterSelect($event, parameters.SERVE_TIME, null)"
+                                    (change)="onParameterSelect($event, parameters.MU, null)"
                                 ></mat-checkbox>
                             </div>
                         </th>
                         <td mat-cell *matCellDef="let element">
                             <mat-checkbox [satPopoverAnchor]="popover"
-                                          [checked]="!!element.serveTime"
-                                          (change)="onParameterSelect($event, parameters.SERVE_TIME, element)"
+                                          [checked]="!!element.mu"
+                                          (change)="onParameterSelect($event, parameters.MU, element)"
                                           [matTooltipPosition]="'after'"
-                                          [matTooltip]="element.serveTime ? ('from: ' + element.serveTime.rangeFrom + ' to: ' + element.serveTime.rangeTo) : ''"
+                                          [matTooltip]="element.mu ? ('from: ' + element.mu.rangeFrom + ' to: ' + element.mu.rangeTo) : ''"
                             ></mat-checkbox>
                         </td>
                     </ng-container>

@@ -1,6 +1,25 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from "@angular/core";
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { SystemParameters, SystemType } from "../../../../model/theory/system-type";
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    Inject,
+    OnDestroy,
+    OnInit,
+    PLATFORM_ID,
+    ViewChild,
+} from "@angular/core";
+import {
+    AbstractControl,
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    Validators,
+} from "@angular/forms";
+import {
+    SystemParameters,
+    SystemType,
+} from "../../../../model/theory/system-type";
 import { LoadingOverlayService } from "../../../../services/loading-overlay.service";
 import { TheoryResultsService } from "../../../../services/theory-results.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -9,11 +28,22 @@ import { TheorySummaryModel } from "../../../../model/theory/theory-summary.mode
 import { ActivatedRoute } from "@angular/router";
 import { SystemTypeDictionary } from "../../../../dictionaries/system-type.dictionary";
 import { MatDialog } from "@angular/material/dialog";
-import { AvailableSystemCharacteristicsDictionary, SystemParametersDictionary } from "../../../../dictionaries/available-system-characteristics.dictionary";
+import {
+    AvailableSystemCharacteristicsDictionary,
+    SystemParametersDictionary,
+} from "../../../../dictionaries/available-system-characteristics.dictionary";
 import { DomSanitizer } from "@angular/platform-browser";
-import { ChartDataModel, ChartSeriesData } from "../../../../model/chart-data.model";
+import {
+    ChartDataModel,
+    ChartSeriesData,
+} from "../../../../model/chart-data.model";
 import { RxUnsubscribe } from "../../../../utils/rx-unsubscribe";
-import { filter, map, startWith, takeUntil } from "rxjs/operators";
+import {
+    filter,
+    map,
+    startWith,
+    takeUntil,
+} from "rxjs/operators";
 import { TranslateService } from "@ngx-translate/core";
 import { MMCSystemComponent } from "../../../../components/m-m-c-system/m-m-c-system.component";
 import { MMCCSystemComponent } from "../../../../components/m-m-c-c-system/m-m-c-c-system.component";
@@ -21,7 +51,10 @@ import { MMCKSystemComponent } from "../../../../components/m-m-c-k-system/m-m-c
 import { SatPopover } from "@ncstate/sat-popover";
 import { MatCheckboxChange } from "@angular/material/checkbox";
 import { SystemVariablesModel } from "../../../../model/theory/system-variables.model";
-import { RangeParameterData, SystemCharacteristicTableModel } from "../../../../model/theory/system-characteristic-table.model";
+import {
+    RangeParameterData,
+    SystemCharacteristicTableModel,
+} from "../../../../model/theory/system-characteristic-table.model";
 import { AvailableSystemCharacteristics } from "../../../../model/theory/theory-result.model";
 import { combineLatest } from "rxjs";
 
@@ -46,14 +79,14 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
 
     public systemName = "";
     public hasQueue = false;
-    private systemType: SystemType;
+    public systemType: SystemType;
 
     public charts: ChartDataModel[] = [];
     public chartWidth = 700;
 
     public availableSystemCharacteristics: Array<SystemCharacteristicTableModel>;
 
-    public displayedColumns: string[] = ["characteristic", "lambda", "s", "c", "k"];
+    public displayedColumns: string[] = ["characteristic", "lambda", "mu", "c", "k"];
 
     constructor(
         private fb: FormBuilder,
@@ -94,12 +127,12 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     private createForm(systemType: string): void {
         this.systemParametersForm = this.fb.group({
             systemType: [systemType, Validators.required],
-            serversNum: [2, [Validators.pattern("^[0-9]*$"), Validators.min(0)]],
-            queueLength: [2, [Validators.pattern("^[0-9]*$"), Validators.min(0)]],
-            serveTime: [0.5, [Validators.required, Validators.min(0)]],
-            lambda: [0.5, [Validators.required, Validators.min(0)]],
-            systemOverload: [1, [Validators.max(1)]],
+            serversNum: [2, [Validators.pattern("^[0-9]*$"), Validators.min(0), Validators.max(100)]],
+            queueLength: [2, [Validators.pattern("^[0-9]*$"), Validators.min(0), Validators.max(100)]],
+            mu: [0.5, [Validators.required, Validators.min(0), Validators.max(100)]],
+            lambda: [0.5, [Validators.required, Validators.min(0), Validators.max(100)]],
         });
+
         this.rangeParameterForm = this.fb.group({
             systemCharacteristic: [],
             rangeParameter: [],
@@ -107,20 +140,24 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
             rangeFrom: [1.0, [Validators.required, Validators.min(0.1), Validators.max(10)]],
             rangeTo: [5.0, [Validators.required, Validators.min(0.2), Validators.max(10)]],
         });
-        combineLatest([
-            this.systemParametersForm.get(SystemParameters.SERVERS_NUM).valueChanges.pipe(startWith(2)),
-            this.systemParametersForm.get(SystemParameters.SERVE_TIME).valueChanges.pipe(startWith(0.5)),
-            this.systemParametersForm.get(SystemParameters.LAMBDA).valueChanges.pipe(startWith(0.5)),
-        ])
-            .pipe(
-                filter(([a, b, c]) => a !== null && b !== null && c !== null),
-                map(([serversNum, serveTime, lambda]: [number, number, number]) => (lambda * serveTime) / serversNum),
-                takeUntil(this.destroy$),
-            )
-            .subscribe((v) =>  {
-                this.systemParametersForm.get("systemOverload").setValue(v);
-                this.systemParametersForm.get("systemOverload").markAsTouched();
-            });
+
+        if (this.systemType !== SystemType.WITH_REJECT) {
+            this.systemParametersForm.setControl("systemOverload", this.fb.control(1, [Validators.max(1)]));
+            combineLatest([
+                this.systemParametersForm.get(SystemParameters.SERVERS_NUM).valueChanges.pipe(startWith(2)),
+                this.systemParametersForm.get(SystemParameters.MU).valueChanges.pipe(startWith(0.5)),
+                this.systemParametersForm.get(SystemParameters.LAMBDA).valueChanges.pipe(startWith(0.5)),
+            ])
+                .pipe(
+                    filter(([a, b, c]) => a !== null && b !== null && c !== null),
+                    map(([serversNum, mu, lambda]: [number, number, number]) => (lambda / mu) / serversNum),
+                    takeUntil(this.destroy$),
+                )
+                .subscribe((v) => {
+                    this.systemParametersForm.get("systemOverload").setValue(v);
+                    this.systemParametersForm.get("systemOverload").markAsTouched();
+                });
+        }
     }
 
     private processTheorySummary(summary: TheorySummaryModel[]): void {

@@ -13,7 +13,7 @@ export const AvailableSystemCharacteristicsDictionary = new Map<AvailableSystemC
 
 export const SystemParametersDictionary = new Map<SystemParameters, string>([
     [SystemParameters.SERVERS_NUM, "port-modelling-fe.calculateValues.serversNum"],
-    [SystemParameters.SERVE_TIME, "port-modelling-fe.calculateValues.serveTime"],
+    [SystemParameters.MU, "port-modelling-fe.calculateValues.mu"],
     [SystemParameters.LAMBDA, "port-modelling-fe.calculateValues.lambda"],
     [SystemParameters.QUEUE_LENGTH, "port-modelling-fe.calculateValues.queueLength"],
 ]);
