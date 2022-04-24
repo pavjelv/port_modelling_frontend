@@ -12,6 +12,7 @@ import {
 import {
     AbstractControl,
     FormBuilder,
+    FormControl,
     FormGroup,
     Validators,
 } from "@angular/forms";
@@ -211,20 +212,27 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     private prepareRangeParameterForm(parameter: SystemParameters, characteristicId: AvailableSystemCharacteristics): void {
         this.rangeParameterForm.get("rangeParameter").setValue(parameter);
         this.rangeParameterForm.get("systemCharacteristic").setValue(characteristicId);
-        if (parameter === SystemParameters.SERVERS_NUM || parameter === SystemParameters.QUEUE_LENGTH) {
+        const isInteger = parameter === SystemParameters.SERVERS_NUM || parameter === SystemParameters.QUEUE_LENGTH;
+        if (isInteger) {
             this.rangeParameterForm.get("rangeFrom").setValue(1);
             this.rangeParameterForm.get("rangeTo").setValue(5);
             this.rangeParameterForm.get("step").setValue(1);
-            this.rangeParameterForm.get("rangeFrom").addValidators([Validators.pattern("^[0-9]*$")]);
-            this.rangeParameterForm.get("rangeTo").addValidators([Validators.pattern("^[0-9]*$")]);
-            this.rangeParameterForm.get("step").addValidators([Validators.pattern("^[0-9]*$")]);
         } else {
             this.rangeParameterForm.get("rangeFrom").setValue(0.1);
             this.rangeParameterForm.get("rangeTo").setValue(4);
             this.rangeParameterForm.get("step").setValue(0.5);
-            this.rangeParameterForm.get("rangeFrom").removeValidators([Validators.pattern("^[0-9]*$")]);
-            this.rangeParameterForm.get("rangeTo").removeValidators([Validators.pattern("^[0-9]*$")]);
-            this.rangeParameterForm.get("step").removeValidators([Validators.pattern("^[0-9]*$")]);
+        }
+        this.prepareControlValidators(this.rangeParameterForm.get("rangeFrom") as FormControl, isInteger);
+        this.prepareControlValidators(this.rangeParameterForm.get("rangeTo") as FormControl, isInteger);
+        this.prepareControlValidators(this.rangeParameterForm.get("step") as FormControl, isInteger);
+    }
+
+    prepareControlValidators(control: FormControl, onlyIntegers = false): void {
+        control.clearValidators();
+        if (onlyIntegers) {
+            control.setValidators([Validators.pattern("^[0-9]*$"), Validators.required, Validators.min(1), Validators.max(10)]);
+        } else {
+            control.setValidators([Validators.required, Validators.min(0.1), Validators.max(5)]);
         }
     }
 
