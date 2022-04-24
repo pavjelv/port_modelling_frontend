@@ -20,13 +20,10 @@
                         <input matInput
                                required
                                type="number"
-                               min="1"
-                               max="10"
                                [formControlName]="parameters.SERVERS_NUM"
                                [matTooltipPosition]="'above'"
                                [matTooltip]="'port-modelling-fe.calculateValues.serversNumHint' | translate"
                         />
-                        <mat-hint align="start">{{ "port-modelling-fe.calculateValues.serversNumHint" | translate }}</mat-hint>
                         <mat-error *ngIf="getControl(parameters.SERVERS_NUM).invalid">{{ getErrorMessage(parameters.SERVERS_NUM) | translate }}</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
@@ -34,13 +31,10 @@
                         <input matInput
                                required
                                type="number"
-                               min="0.1"
-                               max="5"
                                [formControlName]="parameters.SERVE_TIME"
                                [matTooltipPosition]="'above'"
                                [matTooltip]="'port-modelling-fe.calculateValues.serveTimeHint' | translate"
                         />
-                        <mat-hint align="start">{{ "port-modelling-fe.calculateValues.serveTimeHint" | translate }}</mat-hint>
                         <mat-error *ngIf="getControl(parameters.SERVE_TIME).invalid">{{ getErrorMessage(parameters.SERVE_TIME) | translate }}</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
@@ -48,27 +42,30 @@
                         <input matInput
                                required
                                type="number"
-                               min="0.1"
-                               max="5"
                                [formControlName]="parameters.LAMBDA"
                                [matTooltipPosition]="'above'"
                                [matTooltip]="'port-modelling-fe.calculateValues.lambdaHint' | translate"
                         />
-                        <mat-hint align="start">{{ "port-modelling-fe.calculateValues.lambdaHint" | translate }}</mat-hint>
                         <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label [innerHTML]="'Коэффициент загруженности системы' | translate"></mat-label>
+                        <input matInput
+                               [readonly]="true"
+                               [formControlName]="'systemOverload'"
+                        />
+                        <mat-hint align="start">{{ "Для нормального функционирования системы значение должно быть меньше 1" | translate }}</mat-hint>
+                        <mat-error *ngIf="getControl('systemOverload').invalid">{{ getErrorMessage('systemOverload') | translate }}</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" *ngIf="hasQueue">
                         <mat-label>{{ "port-modelling-fe.calculateValues.queueLength" | translate }}</mat-label>
                         <input matInput
                                required
                                type="number"
-                               min="1"
-                               max="10"
                                [formControlName]="parameters.QUEUE_LENGTH"
                                [matTooltipPosition]="'above'"
                                [matTooltip]="'port-modelling-fe.calculateValues.queueLengthHint' | translate"
                         />
-                        <mat-hint align="start">{{ "port-modelling-fe.calculateValues.queueLengthHint" | translate }}</mat-hint>
                         <mat-error *ngIf="getControl(parameters.QUEUE_LENGTH).invalid">{{ getErrorMessage(parameters.QUEUE_LENGTH) | translate }}</mat-error>
                     </mat-form-field>
                 </div>
