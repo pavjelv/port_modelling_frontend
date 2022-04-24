@@ -14,4 +14,5 @@ export interface SystemSummary {
     wait_system_time: string;
     idle_probability: string;
     reject_probability: string;
+    all_busy_probability: string;
 }

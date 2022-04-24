@@ -60,7 +60,6 @@ const CharacteristicCompareChart = (props: { systemVariables: SystemVariablesMod
             .then((res) => res.json())
             .then(
                 (response: ChartsResultModel) => {
-                    console.log(response);
                     setChartsResult(response);
                 },
                 (e) => errorNotification(),

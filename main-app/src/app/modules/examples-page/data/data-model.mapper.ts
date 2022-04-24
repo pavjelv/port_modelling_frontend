@@ -14,7 +14,7 @@ export const dataModelMapper: Map<string, ExamplesData> = new Map<string, Exampl
             parameters: {
                 serversNum: "2",
                 lambda: "1.1",
-                serveTime: "2.1",
+                mu: "2.1",
                 queueLength: "4",
             }
         }

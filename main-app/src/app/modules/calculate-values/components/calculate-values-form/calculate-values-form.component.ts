@@ -12,6 +12,7 @@ import {
 import {
     AbstractControl,
     FormBuilder,
+    FormControl,
     FormGroup,
     Validators,
 } from "@angular/forms";
@@ -37,7 +38,12 @@ import {
     ChartSeriesData,
 } from "../../../../model/chart-data.model";
 import { RxUnsubscribe } from "../../../../utils/rx-unsubscribe";
-import { takeUntil } from "rxjs/operators";
+import {
+    filter,
+    map,
+    startWith,
+    takeUntil,
+} from "rxjs/operators";
 import { TranslateService } from "@ngx-translate/core";
 import { MMCSystemComponent } from "../../../../components/m-m-c-system/m-m-c-system.component";
 import { MMCCSystemComponent } from "../../../../components/m-m-c-c-system/m-m-c-c-system.component";
@@ -50,6 +56,7 @@ import {
     SystemCharacteristicTableModel,
 } from "../../../../model/theory/system-characteristic-table.model";
 import { AvailableSystemCharacteristics } from "../../../../model/theory/theory-result.model";
+import { combineLatest } from "rxjs";
 
 @Component({
     selector: "app-calculate-values-form",
@@ -72,14 +79,14 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
 
     public systemName = "";
     public hasQueue = false;
-    private systemType: SystemType;
+    public systemType: SystemType;
 
     public charts: ChartDataModel[] = [];
     public chartWidth = 700;
 
     public availableSystemCharacteristics: Array<SystemCharacteristicTableModel>;
 
-    public displayedColumns: string[] = ["characteristic", "lambda", "s", "c", "k"];
+    public displayedColumns: string[] = ["characteristic", "lambda", "mu", "c", "k"];
 
     constructor(
         private fb: FormBuilder,
@@ -120,11 +127,12 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     private createForm(systemType: string): void {
         this.systemParametersForm = this.fb.group({
             systemType: [systemType, Validators.required],
-            serversNum: [2, [Validators.required, Validators.min(1), Validators.max(10), Validators.pattern("^[0-9]*$")]],
-            queueLength: [2, [Validators.required, Validators.min(1), Validators.max(10), Validators.pattern("^[0-9]*$")]],
-            serveTime: [0.5, [Validators.required, Validators.min(0.1), Validators.max(5)]],
-            lambda: [0.5, [Validators.required, Validators.min(0.1), Validators.max(5)]],
+            serversNum: [2, [Validators.pattern("^[0-9]*$"), Validators.min(0), Validators.max(100)]],
+            queueLength: [2, [Validators.pattern("^[0-9]*$"), Validators.min(0), Validators.max(100)]],
+            mu: [0.5, [Validators.required, Validators.min(0), Validators.max(100)]],
+            lambda: [0.5, [Validators.required, Validators.min(0), Validators.max(100)]],
         });
+
         this.rangeParameterForm = this.fb.group({
             systemCharacteristic: [],
             rangeParameter: [],
@@ -132,6 +140,24 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
             rangeFrom: [1.0, [Validators.required, Validators.min(0.1), Validators.max(10)]],
             rangeTo: [5.0, [Validators.required, Validators.min(0.2), Validators.max(10)]],
         });
+
+        if (this.systemType !== SystemType.WITH_REJECT) {
+            this.systemParametersForm.setControl("systemOverload", this.fb.control(1, [Validators.max(1)]));
+            combineLatest([
+                this.systemParametersForm.get(SystemParameters.SERVERS_NUM).valueChanges.pipe(startWith(2)),
+                this.systemParametersForm.get(SystemParameters.MU).valueChanges.pipe(startWith(0.5)),
+                this.systemParametersForm.get(SystemParameters.LAMBDA).valueChanges.pipe(startWith(0.5)),
+            ])
+                .pipe(
+                    filter(([a, b, c]) => a !== null && b !== null && c !== null),
+                    map(([serversNum, mu, lambda]: [number, number, number]) => (lambda / mu) / serversNum),
+                    takeUntil(this.destroy$),
+                )
+                .subscribe((v) => {
+                    this.systemParametersForm.get("systemOverload").setValue(v);
+                    this.systemParametersForm.get("systemOverload").markAsTouched();
+                });
+        }
     }
 
     private processTheorySummary(summary: TheorySummaryModel[]): void {
@@ -172,8 +198,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
             return;
         }
         if (!event.checked) {
-            const selectedRow = this.availableSystemCharacteristics
-                .find((v) => v.id === element.id);
+            const selectedRow = this.availableSystemCharacteristics.find((v) => v.id === element.id);
             delete selectedRow[parameter];
             return;
         }
@@ -195,8 +220,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     }
 
     private selectAllParameters(element: SystemCharacteristicTableModel, isChecked: boolean): void {
-        const selectedRow = this.availableSystemCharacteristics
-            .find((v) => v.id === element.id);
+        const selectedRow = this.availableSystemCharacteristics.find((v) => v.id === element.id);
         Object.values(SystemParameters).forEach((parameter) => {
             if (isChecked) {
                 this.prepareRangeParameterForm(parameter, element.id);
@@ -211,20 +235,27 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     private prepareRangeParameterForm(parameter: SystemParameters, characteristicId: AvailableSystemCharacteristics): void {
         this.rangeParameterForm.get("rangeParameter").setValue(parameter);
         this.rangeParameterForm.get("systemCharacteristic").setValue(characteristicId);
-        if (parameter === SystemParameters.SERVERS_NUM || parameter === SystemParameters.QUEUE_LENGTH) {
+        const isInteger = parameter === SystemParameters.SERVERS_NUM || parameter === SystemParameters.QUEUE_LENGTH;
+        if (isInteger) {
             this.rangeParameterForm.get("rangeFrom").setValue(1);
             this.rangeParameterForm.get("rangeTo").setValue(5);
             this.rangeParameterForm.get("step").setValue(1);
-            this.rangeParameterForm.get("rangeFrom").addValidators([Validators.pattern("^[0-9]*$")]);
-            this.rangeParameterForm.get("rangeTo").addValidators([Validators.pattern("^[0-9]*$")]);
-            this.rangeParameterForm.get("step").addValidators([Validators.pattern("^[0-9]*$")]);
         } else {
             this.rangeParameterForm.get("rangeFrom").setValue(0.1);
             this.rangeParameterForm.get("rangeTo").setValue(4);
             this.rangeParameterForm.get("step").setValue(0.5);
-            this.rangeParameterForm.get("rangeFrom").removeValidators([Validators.pattern("^[0-9]*$")]);
-            this.rangeParameterForm.get("rangeTo").removeValidators([Validators.pattern("^[0-9]*$")]);
-            this.rangeParameterForm.get("step").removeValidators([Validators.pattern("^[0-9]*$")]);
+        }
+        this.prepareControlValidators(this.rangeParameterForm.get("rangeFrom") as FormControl, isInteger);
+        this.prepareControlValidators(this.rangeParameterForm.get("rangeTo") as FormControl, isInteger);
+        this.prepareControlValidators(this.rangeParameterForm.get("step") as FormControl, isInteger);
+    }
+
+    prepareControlValidators(control: FormControl, onlyIntegers = false): void {
+        control.clearValidators();
+        if (onlyIntegers) {
+            control.setValidators([Validators.pattern("^[0-9]*$"), Validators.required, Validators.min(0)]);
+        } else {
+            control.setValidators([Validators.required, Validators.min(0)]);
         }
     }
 

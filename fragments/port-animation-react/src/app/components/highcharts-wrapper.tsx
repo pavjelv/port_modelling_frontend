@@ -8,7 +8,7 @@ import { Col, Row } from "antd";
 
 export interface WrapperProps {
     chartsResult: ChartsResultModel;
-    requiredCharacteristics: Array<keyof SystemSummary>;
+    requiredCharacteristics: Array<Exclude<keyof SystemSummary, "name">>;
 }
 
 const processCharacteristics = (props: WrapperProps): unknown[] => {

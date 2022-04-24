@@ -1,6 +1,6 @@
 import { SystemVariablesModel } from "../theory/system-variables.model";
 
-export interface SimulationVariablesModel extends Omit<SystemVariablesModel, "rangeParameter" | "systemType"> {
+export interface SimulationVariablesModel extends Exclude<SystemVariablesModel, "rangeParameter" | "systemType"> {
     time: number;
     requiredCharacteristics: { key: string, value: string }[];
     a1: number;

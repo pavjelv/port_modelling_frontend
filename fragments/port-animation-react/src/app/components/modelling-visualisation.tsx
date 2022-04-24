@@ -30,7 +30,9 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
     let queryParams = "";
     if (props.systemVariables) {
         marks[Number(props.systemVariables.time)] = props.systemVariables.time;
-        Object.entries(props.systemVariables)?.forEach(([k, v]: [string, string]) => {
+        const variables = {...props.systemVariables};
+        delete variables["requiredCharacteristics"];
+        Object.entries(variables as Exclude<SystemVariablesModel, "requiredCharacteristics">)?.forEach(([k, v]: [string, string | number | boolean]) => {
             queryParams += `${k}=${encodeURIComponent(v)}&`;
         });
     }
