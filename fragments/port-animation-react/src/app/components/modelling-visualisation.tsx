@@ -132,6 +132,15 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                                                     {model[key] && Number.parseFloat(model[key]).toFixed(3)}
                                                 </Descriptions.Item>
                                             ))}
+                                            <Descriptions.Item key={10} label={'Затраты порта'}>
+                                                {model.idle_server_cost}
+                                            </Descriptions.Item>
+                                            <Descriptions.Item key={20} label={'Затраты судна'}>
+                                                {model.wait_cost}
+                                            </Descriptions.Item>
+                                            <Descriptions.Item key={30} label={'Общие затраты'}>
+                                                {model.total_cost}
+                                            </Descriptions.Item>
                                         </Descriptions>
                                     </Panel>
                                 ))}

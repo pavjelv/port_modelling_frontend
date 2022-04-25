@@ -14,6 +14,7 @@
                 <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction3' | translate"></span></li>
                 <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction4' | translate"></span></li>
                 <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction5' | translate"></span></li>
+                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction6' | translate"></span></li>
             </ul>
             <div class="modelling-view-instruction__actions">
                 <button mat-button mat-stroked-button matStepperNext>{{ "port-modelling-fe.common.next" | translate }}</button>
@@ -70,7 +71,6 @@
                            required
                            type="number"
                            min="1"
-                           max="5"
                            [formControlName]="parameters.SERVERS_NUM"
                            [matTooltipPosition]="'above'"
                            [matTooltip]="'port-modelling-fe.modellingView.serversNumFieldHint' | translate"
@@ -83,8 +83,6 @@
                     <input matInput
                            required
                            type="number"
-                           min="0.1"
-                           max="5"
                            [formControlName]="parameters.SERVE_TIME"
                            [matTooltipPosition]="'above'"
                            [matTooltip]="'port-modelling-fe.modellingView.serveTimeFieldHint' | translate"
@@ -97,8 +95,6 @@
                     <input matInput
                            required
                            type="number"
-                           min="0.1"
-                           max="4"
                            [formControlName]="parameters.LAMBDA"
                            [matTooltipPosition]="'above'"
                            [matTooltip]="'port-modelling-fe.modellingView.lambdaFieldHint' | translate"
@@ -111,8 +107,6 @@
                     <input matInput
                            required
                            type="number"
-                           min="0"
-                           max="8"
                            [formControlName]="parameters.QUEUE_LENGTH"
                            [matTooltipPosition]="'above'"
                            [matTooltip]="'port-modelling-fe.modellingView.queueLengthFieldHint' | translate"
@@ -145,6 +139,29 @@
                     <mat-error *ngIf="getControl('b1').invalid">{{ getErrorMessage('b1') | translate }}</mat-error>
                 </mat-form-field>
             </div>
+            <h3>Затраты</h3>
+            <div class="modelling-view-form__parameters" [formGroup]="expensesForm">
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "Затраты при простое судна" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           [formControlName]="'waitCost'"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoAppearanceFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY).invalid">{{ getErrorMessage(additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY) | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "Затраты при простое причала" | translate }}</mat-label>
+                    <input matInput
+                           required
+                           type="number"
+                           [formControlName]="'idleCost'"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoServersNumFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(additionalShipTypeParameters.CARGO_SERVERS_NUM).invalid">{{ getErrorMessage(additionalShipTypeParameters.CARGO_SERVERS_NUM) | translate }}</mat-error>
+                </mat-form-field>
+            </div>
             <h3>Параметры для сухогрузов</h3>
             <div class="modelling-view-form__parameters" [formGroup]="additionalShipTypeForm">
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
@@ -166,8 +183,6 @@
                     <input matInput
                            required
                            type="number"
-                           min="0"
-                           max="7"
                            [formControlName]="additionalShipTypeParameters.SERVE_TIME_CARGO"
                            [matTooltipPosition]="'above'"
                            [matTooltip]="'port-modelling-fe.modellingView.serveTimeCargoFieldHint' | translate"
@@ -180,8 +195,6 @@
                     <input matInput
                            required
                            type="number"
-                           min="0"
-                           max="3"
                            [formControlName]="additionalShipTypeParameters.CARGO_SERVERS_NUM"
                            [matTooltipPosition]="'above'"
                            [matTooltip]="'port-modelling-fe.modellingView.cargoServersNumFieldHint' | translate"
