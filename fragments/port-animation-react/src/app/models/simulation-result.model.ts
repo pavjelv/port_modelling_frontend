@@ -3,6 +3,7 @@ import { CustomerDataModel } from "app/models/customer-data.model";
 export interface SimulationResultModel {
     customer_data: CustomerDataModel[];
     models_summary: SystemSummary[];
+    reserve_arrivals: number[];
 }
 
 export interface SystemSummary {
