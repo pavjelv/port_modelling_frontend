@@ -1,14 +1,8 @@
 import { HighchartWrapperComponent } from "./highchart-wrapper.component";
-import {
-    ComponentFixture,
-    TestBed,
-    waitForAsync,
-} from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { ChartSeriesData } from "../../model/chart-data.model";
-import {
-    CUSTOM_ELEMENTS_SCHEMA,
-    NO_ERRORS_SCHEMA,
-} from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from "@angular/core";
+import { ComponentsModule } from "../components.module";
 
 describe("HighchartWrapperComponent", () => {
     let component: HighchartWrapperComponent;
@@ -18,8 +12,7 @@ describe("HighchartWrapperComponent", () => {
         waitForAsync(() => {
             TestBed.configureTestingModule({
                 declarations: [HighchartWrapperComponent],
-                imports: [
-                ],
+                imports: [ComponentsModule],
                 providers: [],
                 schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
             }).compileComponents();
