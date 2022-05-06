@@ -16,3 +16,7 @@ jobs:
         run: |
           npm ci
           npm run build
+      - name: Run main app unit tests
+        run: |
+          cd main-app
+          npm test
