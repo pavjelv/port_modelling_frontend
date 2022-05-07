@@ -1,25 +1,11 @@
-import {
-    AfterViewInit,
-    ChangeDetectionStrategy,
-    Component,
-    HostBinding,
-    Inject,
-    Input,
-    OnInit,
-    PLATFORM_ID,
-} from "@angular/core";
+import { isPlatformBrowser, ViewportScroller } from "@angular/common";
+import { AfterViewInit, ChangeDetectionStrategy, Component, HostBinding, Inject, Input, OnInit, PLATFORM_ID } from "@angular/core";
 import * as Highcharts from "highcharts";
 import { ChartDataModel } from "../../model/chart-data.model";
-import {
-    isPlatformBrowser,
-    ViewportScroller,
-} from "@angular/common";
-
 
 @Component({
     selector: "app-highchart-wrapper",
     templateUrl: "./highchart-wrapper.component.html",
-    styleUrls: ["./highchart-wrapper.component.less"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HighchartWrapperComponent implements OnInit, AfterViewInit {
@@ -34,7 +20,7 @@ export class HighchartWrapperComponent implements OnInit, AfterViewInit {
     @Input()
     public needScroll = false;
 
-    Highcharts: typeof Highcharts = Highcharts;
+    highcharts: typeof Highcharts = Highcharts;
 
     chartOptions: Highcharts.Options = {
         title: {
@@ -69,7 +55,8 @@ export class HighchartWrapperComponent implements OnInit, AfterViewInit {
     constructor(private scroller: ViewportScroller, @Inject(PLATFORM_ID) private platformId: unknown) {
         const isBrowser = isPlatformBrowser(this.platformId);
         if (isBrowser) {
-            const theme = require("highcharts/themes/grid-light");
+            // eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
+            const theme: (v: unknown) => void = require("highcharts/themes/grid-light");
             theme(Highcharts);
         }
     }

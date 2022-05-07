@@ -1,7 +1,7 @@
-import { NgModule, ModuleWithProviders, Inject, PLATFORM_ID } from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
+import { Inject, ModuleWithProviders, NgModule, PLATFORM_ID } from "@angular/core";
 import { MathContentDirective } from "./math-content.directive";
 import { MathService } from "./math.service";
-import { isPlatformBrowser } from "@angular/common";
 
 @NgModule({
     declarations: [MathContentDirective],
@@ -11,14 +11,16 @@ export class MathjaxModule {
     constructor(@Inject(PLATFORM_ID) private platformId: unknown) {
         const isBrowser = isPlatformBrowser(this.platformId);
         if (isBrowser) {
-            const script = document.createElement("script") as HTMLScriptElement;
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const script = document.createElement("script")!;
             script.type = "text/javascript";
             script.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML";
             script.async = true;
 
             document.getElementsByTagName("head")[0].appendChild(script);
 
-            const config = document.createElement("script") as HTMLScriptElement;
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const config = document.createElement("script")!;
             config.type = "text/x-mathjax-config";
             config.text = `
             MathJax.Hub.Config({

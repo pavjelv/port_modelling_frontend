@@ -1,5 +1,5 @@
 import { Server } from "./server";
-import { SERVER_STATE } from "./cranes/crane";
+import { ServerState } from "./cranes/crane";
 
 describe("Server", () => {
     let server: Server;
@@ -16,17 +16,17 @@ describe("Server", () => {
     it("should be busy on serve", () => {
         server.serve("test name");
         expect(server.customerName).toEqual("test name");
-        expect((server as any)._state).toEqual(SERVER_STATE.BUSY);
+        expect((server as any)._state).toEqual(ServerState.BUSY);
     });
 
     it("should be free on free()", () => {
         server.free();
-        expect((server as any)._state).toEqual(SERVER_STATE.FREE);
+        expect((server as any)._state).toEqual(ServerState.FREE);
     });
 
     it("should be idle on reset()", () => {
         server.reset();
-        expect((server as any)._state).toEqual(SERVER_STATE.IDLE);
+        expect((server as any)._state).toEqual(ServerState.IDLE);
     });
 
     it("should clear if animation exists", () => {

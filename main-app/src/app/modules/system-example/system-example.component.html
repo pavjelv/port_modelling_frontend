@@ -9,7 +9,7 @@
         <mat-step>
             <ng-template matStepLabel>{{ "port-modelling-fe.systemExample.titles.symbols" | translate }}</ng-template>
             <div class="system-example-symbols">
-              <app-symbols-description></app-symbols-description>
+                <app-symbols-description></app-symbols-description>
             </div>
             <app-kendall-notation-component></app-kendall-notation-component>
             <div class="system-example__actions">
@@ -71,8 +71,8 @@
                         </table>
                     </div>
                     <div class="system-example-calculations__description">
-                        <h3>{{"port-modelling-fe.systemExample.calculations.header" | translate }}</h3>
-                        <div [innerHTML]="'port-modelling-fe.systemExample.calculations.description' | translate "></div>
+                        <h3>{{ "port-modelling-fe.systemExample.calculations.header" | translate }}</h3>
+                        <div [innerHTML]="'port-modelling-fe.systemExample.calculations.description' | translate"></div>
                         <ul>
                             <li [mathContent]="'$S = 2.16 \\quad суток$'"></li>
                             <li [mathContent]="'$\\mu= \\frac{1}{S} = 0,463$'"></li>
@@ -80,7 +80,7 @@
                             <li [mathContent]="'$\\rho = \\frac{\\lambda}{\\mu} = 25.92$'"></li>
                         </ul>
                         <h3>Рассмотрим случай многоканальной системы массового обслуживания с бесконечной очередью</h3>
-                        <p>Поскольку  <span [mathContent]="'$\\rho > 1$'"></span>, система не может прийти в стационарное состояние, очередь заявок будет бесконечно расти</p>
+                        <p>Поскольку <span [mathContent]="'$\\rho > 1$'"></span>, система не может прийти в стационарное состояние, очередь заявок будет бесконечно расти</p>
                         <p>Выберем число каналов такое, чтобы <span [mathContent]="'$ a = \\frac{\\rho}{c} < 1$'"></span> </p>
                         <p>Пусть <span [mathContent]="'$c = 27$'"></span></p>
                         <p>Вычислим вероятность того, что все каналы свободны, для этого воспользуемся формулой:</p>

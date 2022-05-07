@@ -1,9 +1,8 @@
-import { Observable } from "rxjs";
-import { TranslateLoader } from "@ngx-translate/core";
-
-import { makeStateKey, StateKey, TransferState } from "@angular/platform-browser";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { HttpClient } from "@angular/common/http";
+import { makeStateKey, StateKey, TransferState } from "@angular/platform-browser";
+import { TranslateLoader } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { Observable } from "rxjs";
 
 export class TranslateBrowserLoader implements TranslateLoader {
     constructor(private http: HttpClient, private transferState: TransferState) {}
@@ -19,9 +18,8 @@ export class TranslateBrowserLoader implements TranslateLoader {
                 observer.next(data);
                 observer.complete();
             });
-        } else {
-            return new TranslateHttpLoader(this.http).getTranslation(lang);
         }
+        return new TranslateHttpLoader(this.http).getTranslation(lang);
     }
 }
 

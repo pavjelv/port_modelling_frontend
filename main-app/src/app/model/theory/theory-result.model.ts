@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 // wait - время ожидания в очереди
 // l_queue - средняя длина очереди
 // p_rej - вероятность отказа

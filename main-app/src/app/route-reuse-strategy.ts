@@ -8,12 +8,8 @@ import { ActivatedRouteSnapshot, BaseRouteReuseStrategy, DetachedRouteHandle } f
 export class AppRouteReuseStrategy extends BaseRouteReuseStrategy {
     private storedRoutes = new Map<string, DetachedRouteHandle>();
 
-    constructor() {
-        super();
-    }
-
     shouldDetach(route: ActivatedRouteSnapshot): boolean {
-        return route?.data?.reusable;
+        return (route?.data as { reusable: boolean })?.reusable;
     }
 
     store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {

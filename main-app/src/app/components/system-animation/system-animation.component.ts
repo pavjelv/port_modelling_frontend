@@ -1,11 +1,12 @@
-import { Component, ElementRef, Inject, Input, OnChanges, OnInit, PLATFORM_ID, SimpleChanges, ViewChild } from "@angular/core";
-import { Server } from "./ui-elements/server";
-import { Customer } from "./ui-elements/customer";
-import { SimulationService } from "../../services/simulation.service";
-import { first } from "rxjs/operators";
-import { SimulationResultModel } from "../../model/simulation/simulation-result.model";
 import { isPlatformBrowser } from "@angular/common";
+import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, OnChanges, OnInit, PLATFORM_ID, SimpleChanges, ViewChild } from "@angular/core";
+import { first, takeUntil } from "rxjs/operators";
+import { SimulationResultModel } from "../../model/simulation/simulation-result.model";
 import { SimulationVariablesModel } from "../../model/simulation/simulation-variables.model";
+import { SimulationService } from "../../services/simulation.service";
+import { RxUnsubscribe } from "../../utils/rx-unsubscribe";
+import { Customer } from "./ui-elements/customer";
+import { Server } from "./ui-elements/server";
 
 const WIDTH = 600;
 const HEIGHT = 300;
@@ -16,8 +17,9 @@ const HEIGHT_POINT = HEIGHT / 5;
     selector: "app-system-animation",
     templateUrl: "./system-animation.component.html",
     styleUrls: ["./system-animation.component.less"],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SystemAnimationComponent implements OnInit, OnChanges {
+export class SystemAnimationComponent extends RxUnsubscribe implements OnInit, OnChanges {
     @ViewChild("canvas", { static: true })
     canvas: ElementRef<HTMLCanvasElement>;
 
@@ -40,6 +42,7 @@ export class SystemAnimationComponent implements OnInit, OnChanges {
     public currentTime = 0;
 
     constructor(private simulationService: SimulationService, @Inject(PLATFORM_ID) private platformId: unknown) {
+        super();
         this.isBrowser = isPlatformBrowser(this.platformId);
     }
 
@@ -73,7 +76,7 @@ export class SystemAnimationComponent implements OnInit, OnChanges {
 
         this.simulationService
             .getModellingResult(this.variables)
-            .pipe(first())
+            .pipe(first(), takeUntil(this.destroy$))
             .subscribe((result) => {
                 this.model = result;
                 this.customers = this.model.customer_data.map((c) => new Customer(this.ctx, c.type, c.name, WIDTH_POINT, HEIGHT_POINT));

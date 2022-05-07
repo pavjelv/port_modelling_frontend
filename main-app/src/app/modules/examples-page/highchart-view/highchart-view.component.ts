@@ -1,34 +1,18 @@
-import {
-    AfterViewInit,
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    HostBinding,
-    OnDestroy,
-    ViewChild,
-} from "@angular/core";
-import {
-    ChartDataModel,
-    ChartSeriesData,
-} from "../../../model/chart-data.model";
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostBinding, OnDestroy, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { RxUnsubscribe } from "../../../utils/rx-unsubscribe";
-import { takeUntil } from "rxjs/operators";
-import {
-    AvailableSystemCharacteristicsDictionary,
-    SystemParametersDictionary,
-} from "../../../dictionaries/available-system-characteristics.dictionary";
 import { TranslateService } from "@ngx-translate/core";
-import {
-    dataModelMapper,
-    ExamplesData,
-} from "../data/data-model.mapper";
+import { takeUntil } from "rxjs/operators";
+import { availableSystemCharacteristicsDictionary, systemParametersDictionary } from "../../../dictionaries/available-system-characteristics.dictionary";
+import { ChartDataModel, ChartSeriesData } from "../../../model/chart-data.model";
 import { SystemParameters } from "../../../model/theory/system-type";
+import { RxUnsubscribe } from "../../../utils/rx-unsubscribe";
+import { dataModelMapper, ExamplesData } from "../data/data-model.mapper";
 
 @Component({
-  selector: "app-highchart-view",
-  templateUrl: "./highchart-view.component.html",
-  styleUrls: ["./highchart-view.component.less"]
+    selector: "app-highchart-view",
+    templateUrl: "./highchart-view.component.html",
+    styleUrls: ["./highchart-view.component.less"],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HighchartViewComponent extends RxUnsubscribe implements AfterViewInit, OnDestroy {
     @HostBinding("class.highcharts-view") hostClass = true;
@@ -41,9 +25,7 @@ export class HighchartViewComponent extends RxUnsubscribe implements AfterViewIn
     public chartWidth = 700;
     public url = "0";
 
-    constructor(private route: ActivatedRoute,
-                private cdr: ChangeDetectorRef,
-                private translateService: TranslateService) {
+    constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef, private translateService: TranslateService) {
         super();
     }
 
@@ -64,20 +46,18 @@ export class HighchartViewComponent extends RxUnsubscribe implements AfterViewIn
 
         const dm = data.dataModel[0];
         this.charts = [];
-        AvailableSystemCharacteristicsDictionary.forEach((characteristic, key) => {
-            const chartData = new Map<string, ChartSeriesData>([
-                ["series", dm.result.map((value, i) => [dm.parameter_range[i], value[key]]) as ChartSeriesData]
-            ]);
+        availableSystemCharacteristicsDictionary.forEach((characteristic, key) => {
+            const chartData = new Map<string, ChartSeriesData>([["series", dm.result.map((value, i) => [dm.parameter_range[i], value[key]]) as ChartSeriesData]]);
             this.charts.push({
                 id: key,
-                xAxisName: this.translateService.instant(SystemParametersDictionary.get(dm.range_name)),
+                xAxisName: this.translateService.instant(systemParametersDictionary.get(dm.range_name)),
                 title: characteristic,
                 data: chartData,
             });
         });
         this.parameters = new Map();
         Object.entries(data.parameters).forEach(([key, value]: [SystemParameters, string]) => {
-            this.parameters.set(this.translateService.instant(SystemParametersDictionary.get(key)), value);
+            this.parameters.set(this.translateService.instant(systemParametersDictionary.get(key)), value);
         });
         this.cdr.markForCheck();
     }

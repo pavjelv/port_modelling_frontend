@@ -1,62 +1,29 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    Inject,
-    OnDestroy,
-    OnInit,
-    PLATFORM_ID,
-    ViewChild,
-} from "@angular/core";
-import {
-    AbstractControl,
-    FormBuilder,
-    FormControl,
-    FormGroup,
-    Validators,
-} from "@angular/forms";
-import {
-    SystemParameters,
-    SystemType,
-} from "../../../../model/theory/system-type";
-import { LoadingOverlayService } from "../../../../services/loading-overlay.service";
-import { TheoryResultsService } from "../../../../services/theory-results.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { isPlatformBrowser } from "@angular/common";
-import { TheorySummaryModel } from "../../../../model/theory/theory-summary.model";
-import { ActivatedRoute } from "@angular/router";
-import { SystemTypeDictionary } from "../../../../dictionaries/system-type.dictionary";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from "@angular/core";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatCheckboxChange } from "@angular/material/checkbox";
 import { MatDialog } from "@angular/material/dialog";
-import {
-    AvailableSystemCharacteristicsDictionary,
-    SystemParametersDictionary,
-} from "../../../../dictionaries/available-system-characteristics.dictionary";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { DomSanitizer } from "@angular/platform-browser";
-import {
-    ChartDataModel,
-    ChartSeriesData,
-} from "../../../../model/chart-data.model";
-import { RxUnsubscribe } from "../../../../utils/rx-unsubscribe";
-import {
-    filter,
-    map,
-    startWith,
-    takeUntil,
-} from "rxjs/operators";
+import { ActivatedRoute } from "@angular/router";
+import { SatPopover } from "@ncstate/sat-popover";
 import { TranslateService } from "@ngx-translate/core";
-import { MMCSystemComponent } from "../../../../components/m-m-c-system/m-m-c-system.component";
+import { combineLatest } from "rxjs";
+import { filter, map, startWith, takeUntil } from "rxjs/operators";
 import { MMCCSystemComponent } from "../../../../components/m-m-c-c-system/m-m-c-c-system.component";
 import { MMCKSystemComponent } from "../../../../components/m-m-c-k-system/m-m-c-k-system.component";
-import { SatPopover } from "@ncstate/sat-popover";
-import { MatCheckboxChange } from "@angular/material/checkbox";
+import { MMCSystemComponent } from "../../../../components/m-m-c-system/m-m-c-system.component";
+import { availableSystemCharacteristicsDictionary, systemParametersDictionary } from "../../../../dictionaries/available-system-characteristics.dictionary";
+import { systemTypeDictionary } from "../../../../dictionaries/system-type.dictionary";
+import { ChartDataModel, ChartSeriesData } from "../../../../model/chart-data.model";
+import { RangeParameterData, SystemCharacteristicTableModel } from "../../../../model/theory/system-characteristic-table.model";
+import { SystemParameters, SystemType } from "../../../../model/theory/system-type";
 import { SystemVariablesModel } from "../../../../model/theory/system-variables.model";
-import {
-    RangeParameterData,
-    SystemCharacteristicTableModel,
-} from "../../../../model/theory/system-characteristic-table.model";
 import { AvailableSystemCharacteristics } from "../../../../model/theory/theory-result.model";
-import { combineLatest } from "rxjs";
+import { TheorySummaryModel } from "../../../../model/theory/theory-summary.model";
+import { LoadingOverlayService } from "../../../../services/loading-overlay.service";
+import { TheoryResultsService } from "../../../../services/theory-results.service";
+import { RxUnsubscribe } from "../../../../utils/rx-unsubscribe";
 
 @Component({
     selector: "app-calculate-values-form",
@@ -84,7 +51,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
     public charts: ChartDataModel[] = [];
     public chartWidth = 700;
 
-    public availableSystemCharacteristics: Array<SystemCharacteristicTableModel>;
+    public availableSystemCharacteristics: SystemCharacteristicTableModel[];
 
     public displayedColumns: string[] = ["characteristic", "lambda", "mu", "c", "k"];
 
@@ -108,7 +75,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         const systemType: SystemType = this.route.snapshot.queryParamMap.get("systemType") as SystemType;
         this.hasQueue = systemType === SystemType.WITH_QUEUE;
         this.systemType = systemType;
-        this.availableSystemCharacteristics = Array.from(AvailableSystemCharacteristicsDictionary)
+        this.availableSystemCharacteristics = [...availableSystemCharacteristicsDictionary]
             .filter(([k, _]) => systemType !== SystemType.WITH_REJECT || (k !== "l_queue" && k !== "wait"))
             .map(([key, value]) => {
                 return {
@@ -120,7 +87,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
             this.displayedColumns.pop();
         }
 
-        this.systemName = SystemTypeDictionary.get(systemType);
+        this.systemName = systemTypeDictionary.get(systemType);
         this.createForm(systemType);
     }
 
@@ -150,7 +117,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
             ])
                 .pipe(
                     filter(([a, b, c]) => a !== null && b !== null && c !== null),
-                    map(([serversNum, mu, lambda]: [number, number, number]) => (lambda / mu) / serversNum),
+                    map(([serversNum, mu, lambda]: [number, number, number]) => lambda / mu / serversNum),
                     takeUntil(this.destroy$),
                 )
                 .subscribe((v) => {
@@ -171,13 +138,11 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
                     const calculated = summary.find((s) => {
                         return parameter === s.range_name && p.rangeFrom === s.range_from && p.rangeTo === s.range_to && p.step === s.step;
                     });
-                    const data = new Map<string, ChartSeriesData>([
-                            ["series", calculated.result.map((value, i) => [calculated.parameter_range[i], value[v.id]]) as ChartSeriesData]
-                    ]);
+                    const data = new Map<string, ChartSeriesData>([["series", calculated.result.map((value, i) => [calculated.parameter_range[i], value[v.id]]) as ChartSeriesData]]);
                     this.charts.push({
                         id: v.id + parameter,
-                        xAxisName: this.translateService.instant(SystemParametersDictionary.get(parameter)),
-                        title: AvailableSystemCharacteristicsDictionary.get(v.id),
+                        xAxisName: this.translateService.instant(systemParametersDictionary.get(parameter)),
+                        title: availableSystemCharacteristicsDictionary.get(v.id),
                         data,
                     });
                 });
@@ -193,7 +158,8 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         if (parameter === null) {
             this.selectAllParameters(element, event.checked);
             return;
-        } else if (element === null) {
+        }
+        if (element === null) {
             this.selectAllCharacteristics(parameter, event.checked);
             return;
         }
@@ -261,9 +227,8 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
 
     onRangeSelect(): void {
         if (this.rangeParameterForm.valid) {
-            const selectedRow = this.availableSystemCharacteristics
-                .find((v) => v.id === this.rangeParameterForm.get("systemCharacteristic").value);
-            selectedRow[this.rangeParameterForm.get("rangeParameter").value] = this.rangeParameterForm.getRawValue();
+            const selectedRow = this.availableSystemCharacteristics.find((v) => v.id === this.rangeParameterForm.get("systemCharacteristic").value);
+            selectedRow[this.rangeParameterForm.get("rangeParameter").value as SystemParameters] = this.rangeParameterForm.getRawValue();
             this.popover.close();
             this.cdr.markForCheck();
         }
@@ -278,9 +243,11 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         const formControl = this.getControl(controlName);
         if (formControl.hasError("required")) {
             return "port-modelling-fe.validations.required";
-        } else if (formControl.hasError("min")) {
+        }
+        if (formControl.hasError("min")) {
             return "port-modelling-fe.validations.min";
-        } else if (formControl.hasError("max")) {
+        }
+        if (formControl.hasError("max")) {
             return "port-modelling-fe.validations.max";
         }
         return "port-modelling-fe.validations.incorrectValue";
@@ -306,13 +273,13 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         super.ngOnDestroy();
     }
 
-    private composeRequest(): Array<SystemVariablesModel> {
-        let result = [];
+    private composeRequest(): SystemVariablesModel[] {
+        let result: SystemVariablesModel[] = [];
         Object.values(this.parameters).forEach((parameter) => {
             const selectedValues = this.availableSystemCharacteristics
-                .map((v) => v[parameter] as RangeParameterData)
-                .filter((v) => !!v)
-                .reduce((aggregator, current) => {
+                .map((v) => v[parameter])
+                .filter((v: RangeParameterData) => !!v)
+                .reduce((aggregator: RangeParameterData[], current: RangeParameterData) => {
                     const existingValue = aggregator.find((v) => {
                         return v.rangeFrom === current.rangeFrom && v.rangeTo === current.rangeTo && v.step === current.step;
                     });
@@ -321,7 +288,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
                     }
                     return aggregator;
                 }, []);
-            result = [...result, ...selectedValues.map((value) => ({ ...value, ...this.systemParametersForm.getRawValue() }))];
+            result = [...result, ...selectedValues.map((value) => ({ ...value, ...this.systemParametersForm.getRawValue() } as SystemVariablesModel))];
         });
         return result;
     }
@@ -333,14 +300,14 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
             this.theoryResultsService
                 .calculateBulk(this.composeRequest())
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(
-                    (summary) => {
+                .subscribe({
+                    next: (summary) => {
                         this.loadingService.hideLoading();
                         const width = window.getComputedStyle(this.chartsStepElement?.nativeElement).width;
                         this.chartWidth = parseInt(width.replace("px", ""), 10) / 2 - 10;
                         this.processTheorySummary(summary);
                     },
-                    (error: Error) => {
+                    error: (error: Error) => {
                         this.loadingService.hideLoading();
                         console.error(error);
                         this.snackBar.open(error.message, null, {
@@ -349,7 +316,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
                             verticalPosition: "top",
                         });
                     },
-                );
+                });
         }
     }
 }

@@ -42,6 +42,23 @@ jobs:
           cd main-app
           npm run build
 
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v3
+
+        - name: Load node_modules
+          uses: actions/cache@v1
+          with:
+              path: main-app/node_modules
+              key: node_modules-${{ hashFiles('main-app/package-lock.json') }}
+
+        - name: Build frontend package
+          run: |
+              cd main-app
+              npm run lint:prod
+
   run-main-app-unit-tests:
       needs: build
       runs-on: ubuntu-latest

@@ -1,16 +1,16 @@
-import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { RouterModule, Routes } from "@angular/router";
-import { SystemExampleComponent } from "./system-example.component";
+import { NgModule } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatStepperModule } from "@angular/material/stepper";
 import { MatTableModule } from "@angular/material/table";
 import { MatTabsModule } from "@angular/material/tabs";
-import { MatStepperModule } from "@angular/material/stepper";
+import { RouterModule, Routes } from "@angular/router";
 import { TranslateModule } from "@ngx-translate/core";
 import { ComponentsModule } from "../../components/components.module";
-import { MathjaxModule } from "../mathjax/mathjax.module";
 import { MathContentRouterGuard } from "../../math-content.router-guard";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
-import { MatButtonModule } from "@angular/material/button";
+import { MathjaxModule } from "../mathjax/mathjax.module";
+import { SystemExampleComponent } from "./system-example.component";
 
 const routes: Routes = [
     {
@@ -35,7 +35,7 @@ const routes: Routes = [
         ComponentsModule,
         MathjaxModule,
         MatSnackBarModule,
-        MatButtonModule
+        MatButtonModule,
     ],
     providers: [MathContentRouterGuard],
     exports: [RouterModule, SystemExampleComponent],

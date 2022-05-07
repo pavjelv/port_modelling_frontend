@@ -10,5 +10,5 @@ export type FederationPlugin = LoadRemoteModuleOptions & {
     exposedComponent?: string;
     navigationAlias?: string;
     type?: "angular" | "react" | "vue";
-    subType?: "routeModule" | "componentModule" | "component";
+    subType?: "component" | "componentModule" | "routeModule";
 };

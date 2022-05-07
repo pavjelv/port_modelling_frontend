@@ -1,4 +1,4 @@
-import { Crane, SERVER_STATE } from "./cranes/crane";
+import { Crane, ServerState } from "./cranes/crane";
 
 const SERVER_FIGURE_SIZE = 60;
 
@@ -7,7 +7,7 @@ export class Server {
     private readonly y: number;
     private crane: Crane;
     private _customerName: string;
-    private _state: SERVER_STATE;
+    private _state: ServerState;
     private currentInterval;
 
     constructor(private ctx: CanvasRenderingContext2D, x: number, y: number) {
@@ -22,7 +22,7 @@ export class Server {
 
     public serve(customerName: string): void {
         this._customerName = customerName;
-        this._state = SERVER_STATE.BUSY;
+        this._state = ServerState.BUSY;
         // this.draw();
     }
 
@@ -47,12 +47,12 @@ export class Server {
     public free(): void {
         this.clear();
         this._customerName = null;
-        this._state = SERVER_STATE.FREE;
+        this._state = ServerState.FREE;
         this.draw();
     }
 
     public reset(): void {
-        this._state = SERVER_STATE.IDLE;
+        this._state = ServerState.IDLE;
         this.draw();
     }
 

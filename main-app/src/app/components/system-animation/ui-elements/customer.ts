@@ -1,9 +1,10 @@
+/* eslint-disable no-mixed-operators */
+import { ShipType } from "../../../model/customer-data.model";
 import { getRandomColor } from "./color-generation.helper";
 import { Server } from "./server";
 import { CargoShip } from "./ships/cargo-ship";
-import { CustomerState, Vessel } from "./ships/vessel";
-import { ShipType } from "../../../model/customer-data.model";
 import { Ship } from "./ships/ship";
+import { CustomerState, Vessel } from "./ships/vessel";
 
 const CUSTOMER_FIGURE_SIZE = 40;
 
@@ -21,11 +22,7 @@ export class Customer {
     private _state: CustomerState;
 
     constructor(private ctx: CanvasRenderingContext2D, type: ShipType, customerName: string, widthPoint: number, heightPoint: number) {
-        if (type === ShipType.CARGO_SHIP) {
-            this.vessel = new CargoShip(ctx, getRandomColor(), customerName);
-        } else {
-            this.vessel = new Ship(ctx, getRandomColor(), customerName);
-        }
+        this.vessel = type === ShipType.CARGO_SHIP ? new CargoShip(ctx, getRandomColor(), customerName) : new Ship(ctx, getRandomColor(), customerName);
         this.customerName = customerName;
         this.widthPoint = widthPoint;
         this.heightPoint = heightPoint;

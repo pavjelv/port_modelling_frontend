@@ -1,20 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import {
-    p0,
-    pn,
-    pnGeqC,
-    pnGeqN,
-    qLen,
-    wTime,
-} from "src/app/model/theory/formulas/m-m-c.system";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { p0, pn, pnGeqC, pnGeqN, qLen, wTime } from "src/app/model/theory/formulas/m-m-c.system";
 
 @Component({
-  selector: "app-m-m-c-system",
-  templateUrl: "./m-m-c-system.component.html",
-  styleUrls: ["./m-m-c-system.component.less"]
+    selector: "app-m-m-c-system",
+    templateUrl: "./m-m-c-system.component.html",
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MMCSystemComponent implements OnInit {
-
+export class MMCSystemComponent {
     public p0 = p0;
 
     public pn = pn;
@@ -26,10 +18,4 @@ export class MMCSystemComponent implements OnInit {
     public pnGeqC = pnGeqC;
 
     public waitTime = wTime;
-
-    constructor() { }
-
-    ngOnInit(): void {
-    }
-
 }
