@@ -81,6 +81,7 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
     public additionalShipTypeForm: FormGroup;
     public modelParametersForm: FormGroup;
     public commonParametersForm: FormGroup;
+    public expensesForm: FormGroup;
     public isBrowser = false;
     public selectedDistribution: DistributionsType = DistributionsType.POISSON;
 
@@ -112,22 +113,27 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
         this.modelParametersForm = this.fb.group({
             arrivalDistribution: [this.distributions[0].id, [Validators.required]],
             requiredCharacteristics: [null, [Validators.required]],
-            time: [35, [Validators.required, Validators.min(20), Validators.max(50), Validators.pattern("^[0-9]*$")]],
+            time: [35, [Validators.required, Validators.min(0), Validators.pattern("^[0-9]*$")]],
         });
         this.systemParametersForm = this.fb.group({
-            serversNum: [1, [Validators.required, Validators.min(1), Validators.max(5), Validators.pattern("^[0-9]*$")]],
-            serveTime: [0.5, [Validators.required, Validators.min(0.1), Validators.max(5)]],
-            lambda: [0.5, [Validators.required, Validators.min(0.1), Validators.max(4)]],
-            queueLength: [3, [Validators.required, Validators.min(0), Validators.max(8), Validators.pattern("^[0-9]*$")]],
+            serversNum: [5, [Validators.required, Validators.min(1), Validators.pattern("^[0-9]*$")]],
+            serveTime: [2.03, [Validators.required, Validators.min(0)]],
+            lambda: [2.56, [Validators.required, Validators.min(0)]],
+            queueLength: [200, [Validators.required, Validators.min(0), Validators.pattern("^[0-9]*$")]],
             a1: [0.5, Validators.required],
             b1: [1, Validators.required],
         });
         this.additionalShipTypeForm = this.fb.group({
-            serveTimeCargo: [0, [Validators.min(0), Validators.max(7)]],
+            serveTimeCargo: [0, [Validators.min(0)]],
             cargoAppearanceProbability: [0, [Validators.min(0), Validators.max(1)]],
-            cargoServersNum: [0, [Validators.min(0), Validators.max(3), Validators.pattern("^[0-9]*$")]],
+            cargoServersNum: [0, [Validators.min(0), Validators.pattern("^[0-9]*$")]],
             a2: [0.5, Validators.required],
             b2: [1, Validators.required],
+        });
+
+        this.expensesForm = this.fb.group({
+            waitCost: [80.8, Validators.min(0)],
+            idleCost: [12.8, Validators.min(0)],
         });
 
         this.commonParametersForm = this.fb.group({
@@ -242,7 +248,11 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
                 this.lastFormValue = this.systemParametersForm.value;
                 this.lastAdditionalParametersFormValue = this.additionalShipTypeForm.value;
             }
-            const variables = { systemVariables: { ...this.systemParametersForm.value, ...this.modelParametersForm.value }};
+            const variables = { systemVariables: {
+                    ...this.systemParametersForm.value,
+                    ...this.modelParametersForm.value,
+                    ...this.expensesForm.value
+            }};
             if (this.validateAdditionalTypesForm()) {
                 variables.systemVariables = {
                     ...variables.systemVariables,

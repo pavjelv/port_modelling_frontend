@@ -3,6 +3,7 @@ import { CustomerDataModel } from "app/models/customer-data.model";
 export interface SimulationResultModel {
     customer_data: CustomerDataModel[];
     models_summary: SystemSummary[];
+    reserve_arrivals: number[];
 }
 
 export interface SystemSummary {
@@ -15,4 +16,7 @@ export interface SystemSummary {
     idle_probability: string;
     reject_probability: string;
     all_busy_probability: string;
+    idle_server_cost: string;
+    wait_cost: string;
+    total_cost : string;
 }

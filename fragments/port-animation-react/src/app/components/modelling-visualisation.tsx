@@ -15,6 +15,7 @@ import "antd/lib/collapse/style/index.css";
 import "antd/lib/space/style/index.css";
 import "antd/lib/notification/style/index.css";
 import "antd/lib/back-top/style/index.css";
+import HistogramHighchartsWrapper from "app/components/histogram-highcharts-wrapper";
 
 const errorNotification = () => {
     notification["error"]({
@@ -132,9 +133,30 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                                                     {model[key] && Number.parseFloat(model[key]).toFixed(3)}
                                                 </Descriptions.Item>
                                             ))}
+                                            <Descriptions.Item key={10} label={'Затраты порта'}>
+                                                {model.idle_server_cost}
+                                            </Descriptions.Item>
+                                            <Descriptions.Item key={20} label={'Затраты судна'}>
+                                                {model.wait_cost}
+                                            </Descriptions.Item>
+                                            <Descriptions.Item key={30} label={'Общие затраты'}>
+                                                {model.total_cost}
+                                            </Descriptions.Item>
                                         </Descriptions>
                                     </Panel>
                                 ))}
+                            </Collapse>
+                        </Skeleton>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={16}>
+                        <h2>Структура потока, входящего на запасной терминал</h2>
+                        <Skeleton loading={loading} active={true}>
+                            <Collapse defaultActiveKey={["0"]} style={{ overflow: "auto", maxHeight: "540px" }}>
+                                <Panel key={0} header={'Гистограмма'}>
+                                    <HistogramHighchartsWrapper data={response?.reserve_arrivals} title={'Интервалы между поступлениями заявок на запасной терминал'}/>
+                                </Panel>
                             </Collapse>
                         </Skeleton>
                     </Col>

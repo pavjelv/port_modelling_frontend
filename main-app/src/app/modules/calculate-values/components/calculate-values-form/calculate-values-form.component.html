@@ -48,7 +48,7 @@
                         />
                         <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" *ngIf="systemType !== 'reject'">
+                    <mat-form-field appearance="outline" *ngIf="systemType !== 'reject'" class="readonly-field">
                         <mat-label [innerHTML]="'Коэффициент загруженности системы' | translate"></mat-label>
                         <input matInput
                                [readonly]="true"

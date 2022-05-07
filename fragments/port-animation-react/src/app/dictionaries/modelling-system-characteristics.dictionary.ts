@@ -9,4 +9,7 @@ export const ModellingSystemCharacteristicsDictionary = new Map<Exclude<keyof Sy
     ["left_customers_number", "Количество судов, покинувших систему"],
     ["served_customers_number", "Количество обслуженных судов"],
     ["all_busy_probability", "Вероятность того, что все каналы заняты"],
+    ["wait_cost", "Стоимость ожидания судов"],
+    ["idle_server_cost", "Стоимость простоя причала"],
+    ["total_cost", "Общая стоимость"],
 ]);
