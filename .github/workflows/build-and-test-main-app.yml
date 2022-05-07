@@ -3,6 +3,7 @@ name: Build and test main app
 on:
   push:
       paths: ["main-app/**"]
+  pull_request:
   workflow_dispatch:
 
 jobs:
