@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { SystemAnimationComponent } from "./system-animation/system-animation.component";
 import { MatSliderModule } from "@angular/material/slider";
-import { EmptyViewComponent } from "./empty-view/empty-view.component";
 import { CommonReactWrapperComponent } from "./common-react-wrapper/common-react-wrapper.component";
 import { KendallNotationComponent } from "./kendall-notation/kendall-notation.component";
 import { TranslateModule } from "@ngx-translate/core";
@@ -23,7 +22,6 @@ import { HighchartsChartModule } from "highcharts-angular";
 @NgModule({
     declarations: [
         SystemAnimationComponent,
-        EmptyViewComponent,
         CommonReactWrapperComponent,
         KendallNotationComponent,
         MMCSystemComponent,

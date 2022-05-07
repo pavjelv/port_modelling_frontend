@@ -1,0 +1,62 @@
+name: Build and test main app
+
+on:
+  push:
+      paths: ["main-app/**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  setup:
+     runs-on: ubuntu-latest
+     steps:
+      - uses: actions/checkout@v3
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+            path: main-app/node_modules
+            key: node_modules-${{ hashFiles('main-app/package-lock.json') }}
+            # loading an older version is fine here, since it will get an npm install
+            restore-keys: |
+                node_modules-
+
+      - name: Install dependencies
+        run: |
+          cd main-app
+          npm ci
+
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Load node_modules
+        uses: actions/cache@v1
+        with:
+          path: main-app/node_modules
+          key: node_modules-${{ hashFiles('main-app/package-lock.json') }}
+
+      - name: Build frontend package
+        run: |
+          cd main-app
+          npm run build
+
+  run-main-app-unit-tests:
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - uses: browser-actions/setup-chrome@latest
+        - run: chrome --version
+
+        - name: Load node_modules
+          uses: actions/cache@v1
+          with:
+            path: main-app/node_modules
+            key: node_modules-${{ hashFiles('main-app/package-lock.json') }}
+
+        - name: Run main app unit tests
+          run: |
+            cd main-app
+            CHROME_BIN=$(which chrome) npm run test
