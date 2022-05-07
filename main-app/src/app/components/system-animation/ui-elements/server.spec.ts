@@ -1,5 +1,4 @@
 /* eslint-disable  @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call */
-import "jasmine";
 import { ServerState } from "./cranes/crane";
 import { Server } from "./server";
 
