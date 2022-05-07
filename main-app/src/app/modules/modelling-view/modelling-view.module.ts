@@ -14,6 +14,7 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { TranslateModule } from "@ngx-translate/core";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { ModellingDescriptionComponent } from './components/description/modelling-description.component';
 
 const routes: Routes = [
     {
@@ -23,7 +24,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ModellingViewComponent],
+    declarations: [ModellingViewComponent, ModellingDescriptionComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),

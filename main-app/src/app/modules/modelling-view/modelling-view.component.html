@@ -6,20 +6,7 @@
 <mat-stepper class="modelling-view" linear (selectionChange)="onStepSelectChange($event)">
     <mat-step>
         <ng-template matStepLabel>{{ "port-modelling-fe.common.description" | translate }}</ng-template>
-        <div class="modelling-view-instruction">
-            <h2>{{ "port-modelling-fe.modellingView.instruction" | translate }}</h2>
-            <ul>
-                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction1' | translate"></span></li>
-                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction2' | translate"></span></li>
-                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction3' | translate"></span></li>
-                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction4' | translate"></span></li>
-                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction5' | translate"></span></li>
-                <li><span [innerHTML]="'port-modelling-fe.modellingView.instruction6' | translate"></span></li>
-            </ul>
-            <div class="modelling-view-instruction__actions">
-                <button mat-button mat-stroked-button matStepperNext>{{ "port-modelling-fe.common.next" | translate }}</button>
-            </div>
-        </div>
+        <app-modelling-description></app-modelling-description>
     </mat-step>
     <mat-step [stepControl]="commonParametersForm">
         <div class="modelling-view-form" >
@@ -53,8 +40,7 @@
                     <input matInput
                            required
                            type="number"
-                           min="20"
-                           max="50"
+                           min="10"
                            [formControlName]="parameters.TIME"
                            [matTooltipPosition]="'above'"
                            [matTooltip]="'port-modelling-fe.modellingView.timeFieldHint' | translate"
@@ -120,7 +106,6 @@
                            required
                            type="number"
                            min="0.1"
-                           max="5"
                            [formControlName]="'a1'"
                     />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeFieldHint" | translate }}</mat-hint>
@@ -132,7 +117,6 @@
                            required
                            type="number"
                            min="0.1"
-                           max="5"
                            [formControlName]="'b1'"
                     />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeFieldHint" | translate }}</mat-hint>
@@ -183,6 +167,7 @@
                     <input matInput
                            required
                            type="number"
+                           min="0.1"
                            [formControlName]="additionalShipTypeParameters.SERVE_TIME_CARGO"
                            [matTooltipPosition]="'above'"
                            [matTooltip]="'port-modelling-fe.modellingView.serveTimeCargoFieldHint' | translate"
@@ -208,7 +193,6 @@
                            required
                            type="number"
                            min="0.1"
-                           max="5"
                            [formControlName]="'a2'"
                     />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeFieldHint" | translate }}</mat-hint>
@@ -220,7 +204,6 @@
                            required
                            type="number"
                            min="0.1"
-                           max="5"
                            [formControlName]="'b2'"
                     />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.serveTimeFieldHint" | translate }}</mat-hint>
