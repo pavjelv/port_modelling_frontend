@@ -1,25 +1,33 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ModellingDescriptionComponent } from './modelling-description.component';
+import { TranslateFakeLoader, TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { ModellingDescriptionComponent } from "./modelling-description.component";
 
-describe('ModellingDescriptionComponent', () => {
-  let component: ModellingDescriptionComponent;
-  let fixture: ComponentFixture<ModellingDescriptionComponent>;
+describe("ModellingDescriptionComponent", () => {
+    let component: ModellingDescriptionComponent;
+    let fixture: ComponentFixture<ModellingDescriptionComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ ModellingDescriptionComponent ]
-    })
-    .compileComponents();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [ModellingDescriptionComponent],
+            imports: [
+                TranslateModule.forRoot({
+                    loader: {
+                        provide: TranslateLoader,
+                        useClass: TranslateFakeLoader,
+                    },
+                }),
+            ],
+        }).compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ModellingDescriptionComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ModellingDescriptionComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

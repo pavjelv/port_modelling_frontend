@@ -54,7 +54,7 @@ jobs:
               path: main-app/node_modules
               key: node_modules-${{ hashFiles('main-app/package-lock.json') }}
 
-        - name: Build frontend package
+        - name: Run eslint
           run: |
               cd main-app
               npm run lint:prod
