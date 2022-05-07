@@ -1,8 +1,8 @@
-name: Build and test
+name: Build and test main app
 
 on:
   push:
-  pull_request:
+      paths: ["main-app/**"]
 
 jobs:
   setup:
@@ -18,7 +18,9 @@ jobs:
                 node_modules-
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd main-app
+          npm ci
 
   build:
     needs: setup
