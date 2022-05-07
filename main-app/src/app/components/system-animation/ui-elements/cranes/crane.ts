@@ -1,4 +1,5 @@
-export enum SERVER_STATE {
+/* eslint-disable no-mixed-operators */
+export enum ServerState {
     BUSY = "red",
     FREE = "green",
     IDLE = "gray",
@@ -7,7 +8,7 @@ export enum SERVER_STATE {
 export class Crane {
     constructor(protected ctx: CanvasRenderingContext2D) {}
 
-    public draw(x: number, y: number, z: number, state: SERVER_STATE, size = 0.75): void {
+    public draw(x: number, y: number, z: number, state: ServerState, size = 0.75): void {
         const p = z / 5;
         const ctx = this.ctx;
 
@@ -48,7 +49,7 @@ export class Crane {
         ctx.lineTo(x + p * 4, y + p * 1.5);
         ctx.fill();
 
-        if (state === SERVER_STATE.BUSY) {
+        if (state === ServerState.BUSY) {
             // cargo
             ctx.fillStyle = "black";
             ctx.fillRect(x + p * 0.5, y + p * (1.75 + size), p, p * 0.5);

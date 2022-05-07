@@ -1,13 +1,14 @@
-import { join } from "path";
-import { Observable } from "rxjs";
-import { TranslateLoader } from "@ngx-translate/core";
-import { makeStateKey, StateKey, TransferState } from "@angular/platform-browser";
 import * as fs from "fs";
+// eslint-disable-next-line unicorn/import-style
+import { join } from "path";
+import { makeStateKey, StateKey, TransferState } from "@angular/platform-browser";
+import { TranslateLoader } from "@ngx-translate/core";
+import { Observable } from "rxjs";
 
 export class TranslateServerLoader implements TranslateLoader {
     constructor(private transferState: TransferState, private prefix: string = "i18n", private suffix: string = ".json") {}
 
-    public getTranslation(lang: string): Observable<any> {
+    public getTranslation(lang: string): Observable<unknown> {
         return new Observable((observer) => {
             const assetsFolder = join(process.cwd(), "dist", "port-modelling-fe", "browser", "assets", this.prefix);
 

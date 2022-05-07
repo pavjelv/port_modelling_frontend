@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { SystemVariablesModel } from "../model/theory/system-variables.model";
 import { TheorySummaryModel } from "../model/theory/theory-summary.model";

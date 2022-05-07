@@ -1,13 +1,10 @@
-import {
-    ReplaySubject,
-    Observable,
-    Observer,
-    Subject,
-} from "rxjs";
-import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { isPlatformBrowser } from "@angular/common";
+import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
+import { Observable, Observer, ReplaySubject, Subject } from "rxjs";
 
-@Injectable()
+@Injectable({
+    providedIn: "root",
+})
 export class MathService {
     private readonly notifier: ReplaySubject<boolean>;
     private readonly _renderNotifier: Subject<number> = new ReplaySubject(50, 10000);
@@ -16,24 +13,25 @@ export class MathService {
     private isBrowser = false;
 
     constructor(@Inject(PLATFORM_ID) private platformId: unknown) {
+        // eslint-disable-next-line rxjs/no-ignored-replay-buffer
         this.notifier = new ReplaySubject<boolean>();
         this.isBrowser = isPlatformBrowser(this.platformId);
         if (this.isBrowser) {
             console.log("INIT HUB READY");
-            (window as unknown as { hubReady: Observer<any> }).hubReady = this.notifier;
+            ((window as unknown) as { hubReady: Observer<any> }).hubReady = this.notifier;
             this.preloadMathContent();
         }
     }
 
     private preloadMathContent(): void {
         const mathContentHolder: HTMLIFrameElement = document.createElement("iframe");
-        mathContentHolder.onload = () => {
+        mathContentHolder.addEventListener("load", () => {
             const preloadNodes: NodeList = mathContentHolder.contentDocument?.querySelectorAll("[data-math-hidden-content]");
             preloadNodes?.forEach((node) => {
                 const element: Element = node as Element;
                 this.mathContentCache.set(element.getAttribute("data-math-hidden-content"), element.innerHTML);
             });
-        };
+        });
         mathContentHolder.src = "/assets/math-content-holder.html";
         mathContentHolder.setAttribute("importance", "low");
         mathContentHolder.style.display = "none";

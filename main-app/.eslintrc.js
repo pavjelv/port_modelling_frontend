@@ -487,7 +487,7 @@ module.exports = {
             "plugins": ["@angular-eslint/template"],
             "rules": {
                 // https://github.com/angular-eslint/angular-eslint/tree/master/packages/eslint-plugin-template/docs/rules
-                "@angular-eslint/template/accessibility-elements-content": "error",
+                "@angular-eslint/template/accessibility-elements-content": "warn",
                 "@angular-eslint/template/no-autofocus": "warn",
                 "@angular-eslint/template/no-distracting-elements": "error",
                 "@angular-eslint/template/no-positive-tabindex": "error",

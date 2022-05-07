@@ -1,5 +1,6 @@
-import { Customer } from "./customer";
+/* eslint-disable  @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call */
 import { ShipType } from "../../../model/customer-data.model";
+import { Customer } from "./customer";
 
 describe("Customer", () => {
     let customer: Customer;

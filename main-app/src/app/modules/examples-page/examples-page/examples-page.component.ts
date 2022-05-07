@@ -1,13 +1,6 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    OnInit,
-} from "@angular/core";
 import { FlatTreeControl } from "@angular/cdk/tree";
-import {
-    MatTreeFlatDataSource,
-    MatTreeFlattener,
-} from "@angular/material/tree";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
 
 /** Flat node with expandable and level information */
 interface FlatNode {
@@ -27,8 +20,8 @@ const TREE_DATA: SystemNode[] = [
     {
         name: "СМО с ограниченной очередью",
         children: [
-            {name: "1", routerLink: "1"},
-            {name: "2", routerLink: "2"},
+            { name: "1", routerLink: "1" },
+            { name: "2", routerLink: "2" },
         ],
     },
     {
@@ -45,10 +38,10 @@ const TREE_DATA: SystemNode[] = [
     {
         name: "СМО с бесконечной очередью",
         children: [
-            {name: "1", routerLink: "1"},
-            {name: "2", routerLink: "2"},
+            { name: "1", routerLink: "1" },
+            { name: "2", routerLink: "2" },
         ],
-    }
+    },
 ];
 
 const _transformer = (node: SystemNode, level: number): FlatNode => {
@@ -66,17 +59,17 @@ const _transformer = (node: SystemNode, level: number): FlatNode => {
     styleUrls: ["./examples-page.component.less"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExamplesPageComponent implements OnInit {
+export class ExamplesPageComponent {
     public treeControl = new FlatTreeControl<FlatNode>(
-        node => node.level,
-        node => node.expandable,
+        (node) => node.level,
+        (node) => node.expandable,
     );
 
     public treeFlattener = new MatTreeFlattener(
         _transformer,
-        node => node.level,
-        node => node.expandable,
-        node => node.children,
+        (node) => node.level,
+        (node) => node.expandable,
+        (node) => node.children,
     );
 
     public dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
@@ -85,9 +78,5 @@ export class ExamplesPageComponent implements OnInit {
         this.dataSource.data = TREE_DATA;
     }
 
-    ngOnInit(): void {
-    }
-
-    hasChild = (_: number, node: FlatNode) => node.expandable;
-
+    hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 }

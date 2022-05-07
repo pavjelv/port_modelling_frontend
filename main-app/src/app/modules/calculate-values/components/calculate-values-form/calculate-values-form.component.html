@@ -17,54 +17,48 @@
                 <div class="calculate-values-form-parameters__system-variables">
                     <mat-form-field appearance="outline">
                         <mat-label>{{ "port-modelling-fe.calculateValues.serversNum" | translate }}</mat-label>
-                        <input matInput
-                               required
-                               type="number"
-                               [formControlName]="parameters.SERVERS_NUM"
-                               [matTooltipPosition]="'above'"
-                               [matTooltip]="'port-modelling-fe.calculateValues.serversNumHint' | translate"
+                        <input
+                            matInput
+                            required
+                            type="number"
+                            [formControlName]="parameters.SERVERS_NUM"
+                            [matTooltipPosition]="'above'"
+                            [matTooltip]="'port-modelling-fe.calculateValues.serversNumHint' | translate"
                         />
                         <mat-error *ngIf="getControl(parameters.SERVERS_NUM).invalid">{{ getErrorMessage(parameters.SERVERS_NUM) | translate }}</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label [innerHTML]="'port-modelling-fe.calculateValues.mu' | translate"></mat-label>
-                        <input matInput
-                               required
-                               type="number"
-                               [formControlName]="parameters.MU"
-                               [matTooltipPosition]="'above'"
-                               [matTooltip]="'port-modelling-fe.calculateValues.muHint' | translate"
-                        />
+                        <input matInput required type="number" [formControlName]="parameters.MU" [matTooltipPosition]="'above'" [matTooltip]="'port-modelling-fe.calculateValues.muHint' | translate" />
                         <mat-error *ngIf="getControl(parameters.MU).invalid">{{ getErrorMessage(parameters.MU) | translate }}</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                         <mat-label [innerHTML]="'port-modelling-fe.calculateValues.lambda' | translate"></mat-label>
-                        <input matInput
-                               required
-                               type="number"
-                               [formControlName]="parameters.LAMBDA"
-                               [matTooltipPosition]="'above'"
-                               [matTooltip]="'port-modelling-fe.calculateValues.lambdaHint' | translate"
+                        <input
+                            matInput
+                            required
+                            type="number"
+                            [formControlName]="parameters.LAMBDA"
+                            [matTooltipPosition]="'above'"
+                            [matTooltip]="'port-modelling-fe.calculateValues.lambdaHint' | translate"
                         />
                         <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" *ngIf="systemType !== 'reject'" class="readonly-field">
                         <mat-label [innerHTML]="'Коэффициент загруженности системы' | translate"></mat-label>
-                        <input matInput
-                               [readonly]="true"
-                               [formControlName]="'systemOverload'"
-                        />
+                        <input matInput [readonly]="true" [formControlName]="'systemOverload'" />
                         <mat-hint align="start">{{ "Для нормального функционирования системы значение должно быть меньше 1" | translate }}</mat-hint>
-                        <mat-error *ngIf="getControl('systemOverload').invalid">{{ getErrorMessage('systemOverload') | translate }}</mat-error>
+                        <mat-error *ngIf="getControl('systemOverload').invalid">{{ getErrorMessage("systemOverload") | translate }}</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" *ngIf="hasQueue">
                         <mat-label>{{ "port-modelling-fe.calculateValues.queueLength" | translate }}</mat-label>
-                        <input matInput
-                               required
-                               type="number"
-                               [formControlName]="parameters.QUEUE_LENGTH"
-                               [matTooltipPosition]="'above'"
-                               [matTooltip]="'port-modelling-fe.calculateValues.queueLengthHint' | translate"
+                        <input
+                            matInput
+                            required
+                            type="number"
+                            [formControlName]="parameters.QUEUE_LENGTH"
+                            [matTooltipPosition]="'above'"
+                            [matTooltip]="'port-modelling-fe.calculateValues.queueLengthHint' | translate"
                         />
                         <mat-error *ngIf="getControl(parameters.QUEUE_LENGTH).invalid">{{ getErrorMessage(parameters.QUEUE_LENGTH) | translate }}</mat-error>
                     </mat-form-field>
@@ -82,9 +76,7 @@
                     <ng-container matColumnDef="characteristic">
                         <th mat-header-cell *matHeaderCellDef class="calculate-values-form-table__characteristic-column">{{ "port-modelling-fe.calculateValues.characteristic" | translate }}</th>
                         <td mat-cell *matCellDef="let element" class="calculate-values-form-table__characteristic-column">
-                            <mat-checkbox
-                                (change)="onParameterSelect($event, null, element)"
-                            ></mat-checkbox>
+                            <mat-checkbox (change)="onParameterSelect($event, null, element)"></mat-checkbox>
                             {{ element.value }}
                         </td>
                     </ng-container>
@@ -92,17 +84,16 @@
                         <th mat-header-cell *matHeaderCellDef class="calculate-values-form-table__x-axis-column">
                             <div class="calculate-values-form-table__header">
                                 <span [innerHTML]="'port-modelling-fe.calculateValues.lambda' | translate"></span>
-                                <mat-checkbox
-                                    (change)="onParameterSelect($event, parameters.LAMBDA, null)"
-                                ></mat-checkbox>
+                                <mat-checkbox (change)="onParameterSelect($event, parameters.LAMBDA, null)"></mat-checkbox>
                             </div>
                         </th>
                         <td mat-cell *matCellDef="let element">
-                            <mat-checkbox [satPopoverAnchor]="popover"
-                                          [checked]="!!element.lambda"
-                                          (change)="onParameterSelect($event, parameters.LAMBDA, element)"
-                                          [matTooltipPosition]="'after'"
-                                          [matTooltip]="element.lambda ? ('from: ' + element.lambda.rangeFrom + ' to: ' + element.lambda.rangeTo) : ''"
+                            <mat-checkbox
+                                [satPopoverAnchor]="popover"
+                                [checked]="!!element.lambda"
+                                (change)="onParameterSelect($event, parameters.LAMBDA, element)"
+                                [matTooltipPosition]="'after'"
+                                [matTooltip]="element.lambda ? 'from: ' + element.lambda.rangeFrom + ' to: ' + element.lambda.rangeTo : ''"
                             ></mat-checkbox>
                         </td>
                     </ng-container>
@@ -110,17 +101,16 @@
                         <th mat-header-cell *matHeaderCellDef class="calculate-values-form-table__x-axis-column">
                             <div class="calculate-values-form-table__header">
                                 <span [innerHTML]="'port-modelling-fe.calculateValues.mu' | translate"></span>
-                                <mat-checkbox
-                                    (change)="onParameterSelect($event, parameters.MU, null)"
-                                ></mat-checkbox>
+                                <mat-checkbox (change)="onParameterSelect($event, parameters.MU, null)"></mat-checkbox>
                             </div>
                         </th>
                         <td mat-cell *matCellDef="let element">
-                            <mat-checkbox [satPopoverAnchor]="popover"
-                                          [checked]="!!element.mu"
-                                          (change)="onParameterSelect($event, parameters.MU, element)"
-                                          [matTooltipPosition]="'after'"
-                                          [matTooltip]="element.mu ? ('from: ' + element.mu.rangeFrom + ' to: ' + element.mu.rangeTo) : ''"
+                            <mat-checkbox
+                                [satPopoverAnchor]="popover"
+                                [checked]="!!element.mu"
+                                (change)="onParameterSelect($event, parameters.MU, element)"
+                                [matTooltipPosition]="'after'"
+                                [matTooltip]="element.mu ? 'from: ' + element.mu.rangeFrom + ' to: ' + element.mu.rangeTo : ''"
                             ></mat-checkbox>
                         </td>
                     </ng-container>
@@ -128,17 +118,16 @@
                         <th mat-header-cell *matHeaderCellDef class="calculate-values-form-table__x-axis-column">
                             <div class="calculate-values-form-table__header">
                                 <span>{{ "port-modelling-fe.calculateValues.serversNum" | translate }}</span>
-                                <mat-checkbox
-                                    (change)="onParameterSelect($event, parameters.SERVERS_NUM, null)"
-                                ></mat-checkbox>
+                                <mat-checkbox (change)="onParameterSelect($event, parameters.SERVERS_NUM, null)"></mat-checkbox>
                             </div>
                         </th>
                         <td mat-cell *matCellDef="let element">
-                            <mat-checkbox [satPopoverAnchor]="popover"
-                                          [checked]="!!element.serversNum"
-                                          (change)="onParameterSelect($event, parameters.SERVERS_NUM, element)"
-                                          [matTooltipPosition]="'after'"
-                                          [matTooltip]="element.serversNum ? ('from: ' + element.serversNum.rangeFrom + ' to: ' + element.serversNum.rangeTo) : ''"
+                            <mat-checkbox
+                                [satPopoverAnchor]="popover"
+                                [checked]="!!element.serversNum"
+                                (change)="onParameterSelect($event, parameters.SERVERS_NUM, element)"
+                                [matTooltipPosition]="'after'"
+                                [matTooltip]="element.serversNum ? 'from: ' + element.serversNum.rangeFrom + ' to: ' + element.serversNum.rangeTo : ''"
                             ></mat-checkbox>
                         </td>
                     </ng-container>
@@ -146,17 +135,16 @@
                         <th mat-header-cell *matHeaderCellDef class="calculate-values-form-table__x-axis-column">
                             <div class="calculate-values-form-table__header">
                                 <span>{{ "port-modelling-fe.calculateValues.queueLength" | translate }}</span>
-                                <mat-checkbox
-                                    (change)="onParameterSelect($event, parameters.QUEUE_LENGTH, null)"
-                                ></mat-checkbox>
+                                <mat-checkbox (change)="onParameterSelect($event, parameters.QUEUE_LENGTH, null)"></mat-checkbox>
                             </div>
                         </th>
                         <td mat-cell *matCellDef="let element">
-                            <mat-checkbox [satPopoverAnchor]="popover"
-                                          [checked]="!!element.queueLength"
-                                          (change)="onParameterSelect($event, parameters.QUEUE_LENGTH, element)"
-                                          [matTooltipPosition]="'after'"
-                                          [matTooltip]="element.queueLength ? ('from: ' + element.queueLength.rangeFrom + ' to: ' + element.queueLength.rangeTo) : ''"
+                            <mat-checkbox
+                                [satPopoverAnchor]="popover"
+                                [checked]="!!element.queueLength"
+                                (change)="onParameterSelect($event, parameters.QUEUE_LENGTH, element)"
+                                [matTooltipPosition]="'after'"
+                                [matTooltip]="element.queueLength ? 'from: ' + element.queueLength.rangeFrom + ' to: ' + element.queueLength.rangeTo : ''"
                             ></mat-checkbox>
                         </td>
                     </ng-container>
@@ -164,7 +152,7 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
                 </table>
                 <div class="calculate-values-form-parameters__submit">
-                    <button color="primary" mat-raised-button matStepperNext (click)="_onSubmit()">{{"port-modelling-fe.common.calculate" | translate }}</button>
+                    <button color="primary" mat-raised-button matStepperNext (click)="_onSubmit()">{{ "port-modelling-fe.common.calculate" | translate }}</button>
                 </div>
             </div>
         </mat-step>
@@ -188,28 +176,30 @@
         <mat-card-content [formGroup]="rangeParameterForm">
             <mat-form-field appearance="outline" class="step-field">
                 <mat-label>{{ "port-modelling-fe.calculateValues.from" | translate }}</mat-label>
-                <input matInput
-                       required
-                       type="number"
-                       min="0.1"
-                       max="10"
-                       [formControlName]="'rangeFrom'"
-                       [matTooltipPosition]="'above'"
-                       [matTooltip]="'port-modelling-fe.calculateValues.fromFieldHint' | translate"
+                <input
+                    matInput
+                    required
+                    type="number"
+                    min="0.1"
+                    max="10"
+                    [formControlName]="'rangeFrom'"
+                    [matTooltipPosition]="'above'"
+                    [matTooltip]="'port-modelling-fe.calculateValues.fromFieldHint' | translate"
                 />
                 <mat-hint align="start">{{ "port-modelling-fe.calculateValues.fromFieldHint" | translate }}</mat-hint>
                 <mat-error *ngIf="getControl('rangeFrom').invalid">{{ getErrorMessage("rangeFrom") | translate }}</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="step-field">
                 <mat-label>{{ "port-modelling-fe.calculateValues.to" | translate }}</mat-label>
-                <input matInput
-                       required
-                       type="number"
-                       min="0.2"
-                       max="10"
-                       [formControlName]="'rangeTo'"
-                       [matTooltipPosition]="'above'"
-                       [matTooltip]="'port-modelling-fe.calculateValues.toFieldHint' | translate"
+                <input
+                    matInput
+                    required
+                    type="number"
+                    min="0.2"
+                    max="10"
+                    [formControlName]="'rangeTo'"
+                    [matTooltipPosition]="'above'"
+                    [matTooltip]="'port-modelling-fe.calculateValues.toFieldHint' | translate"
                 />
                 <mat-hint align="start">{{ "port-modelling-fe.calculateValues.toFieldHint" | translate }}</mat-hint>
                 <mat-error *ngIf="getControl('rangeTo').invalid">{{ getErrorMessage("rangeTo") | translate }}</mat-error>

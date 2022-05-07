@@ -1,4 +1,4 @@
-export const ModellingSystemCharacteristicsDictionary = new Map<string, string>([
+export const modellingSystemCharacteristicsDictionary = new Map<string, string>([
     ["wait_system_time", "Среднее время пребывания в системе"],
     ["average_queue_len", "Среднее число заявок в очереди"],
     ["idle_probability", "Вероятность простоя"],

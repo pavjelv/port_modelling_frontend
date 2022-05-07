@@ -1,15 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 
 @Component({
-  selector: "app-choose-example-view",
-  templateUrl: "./choose-example-view.component.html",
-  styleUrls: ["./choose-example-view.component.less"]
+    selector: "app-choose-example-view",
+    templateUrl: "./choose-example-view.component.html",
+    styleUrls: ["./choose-example-view.component.less"],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChooseExampleViewComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class ChooseExampleViewComponent {}

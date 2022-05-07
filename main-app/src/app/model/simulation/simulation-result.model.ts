@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { CustomerDataModel } from "../customer-data.model";
 
 export interface SimulationResultModel {

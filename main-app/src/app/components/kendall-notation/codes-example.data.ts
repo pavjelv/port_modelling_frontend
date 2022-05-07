@@ -4,7 +4,7 @@ interface CodesExampleData {
     description: string;
 }
 
-export const ArrivalProcessDataSource: CodesExampleData[] = [
+export const arrivalProcessDataSource: CodesExampleData[] = [
     {
         symbol: "M",
         name: "port-modelling-fe.kendall.arrivalExamples.markovian",
@@ -12,7 +12,7 @@ export const ArrivalProcessDataSource: CodesExampleData[] = [
     },
 ];
 
-export const ServiceProcessDataSource: CodesExampleData[] = [
+export const serviceProcessDataSource: CodesExampleData[] = [
     {
         symbol: "M",
         name: "port-modelling-fe.kendall.serviceExamples.markovian",
@@ -20,7 +20,7 @@ export const ServiceProcessDataSource: CodesExampleData[] = [
     },
 ];
 
-export const QueueDisciplineDataSource: CodesExampleData[] = [
+export const queueDisciplineDataSource: CodesExampleData[] = [
     {
         symbol: "FIFO/FCFS",
         name: "port-modelling-fe.kendall.queueExamples.fifo",

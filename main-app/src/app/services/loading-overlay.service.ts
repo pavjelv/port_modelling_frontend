@@ -1,11 +1,10 @@
-import { Injectable } from "@angular/core";
-
 import { Overlay, OverlayRef } from "@angular/cdk/overlay";
 import { ComponentPortal } from "@angular/cdk/portal";
+import { Injectable } from "@angular/core";
 
-import { Subject } from "rxjs";
-import { scan, map, distinctUntilChanged } from "rxjs/operators";
 import { MatSpinner } from "@angular/material/progress-spinner";
+import { Subject } from "rxjs";
+import { distinctUntilChanged, map, scan } from "rxjs/operators";
 
 @Injectable({
     providedIn: "root",

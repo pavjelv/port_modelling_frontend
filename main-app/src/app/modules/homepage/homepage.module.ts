@@ -1,11 +1,11 @@
-import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { HomepageComponent } from "./homepage.component";
-import { RouterModule, Routes } from "@angular/router";
+import { NgModule } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
-import { TranslateModule } from "@ngx-translate/core";
 import { MatDialogModule } from "@angular/material/dialog";
+import { RouterModule, Routes } from "@angular/router";
+import { TranslateModule } from "@ngx-translate/core";
+import { HomepageComponent } from "./homepage.component";
 
 const routes: Routes = [
     {

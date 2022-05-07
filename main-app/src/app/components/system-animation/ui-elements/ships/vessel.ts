@@ -6,6 +6,6 @@ export enum CustomerState {
 }
 
 export interface Vessel {
-    draw(x: number, y: number, z: number, state: CustomerState, angle?: number): void;
-    clear(x: number, y: number, z: number, angle?: number): void;
+    draw: (x: number, y: number, z: number, state: CustomerState, angle?: number) => void;
+    clear: (x: number, y: number, z: number, angle?: number) => void;
 }

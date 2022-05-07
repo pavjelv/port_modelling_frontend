@@ -7,7 +7,7 @@ import { Directive, OnDestroy } from "@angular/core";
 import { Subject } from "rxjs";
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class RxUnsubscribe implements OnDestroy {
     private _destroy$: Subject<void> = new Subject();
     destroy$ = this._destroy$.asObservable();

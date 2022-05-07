@@ -1,5 +1,6 @@
-import { TheoryResultModel } from "./theory-result.model";
+/* eslint-disable @typescript-eslint/naming-convention */
 import { SystemParameters } from "./system-type";
+import { TheoryResultModel } from "./theory-result.model";
 
 export interface TheorySummaryModel {
     result: TheoryResultModel[];

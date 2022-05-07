@@ -1,47 +1,21 @@
-import {
-    ChangeDetectionStrategy,
-    ChangeDetectorRef,
-    Component,
-    Inject,
-    Injectable,
-    OnDestroy,
-    OnInit,
-    PLATFORM_ID,
-    ViewChild,
-    ViewChildren,
-    ViewEncapsulation,
-} from "@angular/core";
-import {
-    AbstractControl,
-    FormBuilder,
-    FormControl,
-    FormGroup,
-    Validators,
-} from "@angular/forms";
+import { STEPPER_GLOBAL_OPTIONS, StepperSelectionEvent } from "@angular/cdk/stepper";
 import { isPlatformBrowser } from "@angular/common";
-import { SimulationVariablesModel } from "../../model/simulation/simulation-variables.model";
-import {
-    AdditionalShipTypeParameters,
-    DistributionsType,
-    SimulationParameters,
-} from "../../model/simulation/simulation-parameters";
-import {
-    STEPPER_GLOBAL_OPTIONS,
-    StepperSelectionEvent,
-} from "@angular/cdk/stepper";
-import {
-    MatStepper,
-    MatStepperIntl,
-} from "@angular/material/stepper";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { RxUnsubscribe } from "../../utils/rx-unsubscribe";
-import { takeUntil } from "rxjs/operators";
-import { TranslateService } from "@ngx-translate/core";
-import { ModellingSystemCharacteristicsDictionary } from "../../dictionaries/modelling-system-characteristics.dictionary";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Injectable, OnDestroy, OnInit, PLATFORM_ID, ViewChild, ViewChildren, ViewEncapsulation } from "@angular/core";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatInput } from "@angular/material/input";
 import { MatSelect } from "@angular/material/select";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { MatStepper, MatStepperIntl } from "@angular/material/stepper";
+import { TranslateService } from "@ngx-translate/core";
+import { takeUntil } from "rxjs/operators";
+import { modellingSystemCharacteristicsDictionary } from "../../dictionaries/modelling-system-characteristics.dictionary";
+import { AdditionalShipTypeParameters, DistributionsType, SimulationParameters } from "../../model/simulation/simulation-parameters";
+import { SimulationVariablesModel } from "../../model/simulation/simulation-variables.model";
+import { RxUnsubscribe } from "../../utils/rx-unsubscribe";
 
-@Injectable()
+@Injectable({
+    providedIn: "any",
+})
 export class StepperIntl extends MatStepperIntl {
     constructor(private translateService: TranslateService) {
         super();
@@ -62,7 +36,7 @@ export class StepperIntl extends MatStepperIntl {
         },
         {
             provide: MatStepperIntl,
-            useFactory: (translate: TranslateService) => new StepperIntl(translate),
+            useFactory: (translate: TranslateService): StepperIntl => new StepperIntl(translate),
             deps: [TranslateService],
         },
     ],
@@ -90,7 +64,7 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
 
     public simulationVariables: { systemVariables: SimulationVariablesModel };
 
-    public readonly modellingSystemCharacteristics = ModellingSystemCharacteristicsDictionary;
+    public readonly modellingSystemCharacteristics = modellingSystemCharacteristicsDictionary;
 
     public distributions = [
         { value: "Пуассоновский", id: DistributionsType.POISSON },
@@ -100,11 +74,7 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
     private lastFormValue: Record<string, unknown> = null;
     private lastAdditionalParametersFormValue: Record<string, unknown> = null;
 
-    constructor(@Inject(PLATFORM_ID) private platformId: unknown,
-                private fb: FormBuilder,
-                private cdr: ChangeDetectorRef,
-                private _matStepperIntl: MatStepperIntl,
-                private snackBar: MatSnackBar) {
+    constructor(@Inject(PLATFORM_ID) private platformId: unknown, private fb: FormBuilder, private cdr: ChangeDetectorRef, private _matStepperIntl: MatStepperIntl, private snackBar: MatSnackBar) {
         super();
         this.isBrowser = isPlatformBrowser(this.platformId);
     }
@@ -142,26 +112,26 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
         });
 
         this.modelParametersForm
-            .get(SimulationParameters.ARRIVAL_DISTRIBUTION).valueChanges
-            .pipe(takeUntil(this.destroy$))
+            .get(SimulationParameters.ARRIVAL_DISTRIBUTION)
+            .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.selectedDistribution = value;
             });
     }
 
     public getControl(controlName: string): AbstractControl {
-        return this.systemParametersForm.get(controlName) ??
-            this.additionalShipTypeForm.get(controlName) ??
-            this.modelParametersForm.get(controlName);
+        return this.systemParametersForm.get(controlName) ?? this.additionalShipTypeForm.get(controlName) ?? this.modelParametersForm.get(controlName);
     }
 
     public getErrorMessage(controlName: string): string {
         const formControl = this.getControl(controlName);
         if (formControl.hasError("required")) {
             return "port-modelling-fe.validations.required";
-        } else if (formControl.hasError("min")) {
+        }
+        if (formControl.hasError("min")) {
             return "port-modelling-fe.validations.min";
-        } else if (formControl.hasError("max")) {
+        }
+        if (formControl.hasError("max")) {
             return "port-modelling-fe.validations.max";
         }
         return "port-modelling-fe.validations.incorrectValue";
@@ -178,7 +148,7 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
                     .open(message, "Смоделировать", {
                         horizontalPosition: "right",
                         verticalPosition: "top",
-                        panelClass: "system-example-create-model-snackbar"
+                        panelClass: "system-example-create-model-snackbar",
                     })
                     .onAction()
                     .pipe(takeUntil(this.destroy$))
@@ -214,14 +184,16 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
     }
 
     private validateAdditionalTypesForm(): boolean {
-        return !(this.additionalShipTypeForm.get("serveTimeCargo").value === 0 ||
+        return !(
+            this.additionalShipTypeForm.get("serveTimeCargo").value === 0 ||
             this.additionalShipTypeForm.get("cargoAppearanceProbability").value === 0 ||
-            this.additionalShipTypeForm.get("cargoServersNum").value === 0);
+            this.additionalShipTypeForm.get("cargoServersNum").value === 0
+        );
     }
 
     private findInvalidControls(): FormControl[] {
         const invalid: FormControl[] = [];
-        const controls = {...this.modelParametersForm.controls, ...this.systemParametersForm.controls};
+        const controls = { ...this.modelParametersForm.controls, ...this.systemParametersForm.controls };
         for (const name in controls) {
             if (controls[name].invalid) {
                 invalid.push(controls[name] as FormControl);
@@ -248,11 +220,13 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
                 this.lastFormValue = this.systemParametersForm.value;
                 this.lastAdditionalParametersFormValue = this.additionalShipTypeForm.value;
             }
-            const variables = { systemVariables: {
+            const variables = {
+                systemVariables: {
                     ...this.systemParametersForm.value,
                     ...this.modelParametersForm.value,
-                    ...this.expensesForm.value
-            }};
+                    ...this.expensesForm.value,
+                },
+            };
             if (this.validateAdditionalTypesForm()) {
                 variables.systemVariables = {
                     ...variables.systemVariables,

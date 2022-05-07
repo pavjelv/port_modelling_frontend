@@ -1,9 +1,10 @@
-import { loadRemoteModule } from "./federation-utils";
+import { Type } from "@angular/core";
 import { Routes } from "@angular/router";
-import { FederationPlugin } from "../model/microfrontends/microfrontend.model";
 import { APPLICATION_ROUTES } from "../application-routes.const";
+import { FederationPlugin } from "../model/microfrontends/microfrontend.model";
+import { loadRemoteModule } from "./federation-utils";
 
-export function buildRoutes(options: ReadonlyArray<FederationPlugin>): Routes {
+export function buildRoutes(options: readonly FederationPlugin[]): Routes {
     const lazyRoutes: Routes = options?.map((mfe: FederationPlugin) => {
         switch (mfe.type) {
             case "angular": {
@@ -11,13 +12,15 @@ export function buildRoutes(options: ReadonlyArray<FederationPlugin>): Routes {
                     case "routeModule": {
                         return {
                             path: mfe.routePath,
-                            loadChildren: () => loadRemoteModule(mfe).then((m) => m[mfe.moduleClassName]),
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-member-access
+                            loadChildren: (): Promise<Type<unknown>> => loadRemoteModule(mfe).then((m) => m[mfe.moduleClassName]),
                         };
                     }
                     default: {
                         return {
                             path: mfe.routePath,
-                            loadChildren: () => loadRemoteModule(mfe).then((m) => m[mfe.moduleClassName]),
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-member-access
+                            loadChildren: (): Promise<Type<unknown>> => loadRemoteModule(mfe).then((m) => m[mfe.moduleClassName]),
                         };
                     }
                 }
@@ -28,7 +31,7 @@ export function buildRoutes(options: ReadonlyArray<FederationPlugin>): Routes {
                     children: [
                         {
                             path: "**",
-                            loadChildren: () =>
+                            loadChildren: (): Promise<Type<unknown>> =>
                                 import("../modules/react-wrapper/react-wrapper.module").then((m) => {
                                     return m.ReactWrapperModule;
                                 }),

@@ -1,6 +1,6 @@
 import { FederationPlugin } from "../model/microfrontends/microfrontend.model";
 
-export const ROUTES_CONFIGURATION: ReadonlyArray<FederationPlugin> = [
+export const ROUTES_CONFIGURATION: readonly FederationPlugin[] = [
     // {
     //   type: "angular",
     //   subType: "routeModule",

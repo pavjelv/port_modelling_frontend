@@ -1,7 +1,7 @@
 import { SystemParameters } from "../model/theory/system-type";
 import { AvailableSystemCharacteristics } from "../model/theory/theory-result.model";
 
-export const AvailableSystemCharacteristicsDictionary = new Map<AvailableSystemCharacteristics, string>([
+export const availableSystemCharacteristicsDictionary = new Map<AvailableSystemCharacteristics, string>([
     ["l_sys", "Среднее число заявок в системе"],
     ["t_sys", "Среднее время пребывания в системе"],
     ["l_queue", "Среднее число заявок в очереди"],
@@ -11,7 +11,7 @@ export const AvailableSystemCharacteristicsDictionary = new Map<AvailableSystemC
     ["p_serv", "Относительная пропускная способность"],
 ]);
 
-export const SystemParametersDictionary = new Map<SystemParameters, string>([
+export const systemParametersDictionary = new Map<SystemParameters, string>([
     [SystemParameters.SERVERS_NUM, "port-modelling-fe.calculateValues.serversNum"],
     [SystemParameters.MU, "port-modelling-fe.calculateValues.mu"],
     [SystemParameters.LAMBDA, "port-modelling-fe.calculateValues.lambda"],

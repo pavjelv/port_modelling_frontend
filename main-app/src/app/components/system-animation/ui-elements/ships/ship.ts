@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 import { CustomerState } from "./vessel";
 
 export class Ship {

@@ -2,33 +2,33 @@
 <p [innerHTML]="'port-modelling-fe.kendall.description' | translate"></p>
 <div class="kendall-notation__content">
     <div class="kendall-notation__content__header">
-        <span class="kendall-notation__kendall-character" (mouseover)="selectKendallCharacter(KendallCharacters.A)" [class.selected-character]="selectedKendallCharacter === KendallCharacters.A"
+        <span class="kendall-notation__kendall-character" (mouseover)="selectKendallCharacter(kendallCharacters.A)" [class.selected-character]="selectedKendallCharacter === kendallCharacters.A"
             >A</span
         >
         /
-        <span class="kendall-notation__kendall-character" (mouseover)="selectKendallCharacter(KendallCharacters.S)" [class.selected-character]="selectedKendallCharacter === KendallCharacters.S"
+        <span class="kendall-notation__kendall-character" (mouseover)="selectKendallCharacter(kendallCharacters.S)" [class.selected-character]="selectedKendallCharacter === kendallCharacters.S"
             >S</span
         >
         /
-        <span class="kendall-notation__kendall-character" (mouseover)="selectKendallCharacter(KendallCharacters.c)" [class.selected-character]="selectedKendallCharacter === KendallCharacters.c"
+        <span class="kendall-notation__kendall-character" (mouseover)="selectKendallCharacter(kendallCharacters.c)" [class.selected-character]="selectedKendallCharacter === kendallCharacters.c"
             >c</span
         >
         /
-        <span class="kendall-notation__kendall-character" (mouseover)="selectKendallCharacter(KendallCharacters.K)" [class.selected-character]="selectedKendallCharacter === KendallCharacters.K"
+        <span class="kendall-notation__kendall-character" (mouseover)="selectKendallCharacter(kendallCharacters.K)" [class.selected-character]="selectedKendallCharacter === kendallCharacters.K"
             >K</span
         >
         /
-        <span class="kendall-notation__kendall-character" (mouseover)="selectKendallCharacter(KendallCharacters.N)" [class.selected-character]="selectedKendallCharacter === KendallCharacters.N"
+        <span class="kendall-notation__kendall-character" (mouseover)="selectKendallCharacter(kendallCharacters.N)" [class.selected-character]="selectedKendallCharacter === kendallCharacters.N"
             >N</span
         >
         /
-        <span class="kendall-notation__kendall-character" (mouseover)="selectKendallCharacter(KendallCharacters.D)" [class.selected-character]="selectedKendallCharacter === KendallCharacters.D"
+        <span class="kendall-notation__kendall-character" (mouseover)="selectKendallCharacter(kendallCharacters.D)" [class.selected-character]="selectedKendallCharacter === kendallCharacters.D"
             >D</span
         >
     </div>
     <mat-accordion class="kendall-notation__content__accordion" [multi]="true">
         <mat-expansion-panel>
-            <mat-expansion-panel-header (mouseover)="selectKendallCharacter(KendallCharacters.A)" [class.selected-list]="selectedKendallCharacter === KendallCharacters.A">
+            <mat-expansion-panel-header (mouseover)="selectKendallCharacter(kendallCharacters.A)" [class.selected-list]="selectedKendallCharacter === kendallCharacters.A">
                 <mat-panel-title> A </mat-panel-title>
                 <mat-panel-description>
                     {{ "port-modelling-fe.kendall.descriptionA" | translate }}
@@ -37,7 +37,7 @@
             <ng-container [ngTemplateOutlet]="descriptionTable" [ngTemplateOutletContext]="{ dataSource: arrivalProcessDataSource }"></ng-container>
         </mat-expansion-panel>
         <mat-expansion-panel>
-            <mat-expansion-panel-header (mouseover)="selectKendallCharacter(KendallCharacters.S)" [class.selected-list]="selectedKendallCharacter === KendallCharacters.S">
+            <mat-expansion-panel-header (mouseover)="selectKendallCharacter(kendallCharacters.S)" [class.selected-list]="selectedKendallCharacter === kendallCharacters.S">
                 <mat-panel-title> S </mat-panel-title>
                 <mat-panel-description>
                     {{ "port-modelling-fe.kendall.descriptionS" | translate }}
@@ -46,7 +46,7 @@
             <ng-container [ngTemplateOutlet]="descriptionTable" [ngTemplateOutletContext]="{ dataSource: serviceProcessDataSource }"></ng-container>
         </mat-expansion-panel>
         <mat-expansion-panel disabled>
-            <mat-expansion-panel-header (mouseover)="selectKendallCharacter(KendallCharacters.c)" [class.selected-list]="selectedKendallCharacter === KendallCharacters.c">
+            <mat-expansion-panel-header (mouseover)="selectKendallCharacter(kendallCharacters.c)" [class.selected-list]="selectedKendallCharacter === kendallCharacters.c">
                 <mat-panel-title> c </mat-panel-title>
                 <mat-panel-description>
                     {{ "port-modelling-fe.kendall.descriptionC" | translate }}
@@ -54,7 +54,7 @@
             </mat-expansion-panel-header>
         </mat-expansion-panel>
         <mat-expansion-panel disabled>
-            <mat-expansion-panel-header (mouseover)="selectKendallCharacter(KendallCharacters.K)" [class.selected-list]="selectedKendallCharacter === KendallCharacters.K">
+            <mat-expansion-panel-header (mouseover)="selectKendallCharacter(kendallCharacters.K)" [class.selected-list]="selectedKendallCharacter === kendallCharacters.K">
                 <mat-panel-title> K </mat-panel-title>
                 <mat-panel-description>
                     {{ "port-modelling-fe.kendall.descriptionK" | translate }}
@@ -62,7 +62,7 @@
             </mat-expansion-panel-header>
         </mat-expansion-panel>
         <mat-expansion-panel disabled>
-            <mat-expansion-panel-header (mouseover)="selectKendallCharacter(KendallCharacters.N)" [class.selected-list]="selectedKendallCharacter === KendallCharacters.N">
+            <mat-expansion-panel-header (mouseover)="selectKendallCharacter(kendallCharacters.N)" [class.selected-list]="selectedKendallCharacter === kendallCharacters.N">
                 <mat-panel-title> N </mat-panel-title>
                 <mat-panel-description>
                     {{ "port-modelling-fe.kendall.descriptionN" | translate }}
@@ -70,7 +70,7 @@
             </mat-expansion-panel-header>
         </mat-expansion-panel>
         <mat-expansion-panel>
-            <mat-expansion-panel-header (mouseover)="selectKendallCharacter(KendallCharacters.D)" [class.selected-list]="selectedKendallCharacter === KendallCharacters.D">
+            <mat-expansion-panel-header (mouseover)="selectKendallCharacter(kendallCharacters.D)" [class.selected-list]="selectedKendallCharacter === kendallCharacters.D">
                 <mat-panel-title> D </mat-panel-title>
                 <mat-panel-description>
                     {{ "port-modelling-fe.kendall.descriptionD" | translate }}
