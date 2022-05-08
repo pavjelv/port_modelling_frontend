@@ -32,14 +32,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Cache node modules
+      - name: Cache test node modules
         uses: actions/cache@v1
         with:
           path: e2e-tests/node_modules
-          key: node_modules-${{ hashFiles('e2e-tests/package-lock.json') }}
+          key: test-node_modules-${{ hashFiles('e2e-tests/package-lock.json') }}
           # loading an older version is fine here, since it will get an npm install
           restore-keys: |
-            node_modules-
+            test-node_modules-
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+            path: node_modules
+            key: node_modules-${{ hashFiles('package-lock.json') }}
+            # loading an older version is fine here, since it will get an npm install
+            restore-keys: |
+              node_modules-
 
       - name: Install dependencies
         run: |
@@ -54,11 +63,17 @@ jobs:
         - uses: browser-actions/setup-chrome@latest
         - run: chrome --version
 
-        - name: Load node_modules
+        - name: Load test node_modules
           uses: actions/cache@v1
           with:
             path: e2e-tests/node_modules
-            key: node_modules-${{ hashFiles('e2e-tests/package-lock.json') }}
+            key: test-node_modules-${{ hashFiles('e2e-tests/package-lock.json') }}
+
+        - name: Load node_modules
+          uses: actions/cache@v1
+          with:
+            path: node_modules
+            key: node_modules-${{ hashFiles('package-lock.json') }}
 
         - name: Load build artifact
           uses: actions/cache@v1
