@@ -17,5 +17,5 @@
     "lib": ["es6", "es7", "dom", "es2015"],
     "baseUrl": "src"
   },
-  "exclude": ["build", "node_modules", "server"]
+  "exclude": ["build", "node_modules", "server", "__tests__"]
 }
