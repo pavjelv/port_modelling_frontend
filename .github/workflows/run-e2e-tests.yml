@@ -68,7 +68,6 @@ jobs:
 
         - name: Run port-modelling e2e tests
           run: |
-            npm run start &
             npm run e2e-test
 
         - name: Archive e2e test results
