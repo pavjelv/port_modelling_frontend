@@ -9,7 +9,7 @@ export class HomepageScenario {
     static async openInfoPopover(t: TestController, title?: string) {
         await t.wait(DEFAULT_TIMEOUT);
         await t
-            .expect(HomepageScenario.headlineLink.exists).ok();
+            .expect(HomepageScenario.headlineLink.exists).notOk();
         await t
             .click(HomepageScenario.headlineLink)
             .expect(HomepageScenario.infoDialog.exists).ok();
