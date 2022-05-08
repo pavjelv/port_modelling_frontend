@@ -1,17 +1,18 @@
-import React from "react";
+import { Col, Row } from "antd";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { SystemSummary } from "app/models/simulation-result.model";
-import { ModellingSystemCharacteristicsDictionary } from "app/dictionaries/modelling-system-characteristics.dictionary";
-import { ChartsResultModel } from "app/models/charts-result.model";
-import { Col, Row } from "antd";
+import React from "react";
 
-export interface WrapperProps {
-    chartsResult: ChartsResultModel;
-    requiredCharacteristics: Array<Exclude<keyof SystemSummary, "name">>;
-}
+import { ModellingSystemCharacteristicsDictionary } from "../dictionaries/modelling-system-characteristics.dictionary";
+import { ChartsResultModel } from "../models/charts-result.model";
+import { SystemSummary } from "../models/simulation-result.model";
 
-const processCharacteristics = (props: WrapperProps): unknown[] => {
+export type WrapperProps = {
+    readonly chartsResult: ChartsResultModel;
+    readonly requiredCharacteristics: ReadonlyArray<Exclude<keyof SystemSummary, "name">>;
+};
+
+const processCharacteristics = (props: WrapperProps): readonly unknown[] => {
     return props.requiredCharacteristics.map((name) => {
         return {
             title: {

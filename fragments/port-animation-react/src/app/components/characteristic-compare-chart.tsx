@@ -1,10 +1,11 @@
-import React from "react";
-import { SystemVariablesModel } from "app/models/system-variables.model";
 import { Button, Col, Collapse, Drawer, Form, FormInstance, Input, notification, Row, Select, Skeleton, Space } from "antd";
-import HighchartsWrapper from "app/components/highcharts-wrapper";
-import { ModellingSystemCharacteristicsDictionary } from "app/dictionaries/modelling-system-characteristics.dictionary";
-import { SystemParametersDictionary } from "app/dictionaries/required-system-variables.distionary";
-import { ChartsResultModel } from "app/models/charts-result.model";
+import React from "react";
+
+import HighchartsWrapper from "../components/highcharts-wrapper";
+import { ModellingSystemCharacteristicsDictionary } from "../dictionaries/modelling-system-characteristics.dictionary";
+import { SystemParametersDictionary } from "../dictionaries/required-system-variables.distionary";
+import { ChartsResultModel } from "../models/charts-result.model";
+import { SystemVariablesModel } from "../models/system-variables.model";
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -28,7 +29,7 @@ const errorNotification = () => {
     });
 };
 
-const CharacteristicCompareChart = (props: { systemVariables: SystemVariablesModel, loading: boolean }) => {
+const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVariablesModel, readonly loading: boolean }) => {
     const [drawerVisible, setDrawerVisible] = React.useState(false);
     const [chartsResult, setChartsResult] = React.useState(null as ChartsResultModel);
     const [requiredCharacteristics, setRequiredCharacteristics] = React.useState([]);
@@ -51,7 +52,7 @@ const CharacteristicCompareChart = (props: { systemVariables: SystemVariablesMod
                 delete variables["requiredCharacteristics"];
                 delete variables["characteristics"];
                 let queryParams = "";
-                Object.entries(variables)?.forEach(([k, v]: [string, unknown]) => {
+                Object.entries(variables)?.forEach(([k, v]: readonly [string, unknown]) => {
                     queryParams += `${k}=${encodeURIComponent(String(v))}&`;
                 });
                 const requestURL = `/api/calculate/modelling/charts/?${queryParams}`;
@@ -64,7 +65,9 @@ const CharacteristicCompareChart = (props: { systemVariables: SystemVariablesMod
                 },
                 (e) => errorNotification(),
             )
-            .catch((e) => {});
+            .catch((e) => {
+                console.error(e);
+            });
     };
 
     const showDrawer = () => {

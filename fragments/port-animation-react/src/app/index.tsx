@@ -1,8 +1,10 @@
+import ModellingVisualisation from "app/components/modelling-visualisation";
 import * as React from "react";
 import "./index.less";
+import { Route, Switch } from "react-router-dom";
+
 import { ApplicationProps } from "../application";
-import { Switch, Route } from "react-router-dom";
-import ModellingVisualisation from "app/components/modelling-visualisation";
+
 
 export const App = (props: ApplicationProps) => {
     return (

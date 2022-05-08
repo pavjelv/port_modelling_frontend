@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { Application } from "./application";
 
 export class MainApplicationPlugin extends React.Component {

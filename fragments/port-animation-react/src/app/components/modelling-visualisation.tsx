@@ -1,9 +1,11 @@
-import { SystemVariablesModel } from "app/models/system-variables.model";
+import { BackTop, Col, Collapse, Descriptions, notification, Row, Skeleton, Slider, Space } from "antd";
 import React from "react";
-import { SimulationResultModel, SystemSummary } from "app/models/simulation-result.model";
-import { BackTop, Descriptions, notification, Row, Skeleton, Slider, Space, Collapse, Col } from "antd";
-import PortAnimation from "app/components/port-animation";
-import CharacteristicCompareChart from "app/components/characteristic-compare-chart";
+
+import CharacteristicCompareChart from "../components/characteristic-compare-chart";
+import HistogramHighchartsWrapper from "../components/histogram-highcharts-wrapper";
+import PortAnimation from "../components/port-animation";
+import { SimulationResultModel, SystemSummary } from "../models/simulation-result.model";
+import { SystemVariablesModel } from "../models/system-variables.model";
 
 const { Panel } = Collapse;
 
@@ -15,7 +17,6 @@ import "antd/lib/collapse/style/index.css";
 import "antd/lib/space/style/index.css";
 import "antd/lib/notification/style/index.css";
 import "antd/lib/back-top/style/index.css";
-import HistogramHighchartsWrapper from "app/components/histogram-highcharts-wrapper";
 
 const errorNotification = () => {
     notification["error"]({

@@ -1,11 +1,14 @@
-import { Shape } from "react-konva";
-import React from "react";
 import Konva from "konva";
-import { CustomerAnimationDataModel, CustomerState } from "app/models/animation-properties.model";
-import { ShipType } from "app/models/customer-data.model";
-import { calculateCraneHeight, calculateCraneYCoordinate } from "app/components/crane";
+import React from "react";
+import { Shape } from "react-konva";
+
+import { CustomerAnimationDataModel, CustomerState } from "../models/animation-properties.model";
+import { ShipType } from "../models/customer-data.model";
+import { SCREEN_HEIGHT } from "../models/screen-size.constant";
+
+import { calculateCraneHeight, calculateCraneYCoordinate } from "./crane";
+
 import KonvaEventObject = Konva.KonvaEventObject;
-import { SCREEN_HEIGHT } from "app/models/screen-size.constant";
 
 const ShipImage = (props: CustomerAnimationDataModel) => {
     const click = (e: KonvaEventObject<MouseEvent>) => {
@@ -136,6 +139,7 @@ const ShipImage = (props: CustomerAnimationDataModel) => {
             scale={{ x: scale, y: scale }}
             y={y}
             x={x}
+            title={props.name}
         />
     );
 };
