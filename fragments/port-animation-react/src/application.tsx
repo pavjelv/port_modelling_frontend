@@ -1,10 +1,9 @@
-import { BrowserRouter } from "react-router-dom";
 import { App } from "app/index";
-import * as React from "react";
-import { ApplicationService } from "./application.service";
 import { EventBusService } from "app/models/mfe/event-bus.model";
 import { GlobalNavigationService } from "app/models/mfe/global-navigation.model";
 import { SystemVariablesModel } from "app/models/system-variables.model";
+import * as React from "react";
+import { BrowserRouter } from "react-router-dom";
 
 export interface ApplicationProps {
     systemVariables?: SystemVariablesModel;
@@ -14,13 +13,9 @@ export interface ApplicationProps {
 }
 
 export class Application extends React.Component<ApplicationProps> {
-    private applicationService: ApplicationService = ApplicationService.getInstance();
-
     constructor(props: ApplicationProps) {
         super(props);
         console.log(props);
-        this.applicationService.setEventBus(this.props.eventBus);
-        this.applicationService.setGlobalNavigationService(this.props.globalNavigation);
     }
 
     render(): React.ReactNode {

@@ -1,8 +1,8 @@
-import { Image } from "react-konva";
-import React from "react";
-import useImage from "use-image";
-import { SERVER_TYPE, ServerModel } from "app/models/server.model";
 import { SCREEN_HEIGHT } from "app/models/screen-size.constant";
+import { SERVER_TYPE, ServerModel } from "app/models/server.model";
+import React from "react";
+import { Image } from "react-konva";
+import useImage from "use-image";
 
 const imageHeight = 1130;
 
@@ -20,7 +20,7 @@ export const calculateCraneYCoordinate = (serversCount: number, order: number) =
     return 20 + (SCREEN_HEIGHT / serversCount) * order;
 };
 
-const CraneImage = (props: ServerModel & { serversCount: number }) => {
+const CraneImage = (props: ServerModel & { readonly serversCount: number }) => {
     const [image] = useImage(props.type === SERVER_TYPE.CARGO ? "/assets/images/crane-dry.png" : "/assets/images/crane.png");
     // reduce the size of the crane depending on it's count
     const scale = calculateCraneScale(props.serversCount);

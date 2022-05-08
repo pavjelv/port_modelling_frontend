@@ -1,8 +1,11 @@
 name: Deploy fe app to Heroku
 
 on:
-  push:
+  workflow_run:
+    workflows: [ "Build and test main app", "Build and test fragments" ]
     branches: [ main ]
+    types:
+      - completed
 
 jobs:
   deploy-to-heroku:

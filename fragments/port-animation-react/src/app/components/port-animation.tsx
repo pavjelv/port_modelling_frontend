@@ -1,14 +1,14 @@
-import React from "react";
-import { Layer, Stage, Text } from "react-konva";
 
-import ShipImage from "app/components/ship";
 import CraneImage from "app/components/crane";
-import { SERVER_TYPE, ServerModel } from "app/models/server.model";
+import ShipImage from "app/components/ship";
 import { AnimationPropertiesModel, CustomerAnimationDataModel, CustomerState } from "app/models/animation-properties.model";
+import { CustomerDataModel, ShipType } from "app/models/customer-data.model";
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from "app/models/screen-size.constant";
+import { SERVER_TYPE, ServerModel } from "app/models/server.model";
 import { SimulationResultModel } from "app/models/simulation-result.model";
 import { SystemVariablesModel } from "app/models/system-variables.model";
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from "app/models/screen-size.constant";
-import { CustomerDataModel, ShipType } from "app/models/customer-data.model";
+import React from "react";
+import { Layer, Stage, Text } from "react-konva";
 
 const processResponse = (response: SimulationResultModel, time: number, systemParams: SystemVariablesModel): AnimationPropertiesModel => {
     const servingCustomers: CustomerAnimationDataModel[] = response.customer_data

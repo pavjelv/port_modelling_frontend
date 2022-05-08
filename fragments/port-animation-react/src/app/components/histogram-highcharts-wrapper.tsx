@@ -1,8 +1,7 @@
-import React from "react";
 import Highcharts  from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-
 import bellCurve from "highcharts/modules/histogram-bellcurve"; //module
+import React from "react";
 bellCurve(Highcharts); //init module
 
 const HistogramHighchartsWrapper = (props: {data: number[], title: string}) => {
