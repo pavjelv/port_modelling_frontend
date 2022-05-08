@@ -1,7 +1,10 @@
 name: Run e2e tests
+
 on:
+  pull_request:
   workflow_run:
     workflows: [ "Build and test main app", "Build and test fragments" ]
+    branches: *
     types:
       - completed
 
