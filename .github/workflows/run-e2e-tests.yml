@@ -1,9 +1,10 @@
 name: Run e2e tests
 
 on:
-  pull_request:
   workflow_run:
     workflows: [ "Build and test main app", "Build and test fragments" ]
+    branches:
+        - '**'
     types:
       - completed
 
@@ -19,7 +20,7 @@ jobs:
             key: dist-${{ hashFiles('package-lock.json') }}
             # loading an older version is fine here, since it will get an npm install
             restore-keys: |
-                node_modules-
+                dist-
 
       - name: Install dependencies and build artifact
         run: |
@@ -66,9 +67,7 @@ jobs:
 
         - name: Run port-modelling e2e tests
           run: |
-            npm run start
-            cd e2e-tests
-            npm run test
+            npm run e2e-test
 
         - name: Archive e2e test results
           uses: actions/upload-artifact@v3
