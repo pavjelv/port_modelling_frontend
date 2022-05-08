@@ -23,6 +23,15 @@ jobs:
             restore-keys: |
                 dist-
 
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+            path: node_modules
+            key: node_modules-${{ hashFiles('package-lock.json') }}
+            # loading an older version is fine here, since it will get an npm install
+            restore-keys: |
+                node_modules-
+
       - name: Install dependencies and build artifact
         run: |
           npm ci
@@ -40,15 +49,6 @@ jobs:
           # loading an older version is fine here, since it will get an npm install
           restore-keys: |
             test-node_modules-
-
-      - name: Cache node modules
-        uses: actions/cache@v1
-        with:
-            path: node_modules
-            key: node_modules-${{ hashFiles('package-lock.json') }}
-            # loading an older version is fine here, since it will get an npm install
-            restore-keys: |
-              node_modules-
 
       - name: Install dependencies
         run: |
