@@ -1,10 +1,11 @@
 import { Col, Row } from "antd";
-import { ModellingSystemCharacteristicsDictionary } from "app/dictionaries/modelling-system-characteristics.dictionary";
-import { ChartsResultModel } from "app/models/charts-result.model";
-import { SystemSummary } from "app/models/simulation-result.model";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import React from "react";
+
+import { ModellingSystemCharacteristicsDictionary } from "../dictionaries/modelling-system-characteristics.dictionary";
+import { ChartsResultModel } from "../models/charts-result.model";
+import { SystemSummary } from "../models/simulation-result.model";
 
 export type WrapperProps = {
     readonly chartsResult: ChartsResultModel;

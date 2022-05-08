@@ -1,10 +1,11 @@
 import { Button, Col, Collapse, Drawer, Form, FormInstance, Input, notification, Row, Select, Skeleton, Space } from "antd";
-import HighchartsWrapper from "app/components/highcharts-wrapper";
-import { ModellingSystemCharacteristicsDictionary } from "app/dictionaries/modelling-system-characteristics.dictionary";
-import { SystemParametersDictionary } from "app/dictionaries/required-system-variables.distionary";
-import { ChartsResultModel } from "app/models/charts-result.model";
-import { SystemVariablesModel } from "app/models/system-variables.model";
 import React from "react";
+
+import HighchartsWrapper from "../components/highcharts-wrapper";
+import { ModellingSystemCharacteristicsDictionary } from "../dictionaries/modelling-system-characteristics.dictionary";
+import { SystemParametersDictionary } from "../dictionaries/required-system-variables.distionary";
+import { ChartsResultModel } from "../models/charts-result.model";
+import { SystemVariablesModel } from "../models/system-variables.model";
 
 const { Option } = Select;
 const { Panel } = Collapse;

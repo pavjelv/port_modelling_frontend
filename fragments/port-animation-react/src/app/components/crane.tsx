@@ -1,8 +1,9 @@
-import { SCREEN_HEIGHT } from "app/models/screen-size.constant";
-import { SERVER_TYPE, ServerModel } from "app/models/server.model";
 import React from "react";
 import { Image } from "react-konva";
 import useImage from "use-image";
+
+import { SCREEN_HEIGHT } from "../models/screen-size.constant";
+import { SERVER_TYPE, ServerModel } from "../models/server.model";
 
 const imageHeight = 1130;
 

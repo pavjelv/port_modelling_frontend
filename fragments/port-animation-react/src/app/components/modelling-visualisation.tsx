@@ -1,10 +1,11 @@
 import { BackTop, Col, Collapse, Descriptions, notification, Row, Skeleton, Slider, Space } from "antd";
-import CharacteristicCompareChart from "app/components/characteristic-compare-chart";
-import HistogramHighchartsWrapper from "app/components/histogram-highcharts-wrapper";
-import PortAnimation from "app/components/port-animation";
-import { SimulationResultModel, SystemSummary } from "app/models/simulation-result.model";
-import { SystemVariablesModel } from "app/models/system-variables.model";
 import React from "react";
+
+import CharacteristicCompareChart from "../components/characteristic-compare-chart";
+import HistogramHighchartsWrapper from "../components/histogram-highcharts-wrapper";
+import PortAnimation from "../components/port-animation";
+import { SimulationResultModel, SystemSummary } from "../models/simulation-result.model";
+import { SystemVariablesModel } from "../models/system-variables.model";
 
 const { Panel } = Collapse;
 
