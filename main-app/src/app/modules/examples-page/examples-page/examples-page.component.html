@@ -5,12 +5,8 @@
 </div>
 <div class="examples-page-component">
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="mat-elevation-z1">
-        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-            <!-- use a disabled button to provide padding for tree leaf -->
-            <button mat-icon-button disabled></button>
-            <a routerLink="{{ node.routerLink }}">
-                {{ node.name }}
-            </a>
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding class="examples-page-component__node">
+            <a class="examples-page-component__node__leaf" routerLink="{{ node.routerLink }}" [innerHTML]="node.name" id="{{ node.routerLink }}"></a>
         </mat-tree-node>
         <!-- This is the tree node template for expandable nodes -->
         <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>

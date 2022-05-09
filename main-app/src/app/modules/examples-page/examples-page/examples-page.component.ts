@@ -1,6 +1,8 @@
 import { FlatTreeControl } from "@angular/cdk/tree";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
+import { SystemType } from "../../../model/theory/system-type";
+import { infQueueDataModelMapper, withQueueDataModelMapper } from "../data/data-model.mapper";
 
 /** Flat node with expandable and level information */
 interface FlatNode {
@@ -19,10 +21,10 @@ interface SystemNode {
 const TREE_DATA: SystemNode[] = [
     {
         name: "СМО с ограниченной очередью",
-        children: [
-            { name: "1", routerLink: "1" },
-            { name: "2", routerLink: "2" },
-        ],
+        children: [...withQueueDataModelMapper.entries()].map(([key, data]) => ({
+            name: data.name,
+            routerLink: SystemType.WITH_QUEUE + "/" + key,
+        })),
     },
     {
         name: "СМО с отказами",
@@ -37,10 +39,10 @@ const TREE_DATA: SystemNode[] = [
     },
     {
         name: "СМО с бесконечной очередью",
-        children: [
-            { name: "1", routerLink: "1" },
-            { name: "2", routerLink: "2" },
-        ],
+        children: [...infQueueDataModelMapper.entries()].map(([key, data]) => ({
+            name: data.name,
+            routerLink: SystemType.INFINITE_QUEUE + "/" + key,
+        })),
     },
 ];
 
