@@ -1,5 +1,6 @@
 # Port Modelling Frontend Application
 [![Build and test fragments](https://github.com/pavjelv/port_modelling_frontend/actions/workflows/build-and-test-fragments.yml/badge.svg)](https://github.com/pavjelv/port_modelling_frontend/actions/workflows/build-and-test-fragments.yml) [![Build and test main app](https://github.com/pavjelv/port_modelling_frontend/actions/workflows/build-and-test-main-app.yml/badge.svg)](https://github.com/pavjelv/port_modelling_frontend/actions/workflows/build-and-test-main-app.yml) [![Run e2e tests](https://github.com/pavjelv/port_modelling_frontend/actions/workflows/run-e2e-tests.yml/badge.svg)](https://github.com/pavjelv/port_modelling_frontend/actions/workflows/run-e2e-tests.yml)
+[![Deploy fe app to Heroku](https://github.com/pavjelv/port_modelling_frontend/actions/workflows/deploy-app.yml/badge.svg)](https://github.com/pavjelv/port_modelling_frontend/actions/workflows/deploy-app.yml)
 
 ## Micro-Frontends concept using [Module Federation](https://webpack.js.org/concepts/module-federation/)
 

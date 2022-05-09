@@ -1,46 +1,52 @@
 import { FlatTreeControl } from "@angular/cdk/tree";
 import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { MatTreeFlatDataSource, MatTreeFlattener } from "@angular/material/tree";
+import { SystemType } from "../../../model/theory/system-type";
+import { infQueueDataModelMapper, withQueueDataModelMapper, withRejectDataModelMapper } from "../data/data-model.mapper";
 
 /** Flat node with expandable and level information */
 interface FlatNode {
     expandable: boolean;
     name: string;
     level: number;
+    id: string;
     routerLink?: string;
 }
 
 interface SystemNode {
     name: string;
+    id: string;
     routerLink?: string;
     children?: SystemNode[];
 }
 
 const TREE_DATA: SystemNode[] = [
     {
-        name: "СМО с ограниченной очередью",
-        children: [
-            { name: "1", routerLink: "1" },
-            { name: "2", routerLink: "2" },
-        ],
+        name: "port-modelling-fe.systemType.withQueue",
+        children: [...withQueueDataModelMapper.entries()].map(([key, data]) => ({
+            name: data.name,
+            routerLink: SystemType.WITH_QUEUE + "/" + key,
+            id: SystemType.WITH_QUEUE + "-" + key,
+        })),
+        id: SystemType.WITH_QUEUE,
     },
     {
-        name: "СМО с отказами",
-        children: [
-            {
-                name: "Green",
-            },
-            {
-                name: "Orange",
-            },
-        ],
+        name: "port-modelling-fe.systemType.withReject",
+        children: [...withRejectDataModelMapper.entries()].map(([key, data]) => ({
+            name: data.name,
+            routerLink: SystemType.WITH_REJECT + "/" + key,
+            id: SystemType.WITH_REJECT + "-" + key,
+        })),
+        id: SystemType.WITH_REJECT,
     },
     {
-        name: "СМО с бесконечной очередью",
-        children: [
-            { name: "1", routerLink: "1" },
-            { name: "2", routerLink: "2" },
-        ],
+        name: "port-modelling-fe.systemType.infiniteQueue",
+        children: [...infQueueDataModelMapper.entries()].map(([key, data]) => ({
+            name: data.name,
+            routerLink: SystemType.INFINITE_QUEUE + "/" + key,
+            id: SystemType.INFINITE_QUEUE + "-" + key,
+        })),
+        id: SystemType.INFINITE_QUEUE,
     },
 ];
 
@@ -50,6 +56,7 @@ const _transformer = (node: SystemNode, level: number): FlatNode => {
         name: node.name,
         level,
         routerLink: node.routerLink,
+        id: node.id,
     };
 };
 
