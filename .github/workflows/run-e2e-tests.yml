@@ -1,6 +1,8 @@
 name: Run e2e tests
 
 on:
+  push:
+    paths: [ "e2e-tests/**" ]
   pull_request:
   workflow_dispatch:
   workflow_run:
