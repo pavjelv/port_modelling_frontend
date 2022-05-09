@@ -1,12 +1,7 @@
 name: Run e2e tests
 
 on:
-    pull_request:
-    workflow_run:
-      workflows: [ "Build and test main app" ]
-      branches: [ main ]
-      types:
-        - completed
+  push:
 
 jobs:
   build-fe-artifact:
