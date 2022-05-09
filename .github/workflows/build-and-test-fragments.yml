@@ -2,7 +2,6 @@ name: Build and test fragments
 
 on:
   push:
-      paths: ["fragments/**"]
 
 jobs:
   setup:
