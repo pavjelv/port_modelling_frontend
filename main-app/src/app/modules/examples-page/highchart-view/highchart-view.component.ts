@@ -6,7 +6,7 @@ import { availableSystemCharacteristicsDictionary, systemParametersDictionary } 
 import { ChartDataModel, ChartSeriesData } from "../../../model/chart-data.model";
 import { SystemParameters, SystemType } from "../../../model/theory/system-type";
 import { RxUnsubscribe } from "../../../utils/rx-unsubscribe";
-import { ExamplesData, infQueueDataModelMapper, withQueueDataModelMapper } from "../data/data-model.mapper";
+import { ExamplesData, infQueueDataModelMapper, withQueueDataModelMapper, withRejectDataModelMapper } from "../data/data-model.mapper";
 
 @Component({
     selector: "app-highchart-view",
@@ -41,6 +41,9 @@ export class HighchartViewComponent extends RxUnsubscribe implements AfterViewIn
                     case SystemType.INFINITE_QUEUE:
                         dm = infQueueDataModelMapper.get(exampleId);
                         break;
+                    case SystemType.WITH_REJECT:
+                        dm = withRejectDataModelMapper.get(exampleId);
+                        break;
                     default:
                         dm = withQueueDataModelMapper.get(exampleId);
                 }
@@ -57,7 +60,7 @@ export class HighchartViewComponent extends RxUnsubscribe implements AfterViewIn
         const dm = data.dataModel[0];
         this.charts = [];
         [...availableSystemCharacteristicsDictionary]
-            .filter(([key]) => (type === SystemType.INFINITE_QUEUE ? key !== "p_serv" && key !== "p_rej" && key !== "k" : true))
+            .filter(([key]) => (type === SystemType.INFINITE_QUEUE ? key !== "p_serv" && key !== "p_rej" && key !== "k" : type === SystemType.WITH_REJECT ? key !== "l_queue" && key !== "wait" : true))
             .forEach(([key, characteristic]) => {
                 const chartData = new Map<string, ChartSeriesData>([["series", dm.result.map((value, i) => [dm.parameter_range[i], value[key]]) as ChartSeriesData]]);
                 this.charts.push({
