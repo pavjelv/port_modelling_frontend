@@ -33,16 +33,22 @@ const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVar
     const [drawerVisible, setDrawerVisible] = React.useState(false);
     const [chartsResult, setChartsResult] = React.useState(null as ChartsResultModel);
     const [requiredCharacteristics, setRequiredCharacteristics] = React.useState([]);
+    const [loading, setLoading] = React.useState(props.loading);
 
     const formRef = React.createRef<FormInstance>();
     const close = () => {
         setDrawerVisible(false);
     };
 
+    React.useEffect(() => {
+        setLoading(props.loading);
+    }, [props.loading])
+
     const apply = () => {
         formRef.current
             .validateFields()
             .then((result) => {
+                setLoading(true);
                 setDrawerVisible(false);
                 return result;
             })
@@ -61,6 +67,7 @@ const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVar
             .then((res) => res.json())
             .then(
                 (response: ChartsResultModel) => {
+                    setLoading(false);
                     setChartsResult(response);
                 },
                 (e) => errorNotification(),
@@ -77,7 +84,7 @@ const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVar
     return (
         <>
             <Col span={22}>
-                <Skeleton active={true} loading={props.loading}>
+                <Skeleton active={true} loading={loading}>
                     <Button onClick={showDrawer} type={"primary"}>
                         Построить графики сравнения?
                     </Button>

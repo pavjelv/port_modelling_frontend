@@ -131,17 +131,21 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                                         <Descriptions key={index} bordered column={1}>
                                             {props?.systemVariables?.requiredCharacteristics?.map(({ key, value }) => (
                                                 <Descriptions.Item key={index} label={value}>
-                                                    {model[key] && Number.parseFloat(model[key]).toFixed(3)}
+                                                    {model[key] && (
+                                                        key === "left_customers_number" || key === "served_customers_number" ?
+                                                            Number.parseInt(model[key], 10) :
+                                                            Number.parseFloat(model[key]).toFixed(3)
+                                                    )}
                                                 </Descriptions.Item>
                                             ))}
                                             <Descriptions.Item key={10} label={'Затраты порта'}>
-                                                {model.idle_server_cost}
+                                                {model.idle_server_cost && Number.parseFloat(model.idle_server_cost).toFixed(3)}
                                             </Descriptions.Item>
                                             <Descriptions.Item key={20} label={'Затраты судна'}>
-                                                {model.wait_cost}
+                                                {model.wait_cost && Number.parseFloat(model.wait_cost).toFixed(3)}
                                             </Descriptions.Item>
                                             <Descriptions.Item key={30} label={'Общие затраты'}>
-                                                {model.total_cost}
+                                                {model.total_cost && Number.parseFloat(model.total_cost).toFixed(3)}
                                             </Descriptions.Item>
                                         </Descriptions>
                                     </Panel>
@@ -150,18 +154,20 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                         </Skeleton>
                     </Col>
                 </Row>
-                <Row>
-                    <Col span={16}>
-                        <h2>Структура потока, входящего на запасной терминал</h2>
-                        <Skeleton loading={loading} active={true}>
-                            <Collapse defaultActiveKey={["0"]} style={{ overflow: "auto", maxHeight: "540px" }}>
-                                <Panel key={0} header={'Гистограмма'}>
-                                    <HistogramHighchartsWrapper data={response?.reserve_arrivals} title={'Интервалы между поступлениями заявок на запасной терминал'}/>
-                                </Panel>
-                            </Collapse>
-                        </Skeleton>
-                    </Col>
-                </Row>
+                {response?.reserve_arrivals?.length > 0 &&
+                    <Row>
+                        <Col span={16}>
+                            <h2>Структура потока, входящего на запасной терминал</h2>
+                            <Skeleton loading={loading} active={true}>
+                                <Collapse defaultActiveKey={["0"]} style={{ overflow: "auto", maxHeight: "540px" }}>
+                                    <Panel key={0} header={'Гистограмма'}>
+                                        <HistogramHighchartsWrapper data={response?.reserve_arrivals} title={'Интервалы между поступлениями заявок на запасной терминал'} />
+                                    </Panel>
+                                </Collapse>
+                            </Skeleton>
+                        </Col>
+                    </Row>
+                }
                 <Row>
                     <CharacteristicCompareChart loading={loading} systemVariables={props.systemVariables} />
                 </Row>

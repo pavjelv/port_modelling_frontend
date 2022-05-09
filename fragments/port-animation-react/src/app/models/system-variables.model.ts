@@ -1,3 +1,5 @@
+import { SystemSummary } from "./simulation-result.model";
+
 export interface RequiredSystemVariables {
     lambda: number;
     queueLength: number;
@@ -13,7 +15,7 @@ export interface SystemVariablesModel extends RequiredSystemVariables{
     cargoServersNum: number;
     waitCost: number;
     idleCost: number;
-    requiredCharacteristics: { key: string, value: string }[];
+    requiredCharacteristics: { key: keyof SystemSummary, value: string }[];
     a1: number;
     a2: number;
     b1: number;
