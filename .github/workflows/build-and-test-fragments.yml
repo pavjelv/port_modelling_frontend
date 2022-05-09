@@ -3,7 +3,6 @@ name: Build and test fragments
 on:
   push:
       paths: ["fragments/**"]
-  pull_request:
 
 jobs:
   setup:
