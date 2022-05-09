@@ -4,7 +4,6 @@ on:
   push:
       paths: ["main-app/**"]
   pull_request:
-  workflow_dispatch:
 
 jobs:
   setup:
