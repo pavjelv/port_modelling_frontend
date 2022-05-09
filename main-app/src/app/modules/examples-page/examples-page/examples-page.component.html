@@ -6,7 +6,7 @@
 <div class="examples-page-component">
     <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="mat-elevation-z1">
         <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding class="examples-page-component__node">
-            <a class="examples-page-component__node__leaf" [routerLinkActive]="'active'" mat-button routerLink="{{ node.routerLink }}" [innerHTML]="node.name" id="{{ node.routerLink }}"></a>
+            <a class="examples-page-component__node__leaf" [routerLinkActive]="'active'" mat-button routerLink="{{ node.routerLink }}" [innerHTML]="node.name" id="{{ node.id }}"></a>
         </mat-tree-node>
         <!-- This is the tree node template for expandable nodes -->
         <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>

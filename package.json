@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node dist/port-modelling-fe/server/main.js",
     "build": "npm run build:main-app && npm run build:fragments",
-    "e2e-test": "npm run start & npx wait-on http://localhost:5000 && cd e2e-tests && npm run test",
+    "e2e-test": "npm run start & npx wait-on http://localhost:5000 -t 10000 && cd e2e-tests && npm run test",
     "build:main-app": "cd main-app && npm run build",
     "build:fragments": "cd fragments && npm run build",
     "deps": "cd main-app && npm ci && cd ../fragments && npm ci",

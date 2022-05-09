@@ -9,11 +9,13 @@ interface FlatNode {
     expandable: boolean;
     name: string;
     level: number;
+    id: string;
     routerLink?: string;
 }
 
 interface SystemNode {
     name: string;
+    id: string;
     routerLink?: string;
     children?: SystemNode[];
 }
@@ -24,21 +26,27 @@ const TREE_DATA: SystemNode[] = [
         children: [...withQueueDataModelMapper.entries()].map(([key, data]) => ({
             name: data.name,
             routerLink: SystemType.WITH_QUEUE + "/" + key,
+            id: SystemType.WITH_QUEUE + "-" + key,
         })),
+        id: SystemType.WITH_QUEUE,
     },
     {
         name: "port-modelling-fe.systemType.withReject",
         children: [...withRejectDataModelMapper.entries()].map(([key, data]) => ({
             name: data.name,
             routerLink: SystemType.WITH_REJECT + "/" + key,
+            id: SystemType.WITH_REJECT + "-" + key,
         })),
+        id: SystemType.WITH_REJECT,
     },
     {
         name: "port-modelling-fe.systemType.infiniteQueue",
         children: [...infQueueDataModelMapper.entries()].map(([key, data]) => ({
             name: data.name,
             routerLink: SystemType.INFINITE_QUEUE + "/" + key,
+            id: SystemType.INFINITE_QUEUE + "-" + key,
         })),
+        id: SystemType.INFINITE_QUEUE,
     },
 ];
 
@@ -48,6 +56,7 @@ const _transformer = (node: SystemNode, level: number): FlatNode => {
         name: node.name,
         level,
         routerLink: node.routerLink,
+        id: node.id,
     };
 };
 
