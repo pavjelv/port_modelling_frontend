@@ -1,4 +1,4 @@
-import { BackTop, Col, Collapse, Descriptions, notification, Row, Skeleton, Slider, Space } from "antd";
+import { BackTop, Col, Collapse, Descriptions, InputNumber, notification, Row, Skeleton, Slider, Space } from "antd";
 import React from "react";
 
 import CharacteristicCompareChart from "../components/characteristic-compare-chart";
@@ -17,6 +17,7 @@ import "antd/lib/collapse/style/index.css";
 import "antd/lib/space/style/index.css";
 import "antd/lib/notification/style/index.css";
 import "antd/lib/back-top/style/index.css";
+import "antd/lib/input-number/style/index.css"
 
 const errorNotification = () => {
     notification["error"]({
@@ -55,7 +56,7 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                     errorNotification();
                 });
         }
-    }, [props]);
+    }, [props, queryParams, requestURL]);
     return (
         <>
             <BackTop />
@@ -131,17 +132,21 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                                         <Descriptions key={index} bordered column={1}>
                                             {props?.systemVariables?.requiredCharacteristics?.map(({ key, value }) => (
                                                 <Descriptions.Item key={index} label={value}>
-                                                    {model[key] && Number.parseFloat(model[key]).toFixed(3)}
+                                                    {model[key] && (
+                                                        key === "left_customers_number" || key === "served_customers_number" ?
+                                                            Number.parseInt(model[key], 10) :
+                                                            Number.parseFloat(model[key]).toFixed(3)
+                                                    )}
                                                 </Descriptions.Item>
                                             ))}
                                             <Descriptions.Item key={10} label={'Затраты порта'}>
-                                                {model.idle_server_cost}
+                                                {model.idle_server_cost && Number.parseFloat(model.idle_server_cost).toFixed(3)}
                                             </Descriptions.Item>
                                             <Descriptions.Item key={20} label={'Затраты судна'}>
-                                                {model.wait_cost}
+                                                {model.wait_cost && Number.parseFloat(model.wait_cost).toFixed(3)}
                                             </Descriptions.Item>
                                             <Descriptions.Item key={30} label={'Общие затраты'}>
-                                                {model.total_cost}
+                                                {model.total_cost && Number.parseFloat(model.total_cost).toFixed(3)}
                                             </Descriptions.Item>
                                         </Descriptions>
                                     </Panel>
@@ -150,18 +155,20 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                         </Skeleton>
                     </Col>
                 </Row>
-                <Row>
-                    <Col span={16}>
-                        <h2>Структура потока, входящего на запасной терминал</h2>
-                        <Skeleton loading={loading} active={true}>
-                            <Collapse defaultActiveKey={["0"]} style={{ overflow: "auto", maxHeight: "540px" }}>
-                                <Panel key={0} header={'Гистограмма'}>
-                                    <HistogramHighchartsWrapper data={response?.reserve_arrivals} title={'Интервалы между поступлениями заявок на запасной терминал'}/>
-                                </Panel>
-                            </Collapse>
-                        </Skeleton>
-                    </Col>
-                </Row>
+                {response?.reserve_arrivals?.length > 0 &&
+                    <Row>
+                        <Col span={16}>
+                            <h2>Структура потока, входящего на запасной терминал</h2>
+                            <Skeleton loading={loading} active={true}>
+                                <Collapse style={{ overflow: "auto", maxHeight: "540px" }}>
+                                    <Panel key={0} header={'Гистограмма'}>
+                                        <HistogramHighchartsWrapper data={response?.reserve_arrivals} title={'Интервалы между поступлениями заявок на запасной терминал'} />
+                                    </Panel>
+                                </Collapse>
+                            </Skeleton>
+                        </Col>
+                    </Row>
+                }
                 <Row>
                     <CharacteristicCompareChart loading={loading} systemVariables={props.systemVariables} />
                 </Row>
@@ -169,7 +176,20 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                     <Col span={16}>
                         <h2>Работа системы</h2>
                         <PortAnimation simulationResult={response} time={time} systemParams={props.systemVariables} />
-                        <Slider style={{ width: 795 }} disabled={loading} tipFormatter={null} value={time} min={0} max={props.systemVariables?.time ?? 10} marks={marks} onChange={(v) => setTime(v)} />
+                        <Row>
+                            <Col span={19}>
+                                <Slider step={0.1} disabled={loading} tipFormatter={null} value={typeof time === 'number' ? time : 0} min={0} max={props.systemVariables?.time ?? 10} marks={marks} onChange={(v) => setTime(v)} />
+                            </Col>
+                            <Col span={4}>
+                                <InputNumber
+                                    min={0}
+                                    step={0.1}
+                                    style={{ margin: '0 16px' }}
+                                    value={time}
+                                    onChange={(v) => setTime(v)}
+                                />
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
             </Space>

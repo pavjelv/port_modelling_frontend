@@ -123,16 +123,14 @@
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
                     <mat-label>{{ "Затраты при простое судна" | translate }}</mat-label>
                     <input matInput required type="number" [formControlName]="'waitCost'" />
-                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoAppearanceFieldHint" | translate }}</mat-hint>
-                    <mat-error *ngIf="getControl(additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY).invalid">{{
-                        getErrorMessage(additionalShipTypeParameters.CARGO_APPEARANCE_PROBABILITY) | translate
-                    }}</mat-error>
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoServersNumFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl('waitCost').invalid">{{ getErrorMessage("waitCost") | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
                     <mat-label>{{ "Затраты при простое причала" | translate }}</mat-label>
                     <input matInput required type="number" [formControlName]="'idleCost'" />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoServersNumFieldHint" | translate }}</mat-hint>
-                    <mat-error *ngIf="getControl(additionalShipTypeParameters.CARGO_SERVERS_NUM).invalid">{{ getErrorMessage(additionalShipTypeParameters.CARGO_SERVERS_NUM) | translate }}</mat-error>
+                    <mat-error *ngIf="getControl('idleCost').invalid">{{ getErrorMessage("idleCost") | translate }}</mat-error>
                 </mat-form-field>
             </div>
             <h3>Параметры для сухогрузов</h3>

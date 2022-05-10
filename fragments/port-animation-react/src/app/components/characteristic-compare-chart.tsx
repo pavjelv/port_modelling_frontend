@@ -33,16 +33,23 @@ const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVar
     const [drawerVisible, setDrawerVisible] = React.useState(false);
     const [chartsResult, setChartsResult] = React.useState(null as ChartsResultModel);
     const [requiredCharacteristics, setRequiredCharacteristics] = React.useState([]);
+    const [loading, setLoading] = React.useState(props.loading);
 
     const formRef = React.createRef<FormInstance>();
     const close = () => {
         setDrawerVisible(false);
     };
 
+    React.useEffect(() => {
+        setLoading(props.loading);
+        setChartsResult(null as ChartsResultModel);
+    }, [props])
+
     const apply = () => {
         formRef.current
             .validateFields()
             .then((result) => {
+                setLoading(true);
                 setDrawerVisible(false);
                 return result;
             })
@@ -61,6 +68,7 @@ const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVar
             .then((res) => res.json())
             .then(
                 (response: ChartsResultModel) => {
+                    setLoading(false);
                     setChartsResult(response);
                 },
                 (e) => errorNotification(),
@@ -77,7 +85,7 @@ const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVar
     return (
         <>
             <Col span={22}>
-                <Skeleton active={true} loading={props.loading}>
+                <Skeleton active={true} loading={loading}>
                     <Button onClick={showDrawer} type={"primary"}>
                         Построить графики сравнения?
                     </Button>
@@ -97,17 +105,17 @@ const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVar
                 onClose={close}
                 extra={
                     <Space>
-                        <Button onClick={close}>Cancel</Button>
+                        <Button onClick={close}>Отмена</Button>
                         <Button onClick={apply} type="primary">
-                            Submit
+                            Рассчитать
                         </Button>
                     </Space>
                 }>
                 <Form layout="vertical" hideRequiredMark ref={formRef}>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item name="characteristic" label="Characteristic" rules={[{ required: true, message: "Please select an characteristic" }]}>
-                                <Select mode={"multiple"} placeholder="Please select characteristic">
+                            <Form.Item name="characteristic" label="Характеристика" rules={[{ required: true, message: "Значение обязательно!" }]}>
+                                <Select mode={"multiple"} placeholder="Выберите характеристику">
                                     {Array.from(ModellingSystemCharacteristicsDictionary).map(([key, value], i) => (
                                         <Option key={i} value={key}>
                                             {value}
@@ -115,8 +123,8 @@ const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVar
                                     ))}
                                 </Select>
                             </Form.Item>
-                            <Form.Item name="parameter" label="Parameter" rules={[{ required: true, message: "Please select parameter" }]}>
-                                <Select placeholder="Please select parameter">
+                            <Form.Item name="parameter" label="Параметр" rules={[{ required: true, message: "Значение обязательно!" }]}>
+                                <Select placeholder="Выберите параметр">
                                     {Array.from(SystemParametersDictionary).map(([key, value], i) => (
                                         <Option key={i} value={key}>
                                             {value}
@@ -128,17 +136,17 @@ const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVar
                     </Row>
                     <Row gutter={16}>
                         <Col span={8}>
-                            <Form.Item name="from" label="From" rules={[{ required: true, message: "Please enter user name" }]}>
+                            <Form.Item name="from" label="От" rules={[{ required: true, message: "Значение обязательно!" }]}>
                                 <Input type={"number"} placeholder="Please enter from" />
                             </Form.Item>
                         </Col>
                         <Col span={8}>
-                            <Form.Item name="to" label="To" rules={[{ required: true, message: "Please enter user name" }]}>
+                            <Form.Item name="to" label="До" rules={[{ required: true, message: "Значение обязательно!" }]}>
                                 <Input type={"number"} placeholder="Please enter to" />
                             </Form.Item>
                         </Col>
                         <Col span={8}>
-                            <Form.Item name="step" label="Step" rules={[{ required: true, message: "Please enter user name" }]}>
+                            <Form.Item name="step" label="Шаг" rules={[{ required: true, message: "Значение обязательно!" }]}>
                                 <Input type={"number"} placeholder="Please enter step" />
                             </Form.Item>
                         </Col>
