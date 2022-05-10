@@ -2,16 +2,20 @@
 <mat-dialog-content>
     <p>Обозначается как <span [mathContent]="'$M/M/c/c$'"></span> в символике Кендалла</p>
     <h3>Для вычисления характеристик системы используются следующие формулы:</h3>
-    <span [mathContent]="rho"></span>
+    <p>
+        <span [mathContent]="'$n$'"></span>
+        <span>- Количество каналов обслуживания</span>
+    </p>
+    <span [mathContent]="a"></span>
     <span [mathContent]="pn"></span>
+    <p>Где:</p>
+    <p style="text-align: center" [mathContent]="p0"></p>
     <p
         >Вероятность того, что все каналы обслуживания заняты
         <span [mathContent]="'$P_c$'"></span>
         называется формулой Эрланга <span [mathContent]="'$B[c,p]$'"></span>
     </p>
     <span [mathContent]="b"></span>
-
-    <span [mathContent]="a"></span>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>{{ "port-modelling-fe.common.close" | translate }}</button>

@@ -6,21 +6,11 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MMCKSystemComponent {
-    public rho = "\\[ \\rho = \\lambda \\bar{S} \\]";
+    public readonly a = "\\[ a = \\frac{\\lambda}{\\mu}\\]";
 
-    public p0 = "\\[ P_0 = \\left[ \\sum_{n=0}^{c}\\frac{\\rho^n}{n!} + \\frac{\\rho^c}{c!} \\sum_{n=1}^{K-c}(\\frac{\\rho}{c})^n \\right]^{-1} \\]";
+    public readonly pk = "\\[ P_k = \\frac{\\frac{a^k}{k!}}{\\sum_{k=0}^{n}\\frac{a^k}{k!} + \\frac{a^n}{n!} \\sum_{s=1}^{m} {(\\frac{a}{n})}^s} \\quad (0 \\leq k \\leq n) \\]";
 
-    public pn =
-        "\\[ P_n = \\left\\{ " +
-        "\\begin{array}{ll} " +
-        "\\frac{\\rho^n}{n!}P_0, & \\mbox{if } n\\leq c \\\\ " +
-        "\\frac{\\rho^n}{c!} (\\frac{\\rho}{c})^{n-c} P_0, & \\mbox{if } n = c + 1, \\dots, K." +
-        "\\end{array} " +
-        "\\right. \\]";
+    public readonly pns = "\\[ P_{n+s} = \\frac{\\frac{a^n}{n!}{(\\frac{a}{n})}^s}{\\sum_{k=0}^{n}\\frac{a^k}{k!} + \\frac{a^n}{n!} \\sum_{s=1}^{m} {(\\frac{a}{n})}^s} \\]";
 
-    public a = "\\[ a = \\frac{\\bar{\\lambda} \\bar{S}}{c} \\]";
-
-    public qLen = "\\[ \\bar{Q} = \\frac{\\rho^c r P_0}{c!(1-r)^2} [1 + (K-c) r^{K-c+1} - (K-c+1)r^{K-c} ]  \\]";
-
-    public r = "\\[r = \\frac{\\rho}{c}\\]";
+    public readonly qLen = "\\[ m_s = \\sum_{s=1}^{m} SP_{n+s} \\]";
 }
