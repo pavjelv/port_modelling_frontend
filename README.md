@@ -9,6 +9,7 @@ Host application
 * [x] [Angular](https://angular.io/)
 * [x] [Angular Material](https://material.angular.io/)
 * [x] [Highcharts](https://www.highcharts.com/)
+* [x] [MathJax](https://www.mathjax.org/)
 
 ## Fragments
 ### Port-Animation

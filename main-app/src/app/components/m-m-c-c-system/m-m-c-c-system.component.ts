@@ -6,11 +6,11 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MMCCSystemComponent {
-    public rho = "\\[ \\rho = \\lambda \\bar{S} \\]";
+    public readonly a = "\\[ a = \\frac{\\lambda}{\\mu} \\]";
 
-    public pn = "\\[ P_n = \\frac{\\frac{\\rho^n}{n!}}{1 + \\rho + \\frac{\\rho^2}{2!} + \\dots + \\frac{\\rho^c}{c!}} \\quad n = 0,1, \\dots, c. \\]";
+    public readonly pn = "\\[ P_k = \\frac{a^k}{k!}P_0 \\quad k = 1, \\dots, c. \\]";
 
-    public b = "\\[ B[c,p] = \\frac{\\frac{\\rho^c}{c!}}{1 + \\rho + \\frac{\\rho^2}{2!} + \\dots + \\frac{\\rho^c}{c!}} \\]";
+    public readonly p0 = "$P_0 = \\frac{a}{\\sum_{k=0}^{c}\\frac{a^k}{k!}}$";
 
-    public a = "\\[ a = \\frac{\\bar{\\lambda} \\bar{S}}{c} \\]";
+    public readonly b = "\\[ B[c,p] = \\frac{\\frac{a^c}{c!}}{1 + \\rho + \\frac{a^2}{2!} + \\dots + \\frac{a^c}{c!}} \\]";
 }
