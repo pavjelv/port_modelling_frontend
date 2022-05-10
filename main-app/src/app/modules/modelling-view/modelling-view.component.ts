@@ -89,14 +89,14 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
             serversNum: [5, [Validators.required, Validators.min(1), Validators.pattern("^[0-9]*$")]],
             serveTime: [2.03, [Validators.required, Validators.min(0)]],
             lambda: [2.56, [Validators.required, Validators.min(0)]],
-            queueLength: [200, [Validators.required, Validators.min(0), Validators.pattern("^[0-9]*$")]],
+            queueLength: [7, [Validators.required, Validators.min(0), Validators.pattern("^[0-9]*$")]],
             a1: [0.5, Validators.required],
             b1: [1, Validators.required],
         });
         this.additionalShipTypeForm = this.fb.group({
-            serveTimeCargo: [0, [Validators.min(0)]],
+            serveTimeCargo: [1.5, [Validators.min(0)]],
             cargoAppearanceProbability: [0, [Validators.min(0), Validators.max(1)]],
-            cargoServersNum: [0, [Validators.min(0), Validators.pattern("^[0-9]*$")]],
+            cargoServersNum: [1, [Validators.min(0), Validators.pattern("^[0-9]*$")]],
             a2: [0.5, Validators.required],
             b2: [1, Validators.required],
         });
@@ -120,7 +120,7 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
     }
 
     public getControl(controlName: string): AbstractControl {
-        return this.systemParametersForm.get(controlName) ?? this.additionalShipTypeForm.get(controlName) ?? this.modelParametersForm.get(controlName);
+        return this.systemParametersForm.get(controlName) ?? this.additionalShipTypeForm.get(controlName) ?? this.modelParametersForm.get(controlName) ?? this.expensesForm.get(controlName);
     }
 
     public getErrorMessage(controlName: string): string {

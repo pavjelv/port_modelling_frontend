@@ -1,4 +1,4 @@
-import { BackTop, Col, Collapse, Descriptions, notification, Row, Skeleton, Slider, Space } from "antd";
+import { BackTop, Col, Collapse, Descriptions, InputNumber, notification, Row, Skeleton, Slider, Space } from "antd";
 import React from "react";
 
 import CharacteristicCompareChart from "../components/characteristic-compare-chart";
@@ -17,6 +17,7 @@ import "antd/lib/collapse/style/index.css";
 import "antd/lib/space/style/index.css";
 import "antd/lib/notification/style/index.css";
 import "antd/lib/back-top/style/index.css";
+import "antd/lib/input-number/style/index.css"
 
 const errorNotification = () => {
     notification["error"]({
@@ -55,7 +56,7 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                     errorNotification();
                 });
         }
-    }, [props]);
+    }, [props, queryParams, requestURL]);
     return (
         <>
             <BackTop />
@@ -159,7 +160,7 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                         <Col span={16}>
                             <h2>Структура потока, входящего на запасной терминал</h2>
                             <Skeleton loading={loading} active={true}>
-                                <Collapse defaultActiveKey={["0"]} style={{ overflow: "auto", maxHeight: "540px" }}>
+                                <Collapse style={{ overflow: "auto", maxHeight: "540px" }}>
                                     <Panel key={0} header={'Гистограмма'}>
                                         <HistogramHighchartsWrapper data={response?.reserve_arrivals} title={'Интервалы между поступлениями заявок на запасной терминал'} />
                                     </Panel>
@@ -175,7 +176,20 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                     <Col span={16}>
                         <h2>Работа системы</h2>
                         <PortAnimation simulationResult={response} time={time} systemParams={props.systemVariables} />
-                        <Slider style={{ width: 795 }} disabled={loading} tipFormatter={null} value={time} min={0} max={props.systemVariables?.time ?? 10} marks={marks} onChange={(v) => setTime(v)} />
+                        <Row>
+                            <Col span={19}>
+                                <Slider step={0.1} disabled={loading} tipFormatter={null} value={typeof time === 'number' ? time : 0} min={0} max={props.systemVariables?.time ?? 10} marks={marks} onChange={(v) => setTime(v)} />
+                            </Col>
+                            <Col span={4}>
+                                <InputNumber
+                                    min={0}
+                                    step={0.1}
+                                    style={{ margin: '0 16px' }}
+                                    value={time}
+                                    onChange={(v) => setTime(v)}
+                                />
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
             </Space>
