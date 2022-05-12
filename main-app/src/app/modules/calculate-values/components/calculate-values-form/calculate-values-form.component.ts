@@ -109,7 +109,7 @@ export class CalculateValuesFormComponent extends RxUnsubscribe implements OnIni
         });
 
         if (this.systemType !== SystemType.WITH_REJECT) {
-            this.systemParametersForm.setControl("systemOverload", this.fb.control(1, [Validators.max(1)]));
+            this.systemParametersForm.setControl("systemOverload", this.fb.control(1, [Validators.min(0), Validators.max(1)]));
             combineLatest([
                 this.systemParametersForm.get(SystemParameters.SERVERS_NUM).valueChanges.pipe(startWith(2)),
                 this.systemParametersForm.get(SystemParameters.MU).valueChanges.pipe(startWith(0.5)),

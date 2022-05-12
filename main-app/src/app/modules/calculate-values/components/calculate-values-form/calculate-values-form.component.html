@@ -45,9 +45,15 @@
                         <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" *ngIf="systemType !== 'reject'" class="readonly-field">
-                        <mat-label [innerHTML]="'Коэффициент загруженности системы' | translate"></mat-label>
-                        <input matInput [readonly]="true" [formControlName]="'systemOverload'" />
-                        <mat-hint align="start">{{ "Для нормального функционирования системы значение должно быть меньше 1" | translate }}</mat-hint>
+                        <mat-label [innerHTML]="'port-modelling-fe.calculateValues.systemOverload' | translate"></mat-label>
+                        <input
+                            matInput
+                            [readonly]="true"
+                            [formControlName]="'systemOverload'"
+                            [matTooltipPosition]="'above'"
+                            [matTooltip]="'port-modelling-fe.calculateValues.systemOverloadHint' | translate"
+                        />
+                        <mat-hint align="start">{{ "port-modelling-fe.calculateValues.systemOverloadHint" | translate }}</mat-hint>
                         <mat-error *ngIf="getControl('systemOverload').invalid">{{ getErrorMessage("systemOverload") | translate }}</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" *ngIf="hasQueue">

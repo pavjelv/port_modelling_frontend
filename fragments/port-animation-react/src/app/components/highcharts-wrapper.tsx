@@ -1,6 +1,10 @@
 import { Col, Row } from "antd";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('highcharts/modules/exporting')(Highcharts);
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('highcharts/modules/export-data')(Highcharts);
 import React from "react";
 
 import { ModellingSystemCharacteristicsDictionary } from "../dictionaries/modelling-system-characteristics.dictionary";
@@ -17,6 +21,14 @@ const processCharacteristics = (props: WrapperProps): readonly unknown[] => {
         return {
             title: {
                 text: ModellingSystemCharacteristicsDictionary.get(name),
+            },
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        menuItems: ["viewFullscreen", "separator", "downloadPNG", "downloadSVG", "downloadPDF", "separator", "downloadXLS", "downloadCSV"],
+                    },
+                },
+                enabled: true,
             },
             series: [
                 {
