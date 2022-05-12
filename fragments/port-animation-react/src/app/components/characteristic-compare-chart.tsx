@@ -33,6 +33,7 @@ const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVar
     const [drawerVisible, setDrawerVisible] = React.useState(false);
     const [chartsResult, setChartsResult] = React.useState(null as ChartsResultModel);
     const [requiredCharacteristics, setRequiredCharacteristics] = React.useState([]);
+    const [rangeParameter, setRangeParameter] = React.useState(null);
     const [loading, setLoading] = React.useState(props.loading);
 
     const formRef = React.createRef<FormInstance>();
@@ -55,6 +56,7 @@ const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVar
             })
             .then((result: Record<string, unknown>) => {
                 setRequiredCharacteristics(result["characteristic"] as []);
+                setRangeParameter(result["parameter"]);
                 const variables = { ...props.systemVariables, ...result };
                 delete variables["requiredCharacteristics"];
                 delete variables["characteristics"];
@@ -92,7 +94,7 @@ const CharacteristicCompareChart = (props: { readonly systemVariables: SystemVar
                     {!!chartsResult && (
                         <Collapse defaultActiveKey={["0"]}>
                             <Panel key={0} header={"Графики"}>
-                                <HighchartsWrapper chartsResult={chartsResult} requiredCharacteristics={requiredCharacteristics} />
+                                <HighchartsWrapper seriesName={rangeParameter} chartsResult={chartsResult} requiredCharacteristics={requiredCharacteristics} />
                             </Panel>
                         </Collapse>
                     )}

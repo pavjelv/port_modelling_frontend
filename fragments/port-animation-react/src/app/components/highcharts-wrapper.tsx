@@ -8,12 +8,15 @@ require('highcharts/modules/export-data')(Highcharts);
 import React from "react";
 
 import { ModellingSystemCharacteristicsDictionary } from "../dictionaries/modelling-system-characteristics.dictionary";
+import { SystemParametersDictionary } from "../dictionaries/required-system-variables.distionary";
 import { ChartsResultModel } from "../models/charts-result.model";
 import { SystemSummary } from "../models/simulation-result.model";
+import { RequiredSystemVariables } from "../models/system-variables.model";
 
 export type WrapperProps = {
     readonly chartsResult: ChartsResultModel;
     readonly requiredCharacteristics: ReadonlyArray<Exclude<keyof SystemSummary, "name">>;
+    readonly seriesName: string;
 };
 
 const processCharacteristics = (props: WrapperProps): readonly unknown[] => {
@@ -29,6 +32,11 @@ const processCharacteristics = (props: WrapperProps): readonly unknown[] => {
                     },
                 },
                 enabled: true,
+            },
+            xAxis: {
+                title: {
+                    text: SystemParametersDictionary.get(props.seriesName as keyof RequiredSystemVariables),
+                }
             },
             series: [
                 {
