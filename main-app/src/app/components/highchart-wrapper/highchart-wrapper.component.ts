@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires */
 import { isPlatformBrowser, ViewportScroller } from "@angular/common";
 import { AfterViewInit, ChangeDetectionStrategy, Component, HostBinding, Inject, Input, OnInit, PLATFORM_ID } from "@angular/core";
 import * as Highcharts from "highcharts";
@@ -40,6 +41,14 @@ export class HighchartWrapperComponent implements OnInit, AfterViewInit {
                 text: "",
             },
         },
+        exporting: {
+            buttons: {
+                contextButton: {
+                    menuItems: ["viewFullscreen", "separator", "downloadPNG", "downloadSVG", "downloadPDF", "separator", "downloadXLS", "downloadCSV"],
+                },
+            },
+            enabled: true,
+        },
         plotOptions: {
             line: {
                 dataLabels: {
@@ -55,9 +64,10 @@ export class HighchartWrapperComponent implements OnInit, AfterViewInit {
     constructor(private scroller: ViewportScroller, @Inject(PLATFORM_ID) private platformId: unknown) {
         const isBrowser = isPlatformBrowser(this.platformId);
         if (isBrowser) {
-            // eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
-            const theme: (v: unknown) => void = require("highcharts/themes/grid-light");
-            theme(Highcharts);
+            (require("highcharts/modules/exporting") as (v: unknown) => void)(Highcharts);
+            (require("highcharts/modules/export-data") as (v: unknown) => void)(Highcharts);
+            (require("highcharts/modules/annotations") as (v: unknown) => void)(Highcharts);
+            (require("highcharts/themes/grid-light") as (v: unknown) => void)(Highcharts);
         }
     }
 
