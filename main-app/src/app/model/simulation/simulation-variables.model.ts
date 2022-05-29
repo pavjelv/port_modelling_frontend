@@ -8,4 +8,11 @@ export interface SimulationVariablesModel extends Exclude<SystemVariablesModel, 
     b1: number;
     b2: number;
     arrivalDistribution: "poisson" | "uniform";
+    waitCostCargo: number;
+    idleCostCargo: number;
+    waitCost: number;
+    idleCost: number;
+    cargoAppearanceProbability: number;
+    serveTimeCargo: number;
+    cargoServersNum: number;
 }

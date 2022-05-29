@@ -133,21 +133,12 @@ const ModellingVisualisation = (props: { systemVariables: SystemVariablesModel }
                                             {props?.systemVariables?.requiredCharacteristics?.map(({ key, value }) => (
                                                 <Descriptions.Item key={index} label={value}>
                                                     {model[key] && (
-                                                        key === "left_customers_number" || key === "served_customers_number" ?
+                                                        key === "left_customers_number" ?
                                                             Number.parseInt(model[key], 10) :
                                                             Number.parseFloat(model[key]).toFixed(3)
                                                     )}
                                                 </Descriptions.Item>
                                             ))}
-                                            <Descriptions.Item key={10} label={'Затраты порта'}>
-                                                {model.idle_server_cost && Number.parseFloat(model.idle_server_cost).toFixed(3)}
-                                            </Descriptions.Item>
-                                            <Descriptions.Item key={20} label={'Затраты судна'}>
-                                                {model.wait_cost && Number.parseFloat(model.wait_cost).toFixed(3)}
-                                            </Descriptions.Item>
-                                            <Descriptions.Item key={30} label={'Общие затраты'}>
-                                                {model.total_cost && Number.parseFloat(model.total_cost).toFixed(3)}
-                                            </Descriptions.Item>
                                         </Descriptions>
                                     </Panel>
                                 ))}

@@ -49,6 +49,19 @@
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.timeFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl(parameters.TIME).invalid">{{ getErrorMessage(parameters.TIME) | translate }}</mat-error>
                 </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "port-modelling-fe.modellingView.lambda" | translate }}</mat-label>
+                    <input
+                        matInput
+                        required
+                        type="number"
+                        [formControlName]="parameters.LAMBDA"
+                        [matTooltipPosition]="'above'"
+                        [matTooltip]="'port-modelling-fe.modellingView.lambdaFieldHint' | translate"
+                    />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.lambdaFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
+                </mat-form-field>
             </div>
             <h3>Параметры для контейнерных судов</h3>
             <div class="modelling-view-form__parameters" [formGroup]="systemParametersForm">
@@ -80,19 +93,6 @@
                     <mat-error *ngIf="getControl(parameters.SERVE_TIME).invalid">{{ getErrorMessage(parameters.SERVE_TIME) | translate }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-                    <mat-label>{{ "port-modelling-fe.modellingView.lambda" | translate }}</mat-label>
-                    <input
-                        matInput
-                        required
-                        type="number"
-                        [formControlName]="parameters.LAMBDA"
-                        [matTooltipPosition]="'above'"
-                        [matTooltip]="'port-modelling-fe.modellingView.lambdaFieldHint' | translate"
-                    />
-                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.lambdaFieldHint" | translate }}</mat-hint>
-                    <mat-error *ngIf="getControl(parameters.LAMBDA).invalid">{{ getErrorMessage(parameters.LAMBDA) | translate }}</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
                     <mat-label>{{ "port-modelling-fe.modellingView.queueLength" | translate }}</mat-label>
                     <input
                         matInput
@@ -121,7 +121,7 @@
             <h3>Затраты</h3>
             <div class="modelling-view-form__parameters" [formGroup]="expensesForm">
                 <mat-form-field appearance="outline" class="modelling-view-form__parameter">
-                    <mat-label>{{ "Затраты при простое судна" | translate }}</mat-label>
+                    <mat-label>{{ "Затраты при простое контейнерного судна" | translate }}</mat-label>
                     <input matInput required type="number" [formControlName]="'waitCost'" />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoServersNumFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl('waitCost').invalid">{{ getErrorMessage("waitCost") | translate }}</mat-error>
@@ -131,6 +131,18 @@
                     <input matInput required type="number" [formControlName]="'idleCost'" />
                     <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoServersNumFieldHint" | translate }}</mat-hint>
                     <mat-error *ngIf="getControl('idleCost').invalid">{{ getErrorMessage("idleCost") | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "Затраты при простое сухогруза" | translate }}</mat-label>
+                    <input matInput required type="number" [formControlName]="'waitCostCargo'" />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoServersNumFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl('waitCostCargo').invalid">{{ getErrorMessage("waitCostCargo") | translate }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="modelling-view-form__parameter">
+                    <mat-label>{{ "Затраты при простое причала сухогруза" | translate }}</mat-label>
+                    <input matInput required type="number" [formControlName]="'idleCostCargo'" />
+                    <mat-hint align="start">{{ "port-modelling-fe.modellingView.cargoServersNumFieldHint" | translate }}</mat-hint>
+                    <mat-error *ngIf="getControl('idleCostCargo').invalid">{{ getErrorMessage("idleCostCargo") | translate }}</mat-error>
                 </mat-form-field>
             </div>
             <h3>Параметры для сухогрузов</h3>
