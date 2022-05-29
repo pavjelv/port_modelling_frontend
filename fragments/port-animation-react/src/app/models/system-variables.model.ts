@@ -15,6 +15,8 @@ export interface SystemVariablesModel extends RequiredSystemVariables{
     cargoServersNum: number;
     waitCost: number;
     idleCost: number;
+    waitCostCargo: number;
+    idleCostCargo: number;
     requiredCharacteristics: { key: keyof SystemSummary, value: string }[];
     a1: number;
     a2: number;

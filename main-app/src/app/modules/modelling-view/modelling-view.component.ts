@@ -83,12 +83,12 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
         this.modelParametersForm = this.fb.group({
             arrivalDistribution: [this.distributions[0].id, [Validators.required]],
             requiredCharacteristics: [null, [Validators.required]],
-            time: [35, [Validators.required, Validators.min(0), Validators.pattern("^[0-9]*$")]],
+            time: [100, [Validators.required, Validators.min(0), Validators.pattern("^[0-9]*$")]],
+            lambda: [2.56, [Validators.required, Validators.min(0)]],
         });
         this.systemParametersForm = this.fb.group({
             serversNum: [5, [Validators.required, Validators.min(1), Validators.pattern("^[0-9]*$")]],
             serveTime: [2.03, [Validators.required, Validators.min(0)]],
-            lambda: [2.56, [Validators.required, Validators.min(0)]],
             queueLength: [7, [Validators.required, Validators.min(0), Validators.pattern("^[0-9]*$")]],
             a1: [0.5, Validators.required],
             b1: [1, Validators.required],
@@ -104,6 +104,8 @@ export class ModellingViewComponent extends RxUnsubscribe implements OnInit, OnD
         this.expensesForm = this.fb.group({
             waitCost: [80.8, Validators.min(0)],
             idleCost: [12.8, Validators.min(0)],
+            waitCostCargo: [15, Validators.min(0)],
+            idleCostCargo: [7.3, Validators.min(0)],
         });
 
         this.commonParametersForm = this.fb.group({
